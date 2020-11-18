@@ -5,6 +5,9 @@ import Categorias from '../Components/Categorias/Categorias';
 import Clasificacion from '../Components/Clasificacion/Clasificacion';
 import FormPregunta from '../Components/Pregunta/Pregunta';
 import { api_url } from '../Components/utils/utils';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 class Pregunta extends Component {
   constructor(props) {
@@ -12,7 +15,7 @@ class Pregunta extends Component {
     this.state = {
       error: null,
       loading: true,
-
+      usuario: cookies.get('cookie1'),
       categorias: {
         catid: '',
         catnombre: '',
@@ -28,10 +31,11 @@ class Pregunta extends Component {
     };
   }
   componentDidMount() {
+    console.log(this.state.usuario.userid);
     this.fetchData();
     this.setState({
       pregunta: {
-        userid: parseInt(this.props.match.params.userID),
+        userid: this.state.usuario.userid,
         catid: 1,
         pregtexto: '',
         pregdetalle: '',
@@ -45,7 +49,7 @@ class Pregunta extends Component {
     this.setState({
       pregunta: {
         ...this.state.pregunta,
-        userid: parseInt(this.props.match.params.userID),
+        userid: this.state.usuario.userid,
         catnombre: this.state.pregunta.catnombre,
         catid: this.state.pregunta.catid,
         [e.target.name]: e.target.value,
@@ -55,7 +59,7 @@ class Pregunta extends Component {
   dropDownChange = (e, { value }) => {
     this.setState({
       pregunta: {
-        userid: parseInt(this.props.match.params.userID),
+        userid: this.state.usuario.userid,
         catid: value,
         pregtexto: this.state.pregunta.pregtexto,
         pregdetalle: this.state.pregunta.pregdetalle,

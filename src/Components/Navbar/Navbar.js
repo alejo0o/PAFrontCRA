@@ -85,7 +85,7 @@ class ComponentNavbar extends Component {
         `${api_url}/api/customqueries/getUsuario/${this.state.usuarioLogin.usernick}/${this.state.usuarioLogin.userpass}`
       );
       if (Object.values(response.data) !== 0) {
-        cookies.set('cookie1', response.data, { path: '/' });
+        cookies.set('cookie1', response.data[0], { path: '/' });
       } else {
         cookies.remove('cookie1');
       }

@@ -13,7 +13,7 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path='/' component={MainPage} />
-        <Route exact path='/pregunta/:userID' component={PreguntaPage} />
+        <Route exact path='/pregunta' component={PreguntaPage} />
         <Route exact path='/respuesta/:preguntaID' component={RespuestasPage} />
         <Route exact path='/buscar' component={Buscar} />
         <Route exact path='/categorias' component={Categorias} />
