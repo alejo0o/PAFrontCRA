@@ -1,14 +1,17 @@
-import { Navbar, FormControl, Nav, Form, Button } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { Link } from "react-router-dom";
-import React, { Component } from "react";
-import { api_url } from "../utils/utils";
-import Cookies from "universal-cookie";
-import axios from "axios";
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+import { Navbar, FormControl, Nav, Form, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
+import { api_url } from '../utils/utils';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
+import Login from '../Login/Login';
+import { withRouter } from 'react-router-dom';
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const cookies = new Cookies();
-console.log(cookies.get("cookie1"));
+console.log(cookies.get('cookie1'));
 
 class ComponentNavbar extends Component {
   constructor(props) {
@@ -17,17 +20,17 @@ class ComponentNavbar extends Component {
       error: null,
       loading: true,
 
-      buscar: "",
-      usuarioLogin: { usernick: "", userpass: "" },
+      buscar: '',
+      usuarioLogin: { usernick: '', userpass: '' },
       usuarioSignUp: {
-        usernombre: "",
-        userapellido: "",
-        userfechanacimiento: "",
-        usernick: "",
-        userpass: "",
-        useremail: "",
-        userfoto: "",
-        usersexo: "Masculino",
+        usernombre: '',
+        userapellido: '',
+        userfechanacimiento: '',
+        usernick: '',
+        userpass: '',
+        useremail: '',
+        userfoto: '',
+        usersexo: 'Masculino',
         userpuntaje: 20,
       },
     };
@@ -37,7 +40,9 @@ class ComponentNavbar extends Component {
   componentDidMount() {}
   handleChange = (e) => {
     //maneja el cambio en el componente hijo y setea los valores a las variables de estado
-    this.state.buscar(encodeURIComponent(e.target.value));
+    this.setState({
+      buscar: encodeURIComponent(e.target.value),
+    });
   };
   handleChangeLogin = (e) => {
     //maneja el cambio en el componente hijo y setea los valores a las variables de estado
@@ -80,9 +85,9 @@ class ComponentNavbar extends Component {
         `${api_url}/api/customqueries/getUsuario/${this.state.usuarioLogin.usernick}/${this.state.usuarioLogin.userpass}`
       );
       if (Object.values(response.data) !== 0) {
-        cookies.set("cookie1", response.data, { path: "/" });
+        cookies.set('cookie1', response.data, { path: '/' });
       } else {
-        cookies.remove("cookie1");
+        cookies.remove('cookie1');
       }
       this.setState({
         loading: false,
@@ -119,47 +124,57 @@ class ComponentNavbar extends Component {
     }
   };
 
+  OnSubmitBuscar = (e) => {
+    e.preventDefault();
+    this.props.history.push(`/buscar?buscar=${this.state.buscar}`);
+    window.location.reload();
+  };
+
+  onClickButtonLogout = async (e) => {
+    cookies.remove('cookie1');
+    this.props.history.push(`/`);
+    window.location.reload();
+  };
+
   render() {
     return (
-      <Navbar expand="lg" style={{ backgroundColor: "#dae5ed" }}>
-        <Navbar.Brand href="#home">TASBP</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="mr-auto">
-            <Link to="/" className="nav-link">
+      <Navbar expand='lg' style={{ backgroundColor: '#dae5ed' }}>
+        <Navbar.Brand href='#home'>TASBP</Navbar.Brand>
+        <Navbar.Toggle aria-controls='basic-navbar-nav' />
+        <Navbar.Collapse id='basic-navbar-nav'>
+          <Nav className='mr-auto'>
+            <Link to='/' className='nav-link'>
               Home
             </Link>
           </Nav>
           <Nav>
-            <Form inline onChange={this.handleChange}>
+            <Form
+              inline
+              onChange={this.handleChange}
+              onSubmit={this.OnSubmitBuscar}>
               <FormControl
-                type="text"
-                placeholder="Buscar"
-                className="mr-sm-2"
-                name="buscar"
+                type='text'
+                placeholder='Buscar'
+                className='mr-sm-2'
+                name='buscar'
+                required
               />
-              <a href={`/buscar?buscar=${this.state.buscar}`}>
-                <Button variant="outline-success">Buscar</Button>
-              </a>
+
+              <Button variant='outline-success' type='submit'>
+                Buscar
+              </Button>
             </Form>
           </Nav>
           <Nav>
-            <Link
-              to="/"
-              className="btn btn-primary ml-2"
-              style={{ width: "8em" }}
-            >
-              Log In
-            </Link>
-            {/* <Login
+            <Login
               eventoLogin={this.handleChangeLogin}
               formValuesLogin={this.state.usuarioLogin}
               buttonClickLogin={this.onClickButtonLogin}
               eventoSignUp={this.handleChangeSignUp}
-              formValuesSignUp={this.stateusuarioSignUp}
+              formValuesSignUp={this.state.usuarioSignUp}
               buttonClickSignUp={this.onClickButtonSignUp}
               buttonClickLogout={this.onClickButtonLogout}
-            /> */}
+            />
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -167,4 +182,4 @@ class ComponentNavbar extends Component {
   }
 }
 
-export default ComponentNavbar;
+export default withRouter(ComponentNavbar);
