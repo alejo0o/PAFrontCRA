@@ -8,7 +8,7 @@ import {
 } from './EstilosClasificacion';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Loader from '../Spinner/Spinner';
+import Loader from '../Loader/Loader';
 
 class Clasificacion extends Component {
   constructor(props) {

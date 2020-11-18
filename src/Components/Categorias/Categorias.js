@@ -4,7 +4,7 @@ import 'semantic-ui-css/semantic.min.css';
 import { MainContainer, ItemsLista } from './EstilosCategorias';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Loader from '../Spinner/Spinner';
+import Loader from '../Loader/Loader';
 
 class Categorias extends Component {
   constructor(props) {
