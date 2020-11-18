@@ -5,6 +5,16 @@ import React, { Component } from "react";
 import { api_url } from "../utils/utils";
 import Cookies from "universal-cookie";
 import axios from "axios";
+import Login from "../Login/Login";
+import { withRouter } from "react-router-dom";
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
+import { Icon } from "semantic-ui-react";
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const cookies = new Cookies();
@@ -31,13 +41,13 @@ class ComponentNavbar extends Component {
         userpuntaje: 20,
       },
     };
-    // this.onClickButtonSignUp = this.onClickButtonSignUp.bind(this);
-    // this.onClickButtonLogin = this.onClickButtonLogin.bind(this);
   }
   componentDidMount() {}
   handleChange = (e) => {
     //maneja el cambio en el componente hijo y setea los valores a las variables de estado
-    this.state.buscar(encodeURIComponent(e.target.value));
+    this.setState({
+      buscar: encodeURIComponent(e.target.value),
+    });
   };
   handleChangeLogin = (e) => {
     //maneja el cambio en el componente hijo y setea los valores a las variables de estado
@@ -119,6 +129,18 @@ class ComponentNavbar extends Component {
     }
   };
 
+  OnSubmitBuscar = (e) => {
+    e.preventDefault();
+    this.props.history.push(`/buscar?buscar=${this.state.buscar}`);
+    window.location.reload();
+  };
+
+  onClickButtonLogout = async (e) => {
+    cookies.remove("cookie1");
+    this.props.history.push(`/`);
+    window.location.reload();
+  };
+
   render() {
     return (
       <Navbar expand="lg" style={{ backgroundColor: "#dae5ed" }}>
@@ -131,40 +153,78 @@ class ComponentNavbar extends Component {
             </Link>
           </Nav>
           <Nav>
-            <Form inline onChange={this.handleChange}>
+            <Form
+              inline
+              onChange={this.handleChange}
+              onSubmit={this.OnSubmitBuscar}
+            >
               <FormControl
                 type="text"
                 placeholder="Buscar"
                 className="mr-sm-2"
                 name="buscar"
+                required
               />
-              <a href={`/buscar?buscar=${this.state.buscar}`}>
-                <Button variant="outline-success">Buscar</Button>
-              </a>
+
+              <Button variant="outline-success" type="submit">
+                Buscar
+              </Button>
             </Form>
           </Nav>
-          <Nav>
-            <Link
-              to="/"
-              className="btn btn-primary ml-2"
-              style={{ width: "8em" }}
+          {cookies.get("cookie1") === undefined && (
+            <Nav>
+              <Login
+                eventoLogin={this.handleChangeLogin}
+                formValuesLogin={this.state.usuarioLogin}
+                buttonClickLogin={this.onClickButtonLogin}
+                eventoSignUp={this.handleChangeSignUp}
+                formValuesSignUp={this.state.usuarioSignUp}
+                buttonClickSignUp={this.onClickButtonSignUp}
+                buttonClickLogout={this.onClickButtonLogout}
+              />
+            </Nav>
+          )}
+          {cookies.get("cookie1") !== undefined && (
+            <Nav
+              className="d-md-none justify-content-between"
+              navbar
+              style={{ minHeight: 170 }}
             >
-              Log In
-            </Link>
-            {/* <Login
-              eventoLogin={this.handleChangeLogin}
-              formValuesLogin={this.state.usuarioLogin}
-              buttonClickLogin={this.onClickButtonLogin}
-              eventoSignUp={this.handleChangeSignUp}
-              formValuesSignUp={this.stateusuarioSignUp}
-              buttonClickSignUp={this.onClickButtonSignUp}
-              buttonClickLogout={this.onClickButtonLogout}
-            /> */}
-          </Nav>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret id="profileDropDown">
+                  <img
+                    src={cookies.get("cookie1").userfoto}
+                    alt="Profile"
+                    className="nav-user-profile rounded-circle"
+                    width="50"
+                  />
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem header>
+                    {cookies.get("cookie1").usernombre}
+                  </DropdownItem>
+                  <DropdownItem
+                    // tag={RouterNavLink}
+                    // to="/profile"
+                    className="dropdown-profile"
+                    activeClassName="router-link-exact-active"
+                  >
+                    <Icon disabled name="user circle" /> Profile
+                  </DropdownItem>
+                  <DropdownItem
+                    id="qsLogoutBtn"
+                    onClick={() => this.onClickButtonLogout}
+                  >
+                    <Icon disabled name="toggle off" /> Log out
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Navbar>
     );
   }
 }
 
-export default ComponentNavbar;
+export default withRouter(ComponentNavbar);
