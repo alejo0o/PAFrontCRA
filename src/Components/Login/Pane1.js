@@ -1,15 +1,6 @@
 import React from 'react';
-import {
-  Form,
-  Grid,
-  Header,
-  Icon,
-  Modal,
-  Button,
-  Tab,
-} from 'semantic-ui-react';
-import { MainContainer, MainContainerS } from './EstilosLogin';
-import { validateNick, validateRequired } from './ValidateFunctions';
+import { Form, Grid, Header, Icon, Tab } from 'semantic-ui-react';
+import { MainContainer } from './EstilosLogin';
 
 const Pane1 = ({ eventoLogin, formValuesLogin, buttonClickLogin }) => {
   return (

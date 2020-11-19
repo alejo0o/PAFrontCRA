@@ -1,14 +1,6 @@
 import React from 'react';
-import {
-  Form,
-  Grid,
-  Header,
-  Icon,
-  Modal,
-  Button,
-  Tab,
-} from 'semantic-ui-react';
-import { MainContainer, MainContainerS } from './EstilosLogin';
+import { Modal, Button, Tab } from 'semantic-ui-react';
+
 import Tab1 from './Pane1';
 import Tab2 from './Pane2';
 import 'bootstrap/dist/css/bootstrap.min.css';

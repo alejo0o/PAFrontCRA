@@ -6,6 +6,7 @@ import Clasificacion from '../Components/Clasificacion/Clasificacion';
 import FormPregunta from '../Components/Pregunta/Pregunta';
 import { api_url } from '../Components/utils/utils';
 import Cookies from 'universal-cookie';
+import Logearse from '../Components/Pregunta/Logearse'
 
 const cookies = new Cookies();
 
@@ -13,6 +14,8 @@ class Pregunta extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      success: false,
+      warning: false,
       error: null,
       loading: true,
       usuario: cookies.get('cookie1'),
@@ -31,7 +34,6 @@ class Pregunta extends Component {
     };
   }
   componentDidMount() {
-    console.log(this.state.usuario.userid);
     this.fetchData();
     this.setState({
       pregunta: {
@@ -76,14 +78,27 @@ class Pregunta extends Component {
     });
     try {
       //e.preventDefault();
-      const response = await axios.post(
-        `${api_url}/api/pregunta`,
-        this.state.pregunta
-      );
-      this.setState({
-        loading: false,
-        error: null,
-      });
+      if (this.state.usuario.userpuntaje >= 10) {
+        const response = await axios.post(
+          `${api_url}/api/pregunta`,
+          this.state.pregunta
+        );
+        this.setState({
+          loading: false,
+          error: null,
+          warning: false,
+        });
+        if (response.status === 201)
+          this.setState({
+            success: true,
+          });
+      } else {
+        this.setState({
+          loading: false,
+          error: null,
+          warning: true,
+        });
+      }
     } catch (error) {
       this.setState({
         loading: false,
@@ -111,20 +126,41 @@ class Pregunta extends Component {
       });
     }
   };
+
+  modalOnClose = () => {
+    this.setState({
+      warning: false,
+    });
+  };
+
+  modalOnCloseSuccess = () => {
+    this.setState({
+      success: false,
+    });
+  };
+
   render() {
-    console.log(this.state.pregunta);
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <div>Error</div>;
+
     return (
       <div style={{ display: 'flex' }}>
         <Categorias />
-        <FormPregunta
-          evento={this.handleChange}
-          formValues={this.state.pregunta}
-          buttonClick={this.onClickButton}
-          categorias={this.state.categorias}
-          dropDownChange={this.dropDownChange}
-        />
+        {this.state.usuario && (
+          <FormPregunta
+            evento={this.handleChange}
+            formValues={this.state.pregunta}
+            buttonClick={this.onClickButton}
+            categorias={this.state.categorias}
+            dropDownChange={this.dropDownChange}
+            warning={this.state.warning}
+            modalOnClose={this.modalOnClose}
+            usuarioPuntaje={this.state.usuario.userpuntaje}
+            success={this.state.success}
+            modalSuccessClose={this.modalOnCloseSuccess}
+          />
+        )}
+         {!this.state.usuario && }
         <Clasificacion />
       </div>
     );
