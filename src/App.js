@@ -7,6 +7,7 @@ import RespuestasPage from "./Pages/Respuesta";
 import Buscar from "./Pages/Buscar";
 import Categorias from "./Pages/Categorias";
 import Error from "./Pages/Error";
+import Perfil from "./Pages/Perfil";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route exact path="/buscar" component={Buscar} />
         <Route exact path="/categorias" component={Categorias} />
         <Route exact path="/error" component={Error} />
+        <Route exact path="/perfil" component={Perfil} />
       </Switch>
       <Footer />
     </BrowserRouter>

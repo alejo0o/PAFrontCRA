@@ -13,7 +13,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
-import { Icon } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -89,10 +89,16 @@ class ComponentNavbar extends Component {
       const response = await axios.get(
         `${api_url}/api/customqueries/getUsuario/${this.state.usuarioLogin.usernick}/${this.state.usuarioLogin.userpass}`
       );
-      if (Object.values(response.data) !== 0) {
-        cookies.set("cookie1", response.data, { path: "/" });
+      if (Object.values(response.data).length !== 0) {
+        cookies.set("cookie1", response.data[0], { path: "/" });
+        cookies.remove("cookie2");
       } else {
         cookies.remove("cookie1");
+        cookies.set(
+          "cookie2",
+          { error: "Nickname o contraseña incorrecta" },
+          { path: "/" }
+        );
       }
       this.setState({
         loading: false,
@@ -171,7 +177,7 @@ class ComponentNavbar extends Component {
               </Button>
             </Form>
           </Nav>
-          {cookies.get("cookie1") === undefined && (
+          {window.undefined === cookies.get("cookie1") && (
             <Nav>
               <Login
                 eventoLogin={this.handleChangeLogin}
@@ -180,16 +186,11 @@ class ComponentNavbar extends Component {
                 eventoSignUp={this.handleChangeSignUp}
                 formValuesSignUp={this.state.usuarioSignUp}
                 buttonClickSignUp={this.onClickButtonSignUp}
-                buttonClickLogout={this.onClickButtonLogout}
               />
             </Nav>
           )}
-          {cookies.get("cookie1") !== undefined && (
-            <Nav
-              className="d-md-none justify-content-between"
-              navbar
-              style={{ minHeight: 170 }}
-            >
+          {window.undefined !== cookies.get("cookie1") && (
+            <Nav>
               <UncontrolledDropdown nav inNavbar>
                 <DropdownToggle nav caret id="profileDropDown">
                   <img
@@ -197,25 +198,42 @@ class ComponentNavbar extends Component {
                     alt="Profile"
                     className="nav-user-profile rounded-circle"
                     width="50"
+                    style={{ paddingRight: "0.5em" }}
                   />
+                  <Label circular color="grey">
+                    {cookies.get("cookie1").usernick}&nbsp;&nbsp;&nbsp;
+                    <Icon name="star" />
+                    {cookies.get("cookie1").userpuntaje}
+                  </Label>
                 </DropdownToggle>
                 <DropdownMenu>
-                  <DropdownItem header>
-                    {cookies.get("cookie1").usernombre}
-                  </DropdownItem>
                   <DropdownItem
                     // tag={RouterNavLink}
                     // to="/profile"
                     className="dropdown-profile"
-                    activeClassName="router-link-exact-active"
                   >
-                    <Icon disabled name="user circle" /> Profile
+                    <a
+                      href="/perfil"
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      <Icon
+                        fitted
+                        name="user circle"
+                        style={{ paddingRight: "0.5em" }}
+                      />
+                      Perfil
+                    </a>
                   </DropdownItem>
                   <DropdownItem
                     id="qsLogoutBtn"
-                    onClick={() => this.onClickButtonLogout}
+                    onClick={() => this.onClickButtonLogout()}
                   >
-                    <Icon disabled name="toggle off" /> Log out
+                    <Icon
+                      fitted
+                      name="toggle off"
+                      style={{ paddingRight: "0.5em" }}
+                    />
+                    Logout
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>

@@ -3,7 +3,7 @@ import axios from "axios";
 import Loader from "../Components/Spinner/Spinner";
 import Error from "../Components/Error/Error";
 
-class Respuesta extends Component {
+class ErrorPage extends Component {
   constructor(props) {
     super(props);
   }
@@ -16,4 +16,4 @@ class Respuesta extends Component {
   }
 }
 
-export default Respuesta;
+export default ErrorPage;
