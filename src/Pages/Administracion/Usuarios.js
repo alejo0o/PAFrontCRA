@@ -1,7 +1,5 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 import {Table, Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter} from 'reactstrap';
 import axios from 'axios';
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -138,9 +136,9 @@ class respuestas extends React.Component{
                                 <td>{usuario.userpuntaje}</td>
                                 <td>{usuario.useradmin}</td>
                                 <td>
-                                <Button color="primary" onClick={()=>{this.seleccionar(usuario); this.modalInsertar()}}><FontAwesomeIcon icon={faEdit}/></Button>
+                                <Button color="primary" onClick={()=>{this.seleccionar(usuario); this.modalInsertar()}}></Button>
                                 {"  "}
-                                <Button color="danger" onClick={()=>{this.seleccionar(usuario); this.setState({modalEliminar: true})}}><FontAwesomeIcon icon={faTrashAlt}/></Button></td>
+                                <Button color="danger" onClick={()=>{this.seleccionar(usuario); this.setState({modalEliminar: true})}}></Button></td>
                             </tr>
                         ))}
                     </tbody>

@@ -1,7 +1,5 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 import {Table, Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter} from 'reactstrap';
 import axios from 'axios';
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -106,9 +104,9 @@ class categorias extends React.Component{
                                 <td>{categoria.catnombre}</td>
                                 <td>{categoria.catdescripcion}</td>
                                 <td>
-                                <Button color="primary" onClick={()=>{this.seleccionar(categoria); this.modalInsertar()}}><FontAwesomeIcon icon={faEdit}/></Button>
+                                <Button color="primary" onClick={()=>{this.seleccionar(categoria); this.modalInsertar()}}></Button>
                                 {"  "}
-                                <Button color="danger" onClick={()=>{this.seleccionar(categoria); this.setState({modalEliminar: true})}}><FontAwesomeIcon icon={faTrashAlt}/></Button></td>
+                                <Button color="danger" onClick={()=>{this.seleccionar(categoria); this.setState({modalEliminar: true})}}></Button></td>
                             </tr>
                         ))}
                     </tbody>
