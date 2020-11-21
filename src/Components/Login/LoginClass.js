@@ -3,6 +3,7 @@ import { api_url } from '../utils/utils';
 import Cookies from 'universal-cookie';
 import axios from 'axios';
 import Login from '../Login/Login';
+import { withRouter } from 'react-router-dom';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -113,12 +114,6 @@ class LoginClass extends Component {
     }
   };
 
-  OnSubmitBuscar = (e) => {
-    e.preventDefault();
-    this.props.history.push(`/buscar?buscar=${this.state.buscar}`);
-    window.location.reload();
-  };
-
   onClickButtonLogout = async (e) => {
     cookies.remove('cookie1');
     this.props.history.push(`/`);
@@ -141,4 +136,4 @@ class LoginClass extends Component {
   }
 }
 
-export default LoginClass;
+export default withRouter(LoginClass);

@@ -6,7 +6,7 @@ import Clasificacion from '../Components/Clasificacion/Clasificacion';
 import FormPregunta from '../Components/Pregunta/Pregunta';
 import { api_url } from '../Components/utils/utils';
 import Cookies from 'universal-cookie';
-import Logearse from '../Components/Pregunta/Logearse'
+import Logearse from '../Components/Pregunta/Logearse';
 
 const cookies = new Cookies();
 
@@ -35,15 +35,16 @@ class Pregunta extends Component {
   }
   componentDidMount() {
     this.fetchData();
-    this.setState({
-      pregunta: {
-        userid: this.state.usuario.userid,
-        catid: 1,
-        pregtexto: '',
-        pregdetalle: '',
-        catnombre: 'Sexualidad',
-      },
-    });
+    if (this.state.usuario)
+      this.setState({
+        pregunta: {
+          userid: this.state.usuario.userid,
+          catid: 1,
+          pregtexto: '',
+          pregdetalle: '',
+          catnombre: 'Sexualidad',
+        },
+      });
   }
 
   handleChange = (e) => {
@@ -160,7 +161,7 @@ class Pregunta extends Component {
             modalSuccessClose={this.modalOnCloseSuccess}
           />
         )}
-         {!this.state.usuario && }
+        {!this.state.usuario && <Logearse />}
         <Clasificacion />
       </div>
     );
