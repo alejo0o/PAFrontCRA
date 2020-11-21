@@ -1,17 +1,24 @@
-import { Navbar, FormControl, Nav, Form, Button } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
-import React, { Component } from 'react';
-import { api_url } from '../utils/utils';
-import Cookies from 'universal-cookie';
-import axios from 'axios';
-import Login from '../Login/Login';
-import { withRouter } from 'react-router-dom';
+import { Navbar, FormControl, Nav, Form, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Link } from "react-router-dom";
+import React, { Component } from "react";
+import { api_url } from "../utils/utils";
+import Cookies from "universal-cookie";
+import axios from "axios";
+import Login from "../Login/Login";
+import { withRouter } from "react-router-dom";
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from "reactstrap";
+import { Icon, Label } from "semantic-ui-react";
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const cookies = new Cookies();
-console.log(cookies.get('cookie1'));
+console.log(cookies.get("cookie1"));
 
 class ComponentNavbar extends Component {
   constructor(props) {
@@ -20,22 +27,20 @@ class ComponentNavbar extends Component {
       error: null,
       loading: true,
 
-      buscar: '',
-      usuarioLogin: { usernick: '', userpass: '' },
+      buscar: "",
+      usuarioLogin: { usernick: "", userpass: "" },
       usuarioSignUp: {
-        usernombre: '',
-        userapellido: '',
-        userfechanacimiento: '',
-        usernick: '',
-        userpass: '',
-        useremail: '',
-        userfoto: '',
-        usersexo: 'Masculino',
+        usernombre: "",
+        userapellido: "",
+        userfechanacimiento: "",
+        usernick: "",
+        userpass: "",
+        useremail: "",
+        userfoto: "",
+        usersexo: "Masculino",
         userpuntaje: 20,
       },
     };
-    // this.onClickButtonSignUp = this.onClickButtonSignUp.bind(this);
-    // this.onClickButtonLogin = this.onClickButtonLogin.bind(this);
   }
   componentDidMount() {}
   handleChange = (e) => {
@@ -84,10 +89,16 @@ class ComponentNavbar extends Component {
       const response = await axios.get(
         `${api_url}/api/customqueries/getUsuario/${this.state.usuarioLogin.usernick}/${this.state.usuarioLogin.userpass}`
       );
-      if (Object.values(response.data) !== 0) {
-        cookies.set('cookie1', response.data[0], { path: '/' });
+      if (Object.values(response.data).length !== 0) {
+        cookies.set("cookie1", response.data[0], { path: "/" });
+        cookies.remove("cookie2");
       } else {
-        cookies.remove('cookie1');
+        cookies.remove("cookie1");
+        cookies.set(
+          "cookie2",
+          { error: "Nickname o contraseña incorrecta" },
+          { path: "/" }
+        );
       }
       this.setState({
         loading: false,
@@ -131,19 +142,19 @@ class ComponentNavbar extends Component {
   };
 
   onClickButtonLogout = async (e) => {
-    cookies.remove('cookie1');
+    cookies.remove("cookie1");
     this.props.history.push(`/`);
     window.location.reload();
   };
 
   render() {
     return (
-      <Navbar expand='lg' style={{ backgroundColor: '#dae5ed' }}>
-        <Navbar.Brand href='#home'>TASBP</Navbar.Brand>
-        <Navbar.Toggle aria-controls='basic-navbar-nav' />
-        <Navbar.Collapse id='basic-navbar-nav'>
-          <Nav className='mr-auto'>
-            <Link to='/' className='nav-link'>
+      <Navbar expand="lg" style={{ backgroundColor: "#dae5ed" }}>
+        <Navbar.Brand href="#home">TASBP</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="mr-auto">
+            <Link to="/" className="nav-link">
               Home
             </Link>
           </Nav>
@@ -151,31 +162,83 @@ class ComponentNavbar extends Component {
             <Form
               inline
               onChange={this.handleChange}
-              onSubmit={this.OnSubmitBuscar}>
+              onSubmit={this.OnSubmitBuscar}
+            >
               <FormControl
-                type='text'
-                placeholder='Buscar'
-                className='mr-sm-2'
-                name='buscar'
+                type="text"
+                placeholder="Buscar"
+                className="mr-sm-2"
+                name="buscar"
                 required
               />
 
-              <Button variant='outline-success' type='submit'>
+              <Button variant="outline-success" type="submit">
                 Buscar
               </Button>
             </Form>
           </Nav>
-          <Nav>
-            <Login
-              eventoLogin={this.handleChangeLogin}
-              formValuesLogin={this.state.usuarioLogin}
-              buttonClickLogin={this.onClickButtonLogin}
-              eventoSignUp={this.handleChangeSignUp}
-              formValuesSignUp={this.state.usuarioSignUp}
-              buttonClickSignUp={this.onClickButtonSignUp}
-              buttonClickLogout={this.onClickButtonLogout}
-            />
-          </Nav>
+          {window.undefined === cookies.get("cookie1") && (
+            <Nav>
+              <Login
+                eventoLogin={this.handleChangeLogin}
+                formValuesLogin={this.state.usuarioLogin}
+                buttonClickLogin={this.onClickButtonLogin}
+                eventoSignUp={this.handleChangeSignUp}
+                formValuesSignUp={this.state.usuarioSignUp}
+                buttonClickSignUp={this.onClickButtonSignUp}
+              />
+            </Nav>
+          )}
+          {window.undefined !== cookies.get("cookie1") && (
+            <Nav>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret id="profileDropDown">
+                  <img
+                    src={cookies.get("cookie1").userfoto}
+                    alt="Profile"
+                    className="nav-user-profile rounded-circle"
+                    width="50"
+                    style={{ paddingRight: "0.5em" }}
+                  />
+                  <Label circular color="grey">
+                    {cookies.get("cookie1").usernick}&nbsp;&nbsp;&nbsp;
+                    <Icon name="star" />
+                    {cookies.get("cookie1").userpuntaje}
+                  </Label>
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem
+                    // tag={RouterNavLink}
+                    // to="/profile"
+                    className="dropdown-profile"
+                  >
+                    <a
+                      href="/perfil"
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      <Icon
+                        fitted
+                        name="user circle"
+                        style={{ paddingRight: "0.5em" }}
+                      />
+                      Perfil
+                    </a>
+                  </DropdownItem>
+                  <DropdownItem
+                    id="qsLogoutBtn"
+                    onClick={() => this.onClickButtonLogout()}
+                  >
+                    <Icon
+                      fitted
+                      name="toggle off"
+                      style={{ paddingRight: "0.5em" }}
+                    />
+                    Logout
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Navbar>
     );

@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import Loader from '../Components/Spinner/Spinner';
-import Categorias from '../Components/Categorias/Categorias';
-import Clasificacion from '../Components/Clasificacion/Clasificacion';
-import FormPregunta from '../Components/Pregunta/Pregunta';
-import { api_url } from '../Components/utils/utils';
-import Cookies from 'universal-cookie';
+import React, { Component } from "react";
+import axios from "axios";
+import Loader from "../Components/Spinner/Spinner";
+import Categorias from "../Components/Categorias/Categorias";
+import Clasificacion from "../Components/Clasificacion/Clasificacion";
+import FormPregunta from "../Components/Pregunta/Pregunta";
+import { api_url } from "../Components/utils/utils";
+import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
@@ -15,31 +15,30 @@ class Pregunta extends Component {
     this.state = {
       error: null,
       loading: true,
-      usuario: cookies.get('cookie1'),
+      usuario: cookies.get("cookie1"),
       categorias: {
-        catid: '',
-        catnombre: '',
-        catdescripcion: '',
+        catid: "",
+        catnombre: "",
+        catdescripcion: "",
       },
       pregunta: {
-        userid: '',
+        userid: "",
         catid: 1,
-        pregtexto: '',
-        pregdetalle: '',
-        catnombre: 'Sexualidad',
+        pregtexto: "",
+        pregdetalle: "",
+        catnombre: "Sexualidad",
       },
     };
   }
   componentDidMount() {
-    console.log(this.state.usuario.userid);
     this.fetchData();
     this.setState({
       pregunta: {
         userid: this.state.usuario.userid,
         catid: 1,
-        pregtexto: '',
-        pregdetalle: '',
-        catnombre: 'Sexualidad',
+        pregtexto: "",
+        pregdetalle: "",
+        catnombre: "Sexualidad",
       },
     });
   }
@@ -112,11 +111,10 @@ class Pregunta extends Component {
     }
   };
   render() {
-    console.log(this.state.pregunta);
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <div>Error</div>;
     return (
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: "flex" }}>
         <Categorias />
         <FormPregunta
           evento={this.handleChange}
