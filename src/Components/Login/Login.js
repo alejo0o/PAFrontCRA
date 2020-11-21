@@ -12,7 +12,6 @@ function LoginForm({
   eventoSignUp,
   formValuesSignUp,
   buttonClickSignUp,
-  buttonClickLogout,
 }) {
   const [open, setOpen] = React.useState(false);
   const handleOnChange = (e, data) => {
@@ -27,7 +26,6 @@ function LoginForm({
           eventoLogin={eventoLogin}
           formValuesLogin={formValuesLogin}
           buttonClickLogin={buttonClickLogin}
-          buttonClickLogout={buttonClickLogout}
         />
       ),
     },
@@ -38,7 +36,6 @@ function LoginForm({
           eventoSignUp={eventoSignUp}
           formValuesSignUp={formValuesSignUp}
           buttonClickSignUp={buttonClickSignUp}
-          buttonClickLogout={buttonClickLogout}
           handleOnChange={handleOnChange}
         />
       ),
@@ -46,9 +43,6 @@ function LoginForm({
   ];
   return (
     <div>
-      <Button onClick={buttonClickLogout} className='ml-2' color='teal'>
-        Logout
-      </Button>
       <Modal
         closeIcon
         open={open}

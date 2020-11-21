@@ -16,6 +16,8 @@ class LoginClass extends Component {
     this.state = {
       error: null,
       loading: true,
+
+      buscar: '',
       usuarioLogin: { usernick: '', userpass: '' },
       usuarioSignUp: {
         usernombre: '',
@@ -29,10 +31,7 @@ class LoginClass extends Component {
         userpuntaje: 20,
       },
     };
-    // this.onClickButtonSignUp = this.onClickButtonSignUp.bind(this);
-    // this.onClickButtonLogin = this.onClickButtonLogin.bind(this);
   }
-  componentDidMount() {}
 
   handleChangeLogin = (e) => {
     //maneja el cambio en el componente hijo y setea los valores a las variables de estado
@@ -74,10 +73,16 @@ class LoginClass extends Component {
       const response = await axios.get(
         `${api_url}/api/customqueries/getUsuario/${this.state.usuarioLogin.usernick}/${this.state.usuarioLogin.userpass}`
       );
-      if (Object.values(response.data) !== 0) {
+      if (Object.values(response.data).length !== 0) {
         cookies.set('cookie1', response.data[0], { path: '/' });
+        cookies.remove('cookie2');
       } else {
         cookies.remove('cookie1');
+        cookies.set(
+          'cookie2',
+          { error: 'Nickname o contraseña incorrecta' },
+          { path: '/' }
+        );
       }
       this.setState({
         loading: false,

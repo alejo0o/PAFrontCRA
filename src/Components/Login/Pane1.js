@@ -1,6 +1,8 @@
 import React from 'react';
-import { Form, Grid, Header, Icon, Tab } from 'semantic-ui-react';
+import { Form, Grid, Header, Icon, Tab, Label } from 'semantic-ui-react';
 import { MainContainer } from './EstilosLogin';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 const Pane1 = ({ eventoLogin, formValuesLogin, buttonClickLogin }) => {
   return (
@@ -43,10 +45,27 @@ const Pane1 = ({ eventoLogin, formValuesLogin, buttonClickLogin }) => {
                   required
                 />
               </Form.Group>
+              <Form.Group>
+                {window.undefined === cookies.get('cookie2') && (
+                  <Label basic color='black'>
+                    <Icon name='info circle' />
+                    Ingrese su nickname y contraseña
+                  </Label>
+                )}
+                {window.undefined !== cookies.get('cookie2') && (
+                  <Label basic color='black'>
+                    <Icon name='info circle' />
+                    {cookies.get('cookie2').error}
+                  </Label>
+                )}
+              </Form.Group>
               <Form.Button
                 fluid
                 size='large'
-                style={{ backgroundColor: '#283049', color: '#FFF' }}>
+                style={{
+                  backgroundColor: '#283049',
+                  color: '#FFF',
+                }}>
                 Login
               </Form.Button>
               {/* </Segment> */}
