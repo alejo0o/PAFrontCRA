@@ -1,18 +1,18 @@
 // import { Link } from "react-router-dom";
-import React, { Component } from "react";
-import Loader from "../Components/Spinner/Spinner";
-import { api_url } from "../Components/utils/utils";
-import Cookies from "universal-cookie";
-import axios from "axios";
+import React, { Component } from 'react';
+import Loader from '../Components/Spinner/Spinner';
+import { api_url } from '../Components/utils/utils';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
 // import { withRouter } from "react-router-dom";
-import { Tab } from "semantic-ui-react";
-import Tab1 from "../Components/Perfil/UsuarioPerfil";
-import Tab2 from "../Components/Perfil/PreguntasUsuario";
+import { Tab } from 'semantic-ui-react';
+import Tab1 from '../Components/Perfil/UsuarioPerfil';
+import Tab2 from '../Components/Perfil/PreguntasUsuario';
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const cookies = new Cookies();
-const user = cookies.get("cookie1");
+const user = cookies.get('cookie1');
 
 class Perfil extends Component {
   constructor(props) {
@@ -33,21 +33,12 @@ class Perfil extends Component {
         usersexo: user.usersexo,
         userpuntaje: user.userpuntaje,
       },
-      preguntas: {
-        pregid: "",
-        pregtexto: "",
-        pregdetalle: "",
-        pregfecha: "",
-        preghora: {},
-        pregestado: "",
-        pregcategoria: "",
-      },
-      usuario: {},
+      preguntas: {},
     };
   }
   componentDidMount() {
     this.fetchData();
-    console.log(this.state.usuario);
+
     console.log(this.state.preguntas);
   }
   fetchData = async () => {
@@ -62,12 +53,15 @@ class Perfil extends Component {
       const responseUsuario = await axios.get(
         `${api_url}/api/usuario/${user.userid}`
       );
+
       this.setState({
         preguntas: responsePregunta,
         usuario: responseUsuario,
         loading: false,
+        error: null,
       });
     } catch (error) {
+      console.log('aqui');
       console.log(error);
       this.setState({
         loading: false,
@@ -105,7 +99,7 @@ class Perfil extends Component {
         `${api_url}/api/usuario/${this.state.usuarioUpdate.userid}`,
         this.state.usuarioUpdate
       );
-      cookies.set("cookie1", this.state.usuarioUpdate, { path: "/" });
+      cookies.set('cookie1', this.state.usuarioUpdate, { path: '/' });
       window.location.reload();
 
       this.setState({
@@ -122,7 +116,7 @@ class Perfil extends Component {
 
   panes = [
     {
-      menuItem: { key: "Perfil", icon: "user", content: "Perfil" },
+      menuItem: { key: 'Perfil', icon: 'user', content: 'Perfil' },
       render: () => (
         <Tab1
           eventoUpdate={this.handleChangeUpdate}
@@ -133,14 +127,14 @@ class Perfil extends Component {
     },
     {
       menuItem: {
-        key: "Preguntas",
-        icon: "question circle",
-        content: "Preguntas",
+        key: 'Preguntas',
+        icon: 'question circle',
+        content: 'Preguntas',
       },
-      render: () => <Tab2 preguntasData={this.state.preguntas} />,
+      render: () => <Tab2 preguntasData={this.state.preguntas.data} />,
     },
     {
-      menuItem: { key: "Respuestas", icon: "user", content: "Respuestas" },
+      menuItem: { key: 'Respuestas', icon: 'user', content: 'Respuestas' },
       render: () => <Tab1 />,
     },
   ];
@@ -148,16 +142,16 @@ class Perfil extends Component {
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <div>Error</div>;
     return (
-      <div style={{ marginTop: "2em" }}>
+      <div style={{ marginTop: '2em' }}>
         <Tab
           menu={{
-            style: { backgroundColor: "#283049" },
+            style: { backgroundColor: '#283049' },
             inverted: true,
             fluid: true,
             vertical: true,
           }}
           panes={this.panes}
-          menuPosition="left"
+          menuPosition='left'
         />
       </div>
     );

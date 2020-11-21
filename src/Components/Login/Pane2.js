@@ -132,7 +132,7 @@ const Pane2 = ({
               <Form.Button
                 fluid
                 size='large'
-                style={{ backgroundColor: '#283049', color: '#FFF' }}>
+                style={{ backgroundColor: 'grey', color: '#FFF' }}>
                 Registrarse
               </Form.Button>
             </Form>

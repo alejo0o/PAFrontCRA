@@ -1,13 +1,12 @@
 import React from 'react';
 import {
+  Container,
   Button,
   Form,
   Header,
   Segment,
-  Container,
-  Dropdown,
-  DropdownItem,
-  Select,
+  Modal,
+  Icon,
 } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {
@@ -24,6 +23,11 @@ const Pregunta = ({
   buttonClick,
   categorias,
   dropDownChange,
+  warning,
+  modalOnClose,
+  success,
+  usuarioPuntaje,
+  modalSuccessClose,
 }) => {
   const ListCategorias = [];
   categorias.map((categoria) => {
@@ -35,6 +39,41 @@ const Pregunta = ({
   });
   return (
     <MainContainer>
+      {/*Modales*/}
+      {/*Modal para la pregunta warning*/}
+      <Modal closeIcon open={warning} size='small' style={{ height: 200 }}>
+        <Header icon='remove circle' content='Ups! Hubo un error' />
+        <Modal.Content>
+          <p>
+            Tu puntaje es de <strong>{usuarioPuntaje}</strong> puntos por lo que
+            no puedes realizar más preguntas responde las preguntas de otros
+            participantes para ganar puntos.
+          </p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color='green' onClick={modalOnClose}>
+            <Icon name='checkmark' /> Ok!
+          </Button>
+        </Modal.Actions>
+      </Modal>
+      {/*Modal para la pregunta success*/}
+      <Modal closeIcon open={success} size='small' style={{ height: 200 }}>
+        <Header
+          icon='check circle'
+          content='Pregunta ingresada satisfactoriamente!'
+        />
+        <Modal.Content>
+          <p>
+            Tu pregunta se ha ingresado correctamente, responde otras preguntas
+            para ganar puntos y ayudar a otras personas.
+          </p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color='green' onClick={modalSuccessClose}>
+            <Icon name='smile outline' /> Ok!
+          </Button>
+        </Modal.Actions>
+      </Modal>
       <Form size='large' onSubmit={buttonClick}>
         <Segment stacked style={{ padding: '30px' }}>
           <Header

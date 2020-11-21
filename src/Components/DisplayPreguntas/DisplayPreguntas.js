@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Container, List, Image, Segment } from 'semantic-ui-react';
+import { Header, List, Segment } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {
   MainContainer,
