@@ -62,7 +62,7 @@ class Clasificacion extends Component {
             justifyContent: 'center',
             paddingTop: '2em',
           }}>
-          <Link to={`/pregunta/${1}`}>
+          <Link to={`/pregunta`}>
             <Button
               size='large'
               fluid

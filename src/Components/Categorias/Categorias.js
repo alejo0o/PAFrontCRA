@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Segment, List, Header } from 'semantic-ui-react';
+import { Segment, List, Header } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { MainContainer, ItemsLista } from './EstilosCategorias';
-import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 import Loader from '../Loader/Loader';
 
