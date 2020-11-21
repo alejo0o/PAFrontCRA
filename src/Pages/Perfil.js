@@ -140,7 +140,7 @@ class Perfil extends Component {
       render: () => <Tab2 preguntasData={this.state.preguntas} />,
     },
     {
-      menuItem: { key: "Respuestas", icon: "user", content: "Respuestas" },
+      menuItem: { key: "Respuestas", icon: "talk", content: "Respuestas" },
       render: () => <Tab1 />,
     },
   ];
