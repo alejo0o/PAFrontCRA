@@ -8,6 +8,10 @@ import Buscar from "./Pages/Buscar";
 import Categorias from "./Pages/Categorias";
 import Error from "./Pages/Error";
 import Perfil from "./Pages/Perfil";
+import CategoriasAdmin from './Pages/Administracion/Categorias';
+import RespuestasAdmin from './Pages/Administracion/Respuestas';
+import PreguntasAdmin from './Pages/Administracion/Preguntas';
+import UsuariosAdmin from './Pages/Administracion/Usuarios';
 
 function App() {
   return (
@@ -21,6 +25,10 @@ function App() {
         <Route exact path="/categorias" component={Categorias} />
         <Route exact path="/error" component={Error} />
         <Route exact path="/perfil" component={Perfil} />
+        <Route exact path='/administracion/categorias' component={CategoriasAdmin} />
+        <Route exact path='/administracion/respuestas' component={RespuestasAdmin} />
+        <Route exact path='/administracion/preguntas' component={PreguntasAdmin} />
+        <Route exact path='/administracion/usuarios' component={UsuariosAdmin} />
       </Switch>
       <Footer />
     </BrowserRouter>
