@@ -31,7 +31,7 @@ const NavBar = (props) => {
 
   const onClickButtonLogout = async (e) => {
     cookies.remove('cookie1');
-    props.history.push(`/`);
+    props.history.push(props.location.pathname + props.location.search);
     window.location.reload();
   };
   return (

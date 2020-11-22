@@ -74,6 +74,7 @@ const Pregunta = ({
           </Button>
         </Modal.Actions>
       </Modal>
+      {/*Formulario de pregunta estructura */}
       <Form size='large' onSubmit={buttonClick}>
         <Segment stacked style={{ padding: '30px' }}>
           <Header

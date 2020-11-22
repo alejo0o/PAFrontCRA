@@ -53,7 +53,7 @@ class Categorias extends Component {
             Todas las categorías
           </Header>
           <List style={{ padding: '1em' }}>
-            {this.state.categorias.map((categoria) => (
+            {this.state.categorias.data.map((categoria) => (
               <ItemsLista key={categoria.catid}>
                 <List.Item>
                   <a
