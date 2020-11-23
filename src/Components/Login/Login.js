@@ -1,8 +1,9 @@
-import React from "react";
-import { Modal, Button, Tab } from "semantic-ui-react";
-import Tab1 from "./Pane1";
-import Tab2 from "./Pane2";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React from 'react';
+import { Modal, Button, Tab } from 'semantic-ui-react';
+
+import Tab1 from './Pane1';
+import Tab2 from './Pane2';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function LoginForm({
   eventoLogin,
@@ -19,7 +20,7 @@ function LoginForm({
 
   const panes = [
     {
-      menuItem: { key: "Login", icon: "user", content: "Login" },
+      menuItem: { key: 'Login', icon: 'user', content: 'Login' },
       render: () => (
         <Tab1
           eventoLogin={eventoLogin}
@@ -29,7 +30,7 @@ function LoginForm({
       ),
     },
     {
-      menuItem: { key: "SignUp", icon: "users", content: "SignUp" },
+      menuItem: { key: 'SignUp', icon: 'users', content: 'SignUp' },
       render: () => (
         <Tab2
           eventoSignUp={eventoSignUp}
@@ -46,15 +47,14 @@ function LoginForm({
         closeIcon
         open={open}
         basic
-        dimmer="blurring"
-        size="small"
+        dimmer='blurring'
+        size='small'
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        trigger={<Button color="teal">Login</Button>}
-      >
+        trigger={<Button color='teal'>Login</Button>}>
         <Tab
           menu={{
-            style: { backgroundColor: "#283049" },
+            style: { backgroundColor: '#283049' },
             inverted: true,
             attached: false,
             tabular: false,

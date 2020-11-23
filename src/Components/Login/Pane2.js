@@ -1,14 +1,6 @@
 import React from "react";
-import {
-  Form,
-  Grid,
-  Header,
-  Icon,
-  Modal,
-  Button,
-  Tab,
-} from "semantic-ui-react";
-import { MainContainer, MainContainerS } from "./EstilosLogin";
+import { Form, Grid, Header, Icon, Tab } from "semantic-ui-react";
+import { MainContainerS } from "./EstilosLogin";
 import {
   validateEmail,
   validateFoto,

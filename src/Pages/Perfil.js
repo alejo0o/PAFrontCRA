@@ -1,13 +1,14 @@
-// import { Link } from "react-router-dom";
 import React, { Component } from "react";
 import Loader from "../Components/Spinner/Spinner";
 import { api_url } from "../Components/utils/utils";
 import Cookies from "universal-cookie";
 import axios from "axios";
-// import { withRouter } from "react-router-dom";
 import { Tab } from "semantic-ui-react";
 import Tab1 from "../Components/Perfil/UsuarioPerfil";
 import Tab2 from "../Components/Perfil/PreguntasUsuario";
+import Tab3 from "../Components/Perfil/RespuestasUsuario";
+import Tab4 from "../Components/Perfil/PreguntasCerradasUsuario";
+import Tab5 from "../Components/Perfil/MensajesUsuario";
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -33,22 +34,13 @@ class Perfil extends Component {
         usersexo: user.usersexo,
         userpuntaje: user.userpuntaje,
       },
-      preguntas: {
-        pregid: "",
-        pregtexto: "",
-        pregdetalle: "",
-        pregfecha: "",
-        preghora: {},
-        pregestado: "",
-        pregcategoria: "",
-      },
-      usuario: {},
+      preguntas: {},
+      preguntasCerradas: {},
+      respuestas: {},
     };
   }
   componentDidMount() {
     this.fetchData();
-    console.log(this.state.usuario);
-    console.log(this.state.preguntas);
   }
   fetchData = async () => {
     this.setState({
@@ -59,15 +51,23 @@ class Perfil extends Component {
       const { data: responsePregunta } = await axios.get(
         `${api_url}/api/customqueries/pregXuser/${user.userid}`
       );
-      const responseUsuario = await axios.get(
-        `${api_url}/api/usuario/${user.userid}`
+
+      const { data: responseRespuesta } = await axios.get(
+        `${api_url}/api/customqueries/pregYrespXuser/${user.userid}`
+      );
+
+      const { data: responsePreguntaCerradas } = await axios.get(
+        `${api_url}/api/customqueries/predCad/${user.userid}`
       );
       this.setState({
         preguntas: responsePregunta,
-        usuario: responseUsuario,
+        respuestas: responseRespuesta,
+        preguntasCerradas: responsePreguntaCerradas,
         loading: false,
+        error: null,
       });
     } catch (error) {
+      console.log("aqui");
       console.log(error);
       this.setState({
         loading: false,
@@ -137,11 +137,27 @@ class Perfil extends Component {
         icon: "question circle",
         content: "Preguntas",
       },
-      render: () => <Tab2 preguntasData={this.state.preguntas} />,
+      render: () => <Tab2 preguntasData={this.state.preguntas.data} />,
     },
     {
       menuItem: { key: "Respuestas", icon: "talk", content: "Respuestas" },
-      render: () => <Tab1 />,
+      render: () => <Tab3 respuestasData={this.state.respuestas.data} />,
+    },
+    {
+      menuItem: {
+        key: "Preguntas cerradas",
+        icon: "question circle",
+        content: "Preguntas cerradas",
+      },
+      render: () => <Tab4 preguntasData={this.state.preguntasCerradas.data} />,
+    },
+    {
+      menuItem: {
+        key: "Mensajes",
+        icon: "question circle",
+        content: "Mensajes",
+      },
+      render: () => <Tab5 />,
     },
   ];
   render() {

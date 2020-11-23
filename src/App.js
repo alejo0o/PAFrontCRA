@@ -7,7 +7,12 @@ import RespuestasPage from "./Pages/Respuesta";
 import Buscar from "./Pages/Buscar";
 import Categorias from "./Pages/Categorias";
 import Error from "./Pages/Error";
-import Perfil from "./Pages/Perfil";
+import PerfilPage from "./Pages/Perfil";
+import CategoriasAdmin from "./Pages/Administracion/Categorias";
+import RespuestasAdmin from "./Pages/Administracion/Respuestas";
+import PreguntasAdmin from "./Pages/Administracion/Preguntas";
+import UsuariosAdmin from "./Pages/Administracion/Usuarios";
+import MejorRespuestaPage from "./Pages/MejorRespuesta";
 
 function App() {
   return (
@@ -15,12 +20,37 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/" component={MainPage} />
-        <Route exact path="/pregunta/:userID" component={PreguntaPage} />
+        <Route exact path="/pregunta" component={PreguntaPage} />
         <Route exact path="/respuesta/:preguntaID" component={RespuestasPage} />
         <Route exact path="/buscar" component={Buscar} />
         <Route exact path="/categorias" component={Categorias} />
         <Route exact path="/error" component={Error} />
-        <Route exact path="/perfil" component={Perfil} />
+        <Route exact path="/perfil" component={PerfilPage} />
+        <Route
+          exact
+          path="/administracion/categorias"
+          component={CategoriasAdmin}
+        />
+        <Route
+          exact
+          path="/administracion/respuestas"
+          component={RespuestasAdmin}
+        />
+        <Route
+          exact
+          path="/administracion/preguntas"
+          component={PreguntasAdmin}
+        />
+        <Route
+          exact
+          path="/administracion/usuarios"
+          component={UsuariosAdmin}
+        />
+        <Route
+          exact
+          path="/mejorRespuesta/:preguntaID"
+          component={MejorRespuestaPage}
+        />
       </Switch>
       <Footer />
     </BrowserRouter>
