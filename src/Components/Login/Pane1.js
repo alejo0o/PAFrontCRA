@@ -1,10 +1,24 @@
 import React from 'react';
-import { Form, Grid, Header, Icon, Tab, Label } from 'semantic-ui-react';
+import {
+  Form,
+  Grid,
+  Header,
+  Icon,
+  Tab,
+  Modal,
+  Button,
+} from 'semantic-ui-react';
 import { MainContainer } from './EstilosLogin';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
-const Pane1 = ({ eventoLogin, formValuesLogin, buttonClickLogin }) => {
+const Pane1 = ({
+  eventoLogin,
+  formValuesLogin,
+  buttonClickLogin,
+  FailUser,
+  modalOnCloseFail,
+}) => {
   return (
     <Tab.Pane style={{ backgroundColor: ' #dae5ed' }}>
       <MainContainer style={{ margin: 'auto' }}>
@@ -45,20 +59,27 @@ const Pane1 = ({ eventoLogin, formValuesLogin, buttonClickLogin }) => {
                   required
                 />
               </Form.Group>
-              <Form.Group>
-                {window.undefined === cookies.get('cookie2') && (
-                  <Label basic color='black'>
-                    <Icon name='info circle' />
-                    Ingrese su nickname y contraseña
-                  </Label>
-                )}
-                {window.undefined !== cookies.get('cookie2') && (
-                  <Label basic color='black'>
-                    <Icon name='info circle' />
-                    {cookies.get('cookie2').error}
-                  </Label>
-                )}
-              </Form.Group>
+              {/*Modal de exito de login */}
+              <Modal
+                closeIcon
+                open={FailUser}
+                size='small'
+                style={{ height: 200 }}>
+                <Header icon='ban' content='Usuario o contraseña incorrecta!' />
+                <Modal.Content>
+                  <p>
+                    Las credenciales ingresadas no son correctas, porfavor
+                    revise la información ingresada o contacte con el
+                    administrador.
+                  </p>
+                </Modal.Content>
+                <Modal.Actions>
+                  <Button color='green' onClick={modalOnCloseFail}>
+                    <Icon name='remove circle' /> Ok!
+                  </Button>
+                </Modal.Actions>
+              </Modal>
+              {/*Fin del modal */}
               <Form.Button
                 fluid
                 size='large'

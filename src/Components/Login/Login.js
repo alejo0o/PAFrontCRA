@@ -12,6 +12,8 @@ function LoginForm({
   eventoSignUp,
   formValuesSignUp,
   buttonClickSignUp,
+  FailUser,
+  modalOnCloseFail,
 }) {
   const [open, setOpen] = React.useState(false);
   const handleOnChange = (e, data) => {
@@ -26,6 +28,8 @@ function LoginForm({
           eventoLogin={eventoLogin}
           formValuesLogin={formValuesLogin}
           buttonClickLogin={buttonClickLogin}
+          FailUser={FailUser}
+          modalOnCloseFail={modalOnCloseFail}
         />
       ),
     },
