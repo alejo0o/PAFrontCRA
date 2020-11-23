@@ -117,7 +117,7 @@ class Pregunta extends Component {
     try {
       const { data } = await axios.get(`${api_url}/api/categoria`);
       this.setState({
-        categorias: data,
+        categorias: data.data,
         loading: false,
       });
     } catch (error) {

@@ -16,7 +16,7 @@ class LoginClass extends Component {
     this.state = {
       error: null,
       loading: true,
-
+      usuarioIncorrecto: false,
       buscar: '',
       usuarioLogin: { usernick: '', userpass: '' },
       usuarioSignUp: {
@@ -73,16 +73,16 @@ class LoginClass extends Component {
       const response = await axios.get(
         `${api_url}/api/customqueries/getUsuario/${this.state.usuarioLogin.usernick}/${this.state.usuarioLogin.userpass}`
       );
-      if (Object.values(response.data).length !== 0) {
+      if (response.data.length !== 0) {
         cookies.set('cookie1', response.data[0], { path: '/' });
-        cookies.remove('cookie2');
-      } else {
-        cookies.remove('cookie1');
-        cookies.set(
-          'cookie2',
-          { error: 'Nickname o contraseña incorrecta' },
-          { path: '/' }
+        this.props.history.push(
+          this.props.location.pathname + this.props.location.search
         );
+        window.location.reload();
+      } else {
+        this.setState({
+          usuarioIncorrecto: true,
+        });
       }
       this.setState({
         loading: false,
@@ -124,6 +124,13 @@ class LoginClass extends Component {
     this.props.history.push(`/`);
     window.location.reload();
   };
+
+  modaOnCloseFail = () => {
+    this.setState({
+      usuarioIncorrecto: false,
+    });
+  };
+
   render() {
     return (
       <div>
@@ -135,6 +142,8 @@ class LoginClass extends Component {
           formValuesSignUp={this.state.usuarioSignUp}
           buttonClickSignUp={this.onClickButtonSignUp}
           buttonClickLogout={this.onClickButtonLogout}
+          FailUser={this.state.usuarioIncorrecto}
+          modalOnCloseFail={this.modaOnCloseFail}
         />
       </div>
     );
