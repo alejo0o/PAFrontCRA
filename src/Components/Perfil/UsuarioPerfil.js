@@ -12,13 +12,13 @@ import {
 import { MainContainer } from "./EstilosPerfil";
 import Cookies from "universal-cookie";
 import UsuarioUpdate from "./UsuarioUpdate";
-
-const cookies = new Cookies();
-const user = cookies.get("cookie1");
+import { fecha } from "../utils/utils";
 
 function UsuarioPerfil({ eventoUpdate, formValuesUpdate, buttonClickUpdate }) {
   const [open, setOpen] = React.useState(false);
-
+  const cookies = new Cookies();
+  const user = cookies.get("cookie1");
+  const fechaF = fecha(user.userfechanacimiento);
   return (
     <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
       <MainContainer style={{ margin: "auto" }}>
@@ -54,7 +54,7 @@ function UsuarioPerfil({ eventoUpdate, formValuesUpdate, buttonClickUpdate }) {
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>Fecha de nacimiento</Table.Cell>
-                      <Table.Cell>{user.userfechanacimiento}</Table.Cell>
+                      <Table.Cell>{fechaF}</Table.Cell>
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>Género</Table.Cell>

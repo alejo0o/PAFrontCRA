@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Segment, List, Header } from 'semantic-ui-react';
-import 'semantic-ui-css/semantic.min.css';
-import { MainContainer, ItemsLista } from './EstilosCategorias';
+import React, { Component } from "react";
+import { Segment, List, Header } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
+import { MainContainer, ItemsLista } from "./EstilosCategorias";
 
-import axios from 'axios';
-import Loader from '../Spinner/Spinner';
+import axios from "axios";
+import Loader from "../Spinner/Spinner";
 
 class Categorias extends Component {
   constructor(props) {
@@ -13,9 +13,9 @@ class Categorias extends Component {
       error: null,
       loading: true,
       categorias: {
-        catid: '',
-        catnombre: '',
-        catdescripcion: '',
+        catid: "",
+        catnombre: "",
+        catdescripcion: "",
       },
     };
   }
@@ -29,7 +29,7 @@ class Categorias extends Component {
       error: null,
     });
     try {
-      const { data } = await axios.get('https://localhost:5001/api/categoria');
+      const { data } = await axios.get("https://localhost:5001/api/categoria");
       this.setState({
         categorias: data,
         loading: false,
@@ -49,16 +49,17 @@ class Categorias extends Component {
     return (
       <MainContainer>
         <Segment>
-          <Header style={{ padding: '1em 0em 0em 1em' }}>
+          <Header style={{ padding: "1em 0em 0em 1em" }}>
             Todas las categorías
           </Header>
-          <List style={{ padding: '1em' }}>
+          <List style={{ padding: "1em" }}>
             {this.state.categorias.data.map((categoria) => (
               <ItemsLista key={categoria.catid}>
                 <List.Item>
                   <a
                     href={`/categorias?catid=${categoria.catid}`}
-                    style={{ color: 'black', textDecoration: 'none' }}>
+                    style={{ color: "black", textDecoration: "none" }}
+                  >
                     {categoria.catnombre}
                   </a>
                 </List.Item>

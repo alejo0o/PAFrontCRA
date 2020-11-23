@@ -1,9 +1,10 @@
 import React from "react";
-import { Grid, Header, Icon, Tab, Table } from "semantic-ui-react";
+import { Link } from "react-router-dom";
+import { Grid, Header, Icon, Tab, Table, Button } from "semantic-ui-react";
 import { MainContainer } from "./EstilosPerfil";
 import { fecha } from "../utils/utils";
 
-function PreguntasUsuario({ preguntasData }) {
+function PreguntasCerradasUsuario({ preguntasData }) {
   return (
     <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
       <MainContainer style={{ margin: "auto" }}>
@@ -30,12 +31,27 @@ function PreguntasUsuario({ preguntasData }) {
                 </Table.Header>
                 <Table.Body>
                   {preguntasData.map((pregunta) => {
+                    console.log(preguntasData);
                     var fechaF = fecha(pregunta.pregfecha);
                     return (
                       <Table.Row key={pregunta.pregid}>
                         <Table.Cell>{pregunta.pregtexto}</Table.Cell>
                         <Table.Cell>{pregunta.pregcategoria}</Table.Cell>
                         <Table.Cell>{fechaF}</Table.Cell>
+                        <Table.Cell>
+                          <Link to={`/mejorRespuesta/${pregunta.pregid}`}>
+                            <Button
+                              size="large"
+                              fluid
+                              style={{
+                                backgroundColor: "#283049",
+                                color: "#FFF",
+                              }}
+                            >
+                              Mejor respuesta
+                            </Button>
+                          </Link>
+                        </Table.Cell>
                       </Table.Row>
                     );
                   })}
@@ -49,4 +65,4 @@ function PreguntasUsuario({ preguntasData }) {
   );
 }
 
-export default PreguntasUsuario;
+export default PreguntasCerradasUsuario;

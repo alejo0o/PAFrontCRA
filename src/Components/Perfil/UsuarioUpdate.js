@@ -57,14 +57,7 @@ function UsuarioUpdate({ eventoUpdate, formValuesUpdate, buttonClickUpdate }) {
             value={formValuesUpdate.userfoto}
           />
         </Form.Group>
-        <Form.Button
-          fluid
-          size="large"
-          style={{
-            backgroundColor: "#283049",
-            color: "#FFF",
-          }}
-        >
+        <Form.Button fluid size="large" color="black">
           Editar
         </Form.Button>
         {/* </Segment> */}

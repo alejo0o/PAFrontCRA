@@ -3,7 +3,7 @@ import { Grid, Header, Icon, Tab, Table } from "semantic-ui-react";
 import { MainContainer } from "./EstilosPerfil";
 import { fecha } from "../utils/utils";
 
-function PreguntasUsuario({ preguntasData }) {
+function PreguntasUsuario({ respuestasData }) {
   return (
     <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
       <MainContainer style={{ margin: "auto" }}>
@@ -16,7 +16,7 @@ function PreguntasUsuario({ preguntasData }) {
                 name="user"
                 style={{ fontSize: "0.7em" }}
               />
-              Preguntas
+              Respuestas
             </Header>
             <br />
             <Grid>
@@ -24,17 +24,20 @@ function PreguntasUsuario({ preguntasData }) {
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell>Pregunta</Table.HeaderCell>
-                    <Table.HeaderCell>Categoría</Table.HeaderCell>
+                    <Table.HeaderCell>Respuesta</Table.HeaderCell>
                     <Table.HeaderCell>Fecha de publicación</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
+
                 <Table.Body>
-                  {preguntasData.map((pregunta) => {
-                    var fechaF = fecha(pregunta.pregfecha);
+                  {respuestasData.map((respuesta) => {
+                    var fechaF = fecha(respuesta.respfecha);
                     return (
-                      <Table.Row key={pregunta.pregid}>
-                        <Table.Cell>{pregunta.pregtexto}</Table.Cell>
-                        <Table.Cell>{pregunta.pregcategoria}</Table.Cell>
+                      <Table.Row key={respuesta.respid}>
+                        <Table.Cell collapsing>
+                          {respuesta.pregtexto}
+                        </Table.Cell>
+                        <Table.Cell>{respuesta.resptexto}</Table.Cell>
                         <Table.Cell>{fechaF}</Table.Cell>
                       </Table.Row>
                     );
