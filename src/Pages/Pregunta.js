@@ -89,10 +89,34 @@ class Pregunta extends Component {
           error: null,
           warning: false,
         });
-        if (response.status === 201)
+        if (response.status === 201) {
           this.setState({
             success: true,
           });
+          const editresponse = await axios.put(
+            `${api_url}/api/usuario/${this.state.usuario.userid}`,
+            {
+              useradmin: this.state.usuario.useradmin,
+              userapellido: this.state.usuario.userapellido,
+              useremail: this.state.usuario.useremail,
+              userfechanacimiento: this.state.usuario.userfechanacimiento,
+              userfoto: this.state.usuario.userfoto,
+              userid: this.state.usuario.userid,
+              usernick: this.state.usuario.usernick,
+              usernombre: this.state.usuario.usernombre,
+              userpass: this.state.usuario.userpass,
+              userpuntaje: this.state.usuario.userpuntaje - 10,
+              usersexo: this.state.usuario.usersexo,
+            }
+          );
+          const { data: usuarioNuevo } = await axios.get(
+            `${api_url}/api/usuario/${this.state.usuario.userid}`
+          );
+          this.setState({
+            usuario: usuarioNuevo,
+          });
+          cookies.set('cookie1', usuarioNuevo, { path: '/' });
+        }
       } else {
         this.setState({
           loading: false,
@@ -138,6 +162,7 @@ class Pregunta extends Component {
     this.setState({
       success: false,
     });
+    window.location.reload();
   };
 
   render() {

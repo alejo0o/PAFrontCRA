@@ -6,8 +6,12 @@ import PreguntaUsuario from '../Components/Respuesta/PreguntaUsuario';
 import RespFav from '../Components/Respuesta/RespFav';
 import Categoria from '../Components/Categorias/Categorias';
 import Clasificacion from '../Components/Clasificacion/Clasificacion';
+import Cookies from 'universal-cookie';
+import FormRespuesta from '../Components/FormRespuesta/FormRespuesta';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+const cookies = new Cookies();
 
 class Respuesta extends Component {
   constructor(props) {
@@ -15,36 +19,27 @@ class Respuesta extends Component {
     this.state = {
       error: null,
       loading: true,
-      respuestasPregunta: {
-        respid: '',
-        respfecha: '',
-        resptexto: '',
-        resphora: {},
-        usernick: '',
-        userfoto: '',
-      },
-      preguntaRespuesta: {
+      usuario: cookies.get('cookie1'),
+      respuestasPregunta: {},
+      preguntaRespuesta: {},
+      respFav: {},
+      respuesta: {
+        userid: '',
         pregid: '',
-        pregtexto: '',
-        pregdetalle: '',
-        pregfecha: '',
-        preghora: {},
-        pregmejorresp: '',
-        usernick: '',
-        userfoto: '',
-      },
-      respFav: {
-        respid: '',
-        respfecha: '',
         resptexto: '',
-        resphora: {},
-        usernick: '',
-        userfoto: '',
       },
     };
   }
   componentDidMount() {
     this.fetchData();
+    if (this.state.usuario)
+      this.setState({
+        respuesta: {
+          userid: this.state.usuario.userid,
+          pregid: this.props.match.params.preguntaID,
+          resptexto: '',
+        },
+      });
   }
 
   fetchData = async () => {
@@ -75,6 +70,8 @@ class Respuesta extends Component {
       });
     }
   };
+  onSubmitRespuesta = (e) => {};
+  handleRespuestaChange = (e) => {};
 
   render() {
     if (this.state.loading) return <Loader />;
@@ -84,6 +81,13 @@ class Respuesta extends Component {
         <Categoria />
         <div style={{ display: 'block' }}>
           <PreguntaUsuario preguntaRespuesta={this.state.preguntaRespuesta} />
+          {this.state.usuario && (
+            <FormRespuesta
+              formValues={this.state.respuesta}
+              buttonClick={this.onSubmitRespuesta}
+              evento={this.handleRespuestaChange}
+            />
+          )}
           <RespFav respFav={this.state.respFav} />
           <DisplayRespuestas
             respuestasPregunta={this.state.respuestasPregunta.data}
