@@ -6,6 +6,7 @@ import PreguntaUsuario from "../Components/Respuesta/PreguntaUsuario";
 import RespFav from "../Components/Respuesta/RespFav";
 import Categoria from "../Components/Categorias/Categorias";
 import Clasificacion from "../Components/Clasificacion/Clasificacion";
+import { api_url } from "../Components/utils/utils";
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -42,10 +43,25 @@ class Respuesta extends Component {
         userfoto: "",
       },
       respuestaId: "",
+      pregunta: {},
+      preguntaUpdate: {
+        pregid: "",
+        userid: "",
+        catid: "",
+        catnombre: "",
+        pregtexto: "",
+        pregdetalle: "",
+        pregfecha: "",
+        preghora: {},
+        pregestado: "",
+        pregmejorresp: "",
+        pregmulta: "",
+      },
     };
   }
   componentDidMount() {
     this.fetchData();
+    this.updatePregunta();
   }
 
   fetchData = async () => {
@@ -63,10 +79,14 @@ class Respuesta extends Component {
       const { data: respFav } = await axios.get(
         `https://localhost:5001/api/customqueries/respFav/${this.props.match.params.preguntaID}`
       );
+      const { data: responsePregunta } = await axios.get(
+        `${api_url}/api/pregunta/${this.props.match.params.preguntaID}`
+      );
       this.setState({
         preguntaRespuesta: preguntaRespuesta,
         respuestasPregunta: respuestasPregunta,
         respFav: respFav,
+        pregunta: responsePregunta,
         loading: false,
       });
     } catch (error) {
@@ -76,13 +96,55 @@ class Respuesta extends Component {
       });
     }
   };
-  handleChangeRadio = (e) => {
+  updatePregunta = () => {
     this.setState({
-      respuestaId: e.target.value,
+      pregunta: {
+        ...this.state.pregunta,
+        pregid: this.state.pregunta.pregid,
+        userid: this.state.pregunta.userid,
+        catid: this.state.pregunta.catid,
+        catnombre: this.state.pregunta.catnombre,
+        pregtexto: this.state.pregunta.pregtexto,
+        pregdetalle: this.state.pregunta.pregdetalle,
+        pregfecha: this.state.pregunta.pregfecha,
+        preghora: this.state.pregunta.preghora,
+        pregestado: this.state.pregunta.pregestado,
+        pregmejorresp: this.state.respuestaId,
+        pregmulta: this.state.pregunta.pregmulta,
+      },
     });
   };
+  handleChange = async (e, { value }) => {
+    this.setState({ respuestaId: value });
+    this.setState({
+      loading: true,
+      error: null,
+    });
+    // console.log(this.state.preguntaUpdate.userid, "user");
+    console.log(this.state.preguntaUpdate, "preguntaup");
+    console.log(this.state.pregunta);
+
+    try {
+      // e.preventDefault();
+      const response = await axios.put(
+        `${api_url}/api/pregunta/${this.props.match.params.preguntaID}`,
+        this.state.pregunta
+      );
+      this.setState({
+        loading: false,
+        error: null,
+      });
+    } catch (error) {
+      console.log(error);
+
+      this.setState({
+        loading: false,
+        error: error,
+      });
+    }
+  };
+
   render() {
-    console.log(this.state.respuestaId);
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <div>Error</div>;
     return (
@@ -93,7 +155,7 @@ class Respuesta extends Component {
           <RespFav respFav={this.state.respFav} />
           <DisplayRespuestas
             respuestasPregunta={this.state.respuestasPregunta.data}
-            eventoPregunta={this.handleChangeRadio}
+            eventoPregunta={this.handleChange}
             respuestaId={this.state.respuestaId}
           />
         </div>

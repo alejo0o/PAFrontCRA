@@ -8,7 +8,7 @@ import Tab1 from "../Components/Perfil/UsuarioPerfil";
 import Tab2 from "../Components/Perfil/PreguntasUsuario";
 import Tab3 from "../Components/Perfil/RespuestasUsuario";
 import Tab4 from "../Components/Perfil/PreguntasCerradasUsuario";
-import Tab5 from "../Components/Perfil/MensajesUsuario";
+// import Tab5 from "../Components/Perfil/MensajesUsuario";
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -67,8 +67,6 @@ class Perfil extends Component {
         error: null,
       });
     } catch (error) {
-      console.log("aqui");
-      console.log(error);
       this.setState({
         loading: false,
         error: error,
@@ -157,7 +155,7 @@ class Perfil extends Component {
         icon: "question circle",
         content: "Mensajes",
       },
-      render: () => <Tab5 />,
+      render: () => <Tab4 />,
     },
   ];
   render() {
