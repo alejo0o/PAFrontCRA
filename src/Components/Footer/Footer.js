@@ -17,7 +17,7 @@ const FooterPage = () => {
               <li className='list-unstyled'>
                 <i className='code icon'></i>
                 <a
-                  href='https://github.com/alejo0o/YahooFrontend'
+                  href='https://github.com/alejo0o/PAFrontCRA'
                   rel='noopener noreferrer'
                   target='_blank'>
                   FrontEnd

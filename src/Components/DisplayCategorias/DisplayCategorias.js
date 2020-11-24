@@ -1,10 +1,11 @@
 import React from 'react';
-import { Header, List, Segment } from 'semantic-ui-react';
+import { Header, List } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {
   MainContainer,
   ListaItem,
 } from '../DisplayCategorias/EstilosDisplayCategorias';
+import { Link } from 'react-router-dom';
 
 const DisplayCategorias = ({ pregCategoria, categoria }) => {
   return (
@@ -37,17 +38,23 @@ const DisplayCategorias = ({ pregCategoria, categoria }) => {
           return (
             <List.Item key={pregunta.pregid} style={ListaItem}>
               <List.Icon>
-                <i className='thumbs up icon'></i>
+                <i className='question icon'></i>
               </List.Icon>
 
               <List.Content>
-                <Header
-                  style={{
-                    marginBottom: '0.5em',
-                    fontSize: '15px',
-                  }}>
-                  {pregunta.pregtexto}
-                </Header>
+                <Link
+                  key={pregunta.pregid}
+                  to={`/respuesta/${pregunta.pregid}`}
+                  style={{ textDecoration: 'none', color: 'black' }}>
+                  <Header
+                    style={{
+                      marginBottom: '0.5em',
+                      fontSize: '15px',
+                    }}>
+                    {pregunta.pregtexto}
+                  </Header>
+                </Link>
+
                 <List.Description>{pregunta.pregdetalle}</List.Description>
                 <br />
                 <List.Description

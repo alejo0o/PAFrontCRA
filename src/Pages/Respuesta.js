@@ -8,6 +8,7 @@ import Categoria from '../Components/Categorias/Categorias';
 import Clasificacion from '../Components/Clasificacion/Clasificacion';
 import Cookies from 'universal-cookie';
 import FormRespuesta from '../Components/FormRespuesta/FormRespuesta';
+import { api_url } from '../Components/utils/utils';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -17,6 +18,8 @@ class Respuesta extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      success: false,
+      warning: false,
       error: null,
       loading: true,
       usuario: cookies.get('cookie1'),
@@ -49,19 +52,20 @@ class Respuesta extends Component {
     });
     try {
       const { data: respuestasPregunta } = await axios.get(
-        `https://localhost:5001/api/customqueries/respPregunta/${this.props.match.params.preguntaID}`
+        `${api_url}/api/customqueries/respPregunta/${this.props.match.params.preguntaID}`
       );
       const { data: preguntaRespuesta } = await axios.get(
-        `https://localhost:5001/api/customqueries/pregResp/${this.props.match.params.preguntaID}`
+        `${api_url}/api/customqueries/pregResp/${this.props.match.params.preguntaID}`
       );
       const { data: respFav } = await axios.get(
-        `https://localhost:5001/api/customqueries/respFav/${this.props.match.params.preguntaID}`
+        `${api_url}/api/customqueries/respFav/${this.props.match.params.preguntaID}`
       );
       this.setState({
         preguntaRespuesta: preguntaRespuesta,
         respuestasPregunta: respuestasPregunta,
         respFav: respFav,
         loading: false,
+        error: null,
       });
     } catch (error) {
       this.setState({
