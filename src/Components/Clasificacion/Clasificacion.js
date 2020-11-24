@@ -79,16 +79,20 @@ class Clasificacion extends Component {
           </ContainerDescription>
           <List ordered>
             {this.state.puntajes.map((usuario) => (
-              <List.Item key={usuario.id} style={ListItem}>
-                <List.Content style={{ display: 'flex' }}>
-                  <Image avatar src={usuario.foto} />
-                  <List.Header style={{ marginRight: 'auto' }}>
-                    {usuario.nick}
-                  </List.Header>
-
-                  <List.Description>{usuario.puntaje}</List.Description>
-                </List.Content>
-              </List.Item>
+              <a
+                href={`/DisplayPerfil/${usuario.id}`}
+                key={usuario.id}
+                style={{ textDecoration: 'none', color: 'black' }}>
+                <List.Item style={ListItem}>
+                  <List.Content style={{ display: 'flex' }}>
+                    <Image avatar src={usuario.foto} />
+                    <List.Header style={{ marginRight: 'auto' }}>
+                      {usuario.nick}
+                    </List.Header>
+                    <List.Description>{usuario.puntaje}</List.Description>
+                  </List.Content>
+                </List.Item>
+              </a>
             ))}
           </List>
         </MainContainer>

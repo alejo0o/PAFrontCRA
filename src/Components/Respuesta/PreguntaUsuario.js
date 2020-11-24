@@ -1,10 +1,9 @@
 import React from 'react';
-import { Header, Container, List, Image, Segment } from 'semantic-ui-react';
+import { Header, List, Image } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {
   MainContainer,
   ListaItem,
-  ListaItem1,
 } from '../Respuesta/EstilosDisplayRespuestas';
 import { Link } from 'react-router-dom';
 import { fechF } from '../utils/utils';
@@ -33,7 +32,9 @@ const PreguntaUsuario = ({ preguntaRespuesta }) => {
                 </List.Description>
                 <List.Description>{pregunta.pregdetalle}</List.Description>
                 <br />
-                <Link to=''>{pregunta.usernick}</Link>
+                <Link to={`/DisplayPerfil/${pregunta.userid}`}>
+                  {pregunta.usernick}
+                </Link>
               </List.Content>
             </List.Item>
           );
