@@ -1,46 +1,65 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {Table, Button, Container, Modal, ModalBody, ModalHeader, ModalFooter} from 'reactstrap';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
-import {Table, Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter} from 'reactstrap';
+import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import moment from 'moment';
+import Cookies from 'universal-cookie';
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
+
 const url = "https://localhost:5001/api/usuario/"
+const size = 5;
 
 class respuestas extends React.Component{
-
+    
     state={
         data:[],
-        total:[],
+        pagina:'',
+        size:'',
+        totalPaginas:'',
+        totalRegistros:'',
+        modalEncerar: false,
         modalInsertar: false,
         modalEliminar: false,
         form:{
             userid: '',
             usernombre:'',
             userapellido:'',
-            userfechanacimiento:'',
+            userfechanacimiento: Date,
             usernick:'',
             userpass:'',
             useremail:'',
             userfoto:'',
-            useradmin:'',
+            useradmin: '',
             usersexo:'',
             userpuntaje:'',
             tipoModal:''
+        },
+        formMensaje:{
+            adminid:'',
+            userid:'',
+            mentitulo:'',
+            mendetalle:''
         }
     }
-    peticionGet=()=>{
-        axios.get(url).then(response=>{
+    peticionGet=(page, tamano)=>{
+
+        const urlGet = "https://localhost:5001/api/usuario/?pageNumber="+page+"&pageSize="+tamano;
+        axios.get(urlGet).then(response=>{
             this.setState({data: response.data.data});
-            this.setState({total: response.data});
+            this.setState({pagina: response.data.pageNumber});
+            this.setState({size: response.data.pageSize});
+            this.setState({totalPaginas: response.data.totalPages});
+            this.setState({totalRegistros: response.data.totalRecords});
         }).catch(error=>{
             console.log(error.message);
         })
     }
 
     componentDidMount(){
-        this.peticionGet();
+        this.peticionGet(1,20);
     }
 
     modalInsertar=()=>{
@@ -48,10 +67,7 @@ class respuestas extends React.Component{
     }
 
     peticionPost=async()=>{
-        delete this.state.form.userid;
-        await axios.post(url,this.state.form).then(response=>{
-          this.modalInsertar();
-          this.peticionGet();
+        await axios.post("https://localhost:5001/api/mensaje/",this.state.formMensaje).then(response=>{
         }).catch(error=>{
           console.log(error.message);
         })
@@ -88,8 +104,15 @@ class respuestas extends React.Component{
       }
 
     peticionPut=()=>{
+        if(this.state.form.useradmin == "true")
+         {
+            this.state.form.useradmin = true;
+         }
+         else{
+            this.state.form.useradmin = false;
+         }
     axios.put(url+this.state.form.userid, this.state.form).then(response=>{
-        this.modalInsertar();
+        this.setState({modalInsertar: false});
         this.peticionGet();
     })
     }
@@ -101,8 +124,31 @@ class respuestas extends React.Component{
         })
       }
 
+    peticionEncerar=()=>{
+        this.state.formMensaje.mendetalle = this.state.form.mensajeuser;
+        delete this.state.form.mensajeuser;
+        this.state.form.userpuntaje = 0;
+        axios.put(url+this.state.form.userid, this.state.form).then(response=>{
+        this.setState({modalEncerar: false});
+        const cookies = new Cookies();
+        this.state.formMensaje.mentitulo = 'Puntaje 0';
+        this.state.formMensaje.adminid = cookies.get('cookie1').userid;
+        this.state.formMensaje.userid = this.state.form.userid;
+        this.peticionPost();
+        this.peticionGet();
+        })
+      }
+
     render(){
         const {form}=this.state;
+        let paginas = [];
+        for(let i=0;i<this.state.totalPaginas;i++)
+        {
+            if(parseInt(this.state.pagina)==i+1)
+                paginas[i]= [i+1, true];
+            else
+                paginas[i]= [i+1, false];
+        }
         return(
             <>
             <Container>
@@ -121,7 +167,7 @@ class respuestas extends React.Component{
                         <th>Email</th>
                         <th>Foto</th>
                         <th>Puntaje</th>
-                        <th>Admin</th>
+                        <th>Rol</th>
                         <th>Acciones</th>
                     </tr></thead>
                     <tbody>
@@ -129,21 +175,35 @@ class respuestas extends React.Component{
                             <tr key={usuario.userid}>
                                 <td>{usuario.userid}</td>
                                 <td>{usuario.usernombre} {usuario.userapellido}</td>
-                                <td>{usuario.userfechanacimiento}</td>
+                                <td>{moment(usuario.userfechanacimiento).format('DD/MM/YYYY')}</td>
                                 <td>{usuario.usernick}</td>
                                 <td>{usuario.userpass}</td>
                                 <td>{usuario.usersexo}</td>
                                 <td>{usuario.useremail}</td>
                                 <td><img src={usuario.userfoto} width="100" height="100"/></td>
                                 <td>{usuario.userpuntaje}</td>
-                                <td>{usuario.useradmin}</td>
+                                <td>{usuario.useradmin?"Admin":"Usuario"}</td>
                                 <td>
                                 <Button color="primary" onClick={()=>{this.seleccionar(usuario); this.modalInsertar()}}><FontAwesomeIcon icon={faEdit}/></Button>
                                 {"  "}
+                                
+                                <Button color="primary" onClick={()=>{this.seleccionar(usuario); this.setState({modalEncerar: true})}}>Encerar</Button>
                                 <Button color="danger" onClick={()=>{this.seleccionar(usuario); this.setState({modalEliminar: true})}}><FontAwesomeIcon icon={faTrashAlt}/></Button></td>
                             </tr>
                         ))}
                     </tbody>
+                </Table>
+
+                <Table>
+                    <thead>
+                        <tr>
+                            <th><Button onClick={()=>this.componentDidMount()}>Primera</Button></th> 
+                            {paginas.map(pag=>(
+                                    <th><Button color={pag[1]?"info":"link"} onClick={()=>this.peticionGet(pag[0],this.state.size)}>{pag[0]}</Button></th>
+                            ))}
+                            <th><Button onClick={()=>this.peticionGet(this.state.totalPaginas,this.state.size)}>Ultima</Button></th> 
+                        </tr>
+                    </thead>
                 </Table>
                     
                 <Modal isOpen={this.state.modalInsertar}>
@@ -153,14 +213,46 @@ class respuestas extends React.Component{
                     <ModalBody>
                     <div className="form-group">
                         <label htmlFor="id">ID</label>
-                        <input className="form-control" type="text" name="respid" id="respid" readOnly onChange={this.handleChange} value={form?form.respid:''}/>
+                        <input className="form-control" type="text" name="userid" id="userid" readOnly onChange={this.handleChange} value={form?form.userid:''}/>
                         <br/>
-                        <input className="form-control" type="hidden" name="userid" id="userid" readOnly onChange={this.handleChange} value={form?form.userid:''}/>
-                        <input className="form-control" type="hidden" name="pregid" id="pregid" readOnly onChange={this.handleChange} value={form?form.pregid:''}/>
-                        <input className="form-control" type="hidden" name="respfecha" id="respfecha" readOnly onChange={this.handleChange} value={form?form.respfecha:''}/>
-                        <input className="form-control" type="hidden" name="resphora" id="resphora" readOnly onChange={this.handleChange} value={form?form.resphora:''}/>
-                        <label htmlFor="nombre">Texto</label>
-                        <input className="form-control" type="text" name="resptexto" id="resptexto" onChange={this.handleChange} value={form?form.resptexto: ''}/>
+                        <label htmlFor="nombre">Nombre</label>
+                        <input className="form-control" type="text" name="usernombre" id="usernombre" onChange={this.handleChange} value={form?form.usernombre:''}/>
+                        <br/>
+                        <label htmlFor="apellido">Apellido</label>
+                        <input className="form-control" type="text" name="userapellido" id="userapellido" onChange={this.handleChange} value={form?form.userapellido:''}/>
+                        <br/>
+                        <label htmlFor="email">Email</label>
+                        <input className="form-control" type="email" name="useremail" id="useremail" onChange={this.handleChange} value={form?form.useremail:''}/>
+                        <br/>
+                        <label htmlFor="fechanacimiento">Fecha Nacimiento</label>
+                        <input className="form-control" type="date" name="userfechanacimiento" id="userfechanacimiento" onChange={this.handleChange} value={form?moment(form.userfechanacimiento).format('yyyy-MM-dd'):''}/>
+                        <br/>
+                        <label htmlFor="sexo">Sexo</label>
+                        <select className="form-control" name="usersexo" id="usersexo" onChange={this.handleChange} value={form?form.usersexo: ''}>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                        <label htmlFor="nick">Usuario</label>
+                        <input className="form-control" type="text" name="usernick" id="usernick" readOnly onChange={this.handleChange} value={form?form.usernick:''}/>
+                        <br/>
+                        <label htmlFor="foto">Foto:</label> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <img src={form?form.userfoto:''} width="100" height="100"/> <br/>
+                        <input className="form-control" type="text" name="userfoto" id="userfoto" onChange={this.handleChange} value={form?form.userfoto:''}/>
+                        <br/>
+                        <label htmlFor="puntaje">Puntaje</label>
+                        <input className="form-control" type="text" name="userpuntaje" id="userpuntaje" readOnly onChange={this.handleChange} value={form?form.userpuntaje:''}/>
+                        <br/>
+                        <label htmlFor="admin">Administrador</label>
+                        <select className="form-control" name="useradmin" id="useradmin" onChange={this.handleChange} value={form?form.useradmin: ''}>
+                            <option value="true">Si</option>
+                            <option value="false">No</option>
+                        </select>
+                        <br/>
+                        
+
+
+
                     </div>
                     </ModalBody>
 
@@ -180,11 +272,53 @@ class respuestas extends React.Component{
 
                 <Modal isOpen={this.state.modalEliminar}>
                     <ModalBody>
-                        Estás seguro que deseas eliminar la respuesta {form && form.respid}
+                        Estás seguro que deseas eliminar el usuario {form && form.usuarioid}
                     </ModalBody>
                     <ModalFooter>
                         <button className="btn btn-danger" onClick={()=>this.peticionDelete()}>Sí</button>
                         <button className="btn btn-secundary" onClick={()=>this.setState({modalEliminar: false})}>No</button>
+                    </ModalFooter>
+                </Modal>
+
+                <Modal isOpen={this.state.modalEncerar}>
+                    <ModalBody>
+                        
+                        <div className="form-group">
+                        <label htmlFor="id">ID</label>
+                        <input className="form-control" type="text" name="userid" id="userid" readOnly onChange={this.handleChange} value={form?form.userid:''}/>
+                        <br/>
+                        Ingrese la razón para modificar la puntuación
+                        <textarea className="form-control" type="text" name="mensajeuser" onChange={this.handleChange} id="mensajeuser" required > </textarea>
+                        <br/>
+
+                        
+                        <br/>
+                        <input className="form-control" type="hidden" name="usernombre" id="usernombre" onChange={this.handleChange} value={form?form.usernombre:''}/>
+
+                        <input className="form-control" type="hidden" name="userapellido" id="userapellido" onChange={this.handleChange} value={form?form.userapellido:''}/>
+
+                        <input className="form-control" type="hidden" name="useremail" id="useremail" onChange={this.handleChange} value={form?form.useremail:''}/>
+
+                        <input className="form-control" type="hidden" name="userfechanacimiento" id="userfechanacimiento" onChange={this.handleChange} value={form?moment(form.userfechanacimiento).format('yyyy-MM-dd'):''}/>
+
+                        <input className="form-control" type="hidden" name="usersexo" id="usersexo" onChange={this.handleChange} value={form?form.usersexo: ''}/>
+
+                        <input className="form-control" type="hidden" name="usernick" id="usernick" readOnly onChange={this.handleChange} value={form?form.usernick:''}/>
+
+                        <input className="form-control" type="hidden" name="userfoto" id="userfoto" onChange={this.handleChange} value={form?form.userfoto:''}/>
+
+                        <input className="form-control" type="hidden" name="userpuntaje" id="userpuntaje" readOnly onChange={this.handleChange} />
+
+                        <input className="form-control" type="hidden" name="useradmin" id="useradmin" onChange={this.handleChange} value={form?form.useradmin: ''}/>
+                        <br/>
+
+
+
+                        </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <button className="btn btn-danger" onClick={()=>this.peticionEncerar()}>Enviar</button>
+                        <button className="btn btn-secundary" onClick={()=>this.setState({modalEncerar: false})}>Regresar</button>
                     </ModalFooter>
                 </Modal>
 

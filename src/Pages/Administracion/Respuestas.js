@@ -4,6 +4,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 import {Table, Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter} from 'reactstrap';
 import axios from 'axios';
+import moment from 'moment';
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const url = "https://localhost:5001/api/respuesta/"
@@ -21,7 +23,7 @@ class respuestas extends React.Component{
             pregid:'',
             resptexto:'',
             respfecha:'',
-            resphora:'',
+            resphora: Date,
             tipoModal:''
         }
     }
@@ -71,7 +73,8 @@ class respuestas extends React.Component{
             userid: respuesta.userid,
             pregid: respuesta.pregid,
             resptexto: respuesta.resptexto,
-            respfecha: respuesta.respfecha,
+            respfecha: moment(respuesta.respfecha).format('YYYY-MM-DD'),
+            //resphora: respuesta.resphora.hours+":"+respuesta.resphora.minutes+":"+respuesta.resphora.seconds
             resphora: respuesta.resphora
           }
         })
@@ -117,7 +120,7 @@ class respuestas extends React.Component{
                                 <td>{respuesta.userid}</td>
                                 <td>{respuesta.pregid}</td>
                                 <td>{respuesta.resptexto}</td>
-                                <td>{respuesta.respfecha}</td>
+                                <td>{moment(respuesta.respfecha).format('YYYY-MM-DD')}</td>
                                 <td>{respuesta.resphora.hours}:{respuesta.resphora.minutes}:{respuesta.resphora.seconds}</td>
                                 <td>
                                 <Button color="primary" onClick={()=>{this.seleccionar(respuesta); this.modalInsertar()}}><FontAwesomeIcon icon={faEdit}/></Button>
