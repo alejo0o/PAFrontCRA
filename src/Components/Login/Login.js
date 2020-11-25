@@ -14,6 +14,7 @@ function LoginForm({
   buttonClickSignUp,
   FailUser,
   modalOnCloseFail,
+  nombreBoton,
 }) {
   const [open, setOpen] = React.useState(false);
   const handleOnChange = (e, data) => {
@@ -55,7 +56,7 @@ function LoginForm({
         size='small'
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        trigger={<Button color='teal'>Login</Button>}>
+        trigger={<Button color='teal'>{nombreBoton}</Button>}>
         <Tab
           menu={{
             style: { backgroundColor: '#283049' },

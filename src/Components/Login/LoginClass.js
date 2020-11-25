@@ -119,12 +119,6 @@ class LoginClass extends Component {
     }
   };
 
-  onClickButtonLogout = async (e) => {
-    cookies.remove('cookie1');
-    this.props.history.push(`/`);
-    window.location.reload();
-  };
-
   modaOnCloseFail = () => {
     this.setState({
       usuarioIncorrecto: false,
@@ -141,9 +135,9 @@ class LoginClass extends Component {
           eventoSignUp={this.handleChangeSignUp}
           formValuesSignUp={this.state.usuarioSignUp}
           buttonClickSignUp={this.onClickButtonSignUp}
-          buttonClickLogout={this.onClickButtonLogout}
           FailUser={this.state.usuarioIncorrecto}
           modalOnCloseFail={this.modaOnCloseFail}
+          nombreBoton={this.props.nombreBoton}
         />
       </div>
     );

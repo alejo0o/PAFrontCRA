@@ -1,12 +1,12 @@
 import React from 'react';
-import { Header, Container, List, Image, Segment } from 'semantic-ui-react';
+import { Header, List, Image } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import {
   MainContainer,
   ListaItem,
-  ListaItem1,
 } from '../Respuesta/EstilosDisplayRespuestas';
 import { fechF } from '../utils/utils';
+import { Link } from 'react-router-dom';
 
 const DisplayRespuestas = ({ respuestasPregunta }) => {
   return (
@@ -17,18 +17,21 @@ const DisplayRespuestas = ({ respuestasPregunta }) => {
           return (
             <List.Item key={respuesta.respid} style={ListaItem}>
               <List.Content>
-                <Header
-                  style={{
-                    marginBottom: '0.5em',
-                    fontSize: '15px',
-                  }}>
-                  <Image
-                    avatar
-                    src={respuesta.userfoto}
-                    style={{ width: 35, height: 35 }}
-                  />
-                  {respuesta.usernick}
-                </Header>
+                <Link to={`/DisplayPerfil/${respuesta.userid}`}>
+                  <Header
+                    style={{
+                      marginBottom: '0.5em',
+                      fontSize: '15px',
+                    }}>
+                    <Image
+                      avatar
+                      src={respuesta.userfoto}
+                      style={{ width: 35, height: 35 }}
+                    />
+                    {respuesta.usernick}
+                  </Header>
+                </Link>
+
                 <List.Description>{respuesta.resptexto}</List.Description>
                 <br />
                 <List.Description

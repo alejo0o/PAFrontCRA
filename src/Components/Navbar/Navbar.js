@@ -12,11 +12,11 @@ import {
   DropdownItem,
 } from 'reactstrap';
 import { Icon, Label } from 'semantic-ui-react';
+import UsuariosAdmin from './UsuarioAdmin';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
+const cookies = new Cookies();
 const NavBar = (props) => {
-  const cookies = new Cookies();
   const [buscar, setbuscar] = useState('');
   const handleChange = (e) => {
     //maneja el cambio en el componente hijo y setea los valores a las variables de estado
@@ -29,14 +29,15 @@ const NavBar = (props) => {
     window.location.reload();
   };
 
-  const onClickButtonLogout = async (e) => {
+  const onClickButtonLogout = (e) => {
     cookies.remove('cookie1');
     props.history.push('/');
     window.location.reload();
   };
+
   return (
     <Navbar expand='lg' style={{ backgroundColor: '#dae5ed' }}>
-      <Navbar.Brand href='#home'>TASBP</Navbar.Brand>
+      <Navbar.Brand href='/'>TASBP</Navbar.Brand>
       <Navbar.Toggle aria-controls='basic-navbar-nav' />
       <Navbar.Collapse id='basic-navbar-nav'>
         <Nav className='mr-auto'>
@@ -61,7 +62,7 @@ const NavBar = (props) => {
         </Nav>
         {window.undefined === cookies.get('cookie1') && (
           <Nav>
-            <Login />
+            <Login nombreBoton='Login' />
           </Nav>
         )}
         {window.undefined !== cookies.get('cookie1') && (
@@ -97,6 +98,9 @@ const NavBar = (props) => {
                     Perfil
                   </a>
                 </DropdownItem>
+                {/*Botones del administrador que aparecen si se identifica al user como admin */}
+                {cookies.get('cookie1').useradmin && <UsuariosAdmin />}
+                {/*Fin del componentes administrador */}
                 <DropdownItem id='qsLogoutBtn' onClick={onClickButtonLogout}>
                   <Icon
                     fitted
