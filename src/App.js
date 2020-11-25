@@ -14,11 +14,13 @@ import PreguntasAdmin from './Pages/Administracion/Preguntas';
 import UsuariosAdmin from './Pages/Administracion/Usuarios';
 import MejorRespuestaPage from './Pages/MejorRespuesta';
 import DisplayPerfil from './Pages/DisplayPerfil';
+import Retorno from './Components/BotonRegresar/BotonRegresar';
 
 function App() {
   return (
     <BrowserRouter>
       <Navbar />
+      <Retorno />
       <Switch>
         <Route exact path='/' component={MainPage} />
         <Route exact path='/pregunta' component={PreguntaPage} />
