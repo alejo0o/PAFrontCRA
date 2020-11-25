@@ -15,7 +15,7 @@ const Logearse = () => {
           conocimiento y ayudar a otras personas. Para una mejor experiencia
           inicia sesión y comienza a preguntar y responder a otros usuarios.
         </p>
-        <Login />
+        <Login nombreBoton='Login' />
       </Segment>
     </Container>
   );

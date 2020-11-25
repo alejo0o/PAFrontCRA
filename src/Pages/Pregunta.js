@@ -84,15 +84,7 @@ class Pregunta extends Component {
           `${api_url}/api/pregunta`,
           this.state.pregunta
         );
-        this.setState({
-          loading: false,
-          error: null,
-          warning: false,
-        });
         if (response.status === 201) {
-          this.setState({
-            success: true,
-          });
           const editresponse = await axios.put(
             `${api_url}/api/usuario/${this.state.usuario.userid}`,
             {
@@ -112,10 +104,16 @@ class Pregunta extends Component {
           const { data: usuarioNuevo } = await axios.get(
             `${api_url}/api/usuario/${this.state.usuario.userid}`
           );
+          //seteo del nuevo usuario en la cookie
+          cookies.set('cookie1', usuarioNuevo, { path: '/' });
+
           this.setState({
             usuario: usuarioNuevo,
+            success: true,
+            loading: false,
+            error: null,
+            warning: false,
           });
-          cookies.set('cookie1', usuarioNuevo, { path: '/' });
         }
       } else {
         this.setState({
