@@ -21,6 +21,8 @@ class Respuesta extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      success: false,
+      warning: false,
       error: null,
       loading: true,
       success: false,
