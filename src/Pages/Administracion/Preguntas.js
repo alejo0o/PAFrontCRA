@@ -12,7 +12,11 @@ class preguntas extends React.Component{
 
     state={
         data:[],
-        total:[],
+        categorias:[],
+        pagina:'',
+        size:'',
+        totalPaginas:'',
+        totalRegistros:'',
         modalInsertar: false,
         modalEliminar: false,
         form:{
@@ -27,17 +31,28 @@ class preguntas extends React.Component{
             tipoModal:''
         }
     }
-    peticionGet=()=>{
-        axios.get(url).then(response=>{
+    peticionGet=(page, tamano)=>{
+        const urlGet = "https://localhost:5001/api/pregunta?pageNumber="+page+"&pageSize="+tamano;
+        axios.get(urlGet).then(response=>{
             this.setState({data: response.data.data});
-            this.setState({total: response.data});
+            this.setState({pagina: response.data.pageNumber});
+            this.setState({size: response.data.pageSize});
+            this.setState({totalPaginas: response.data.totalPages});
+            this.setState({totalRegistros: response.data.totalRecords});
         }).catch(error=>{
             console.log(error.message);
         })
     }
 
     componentDidMount(){
-        this.peticionGet();
+        this.peticionGet(1,20);
+        axios.get('https://localhost:5001/api/categoria/')
+        .then(response =>{
+            this.setState({categorias: response.data.data})
+        })
+        .catch((error) => {
+            console.log(error)
+        });
     }
 
     modalInsertar=()=>{
@@ -82,9 +97,16 @@ class preguntas extends React.Component{
       }
 
     peticionPut=()=>{
+    this.state.categorias.map((elemento, i) => {     
+        if(elemento.catid == this.state.form.catnombre)
+        {
+            this.state.form.catid = parseInt(this.state.form.catnombre);
+            this.state.form.catnombre = elemento.catnombre;
+        }
+    })
     axios.put(url+this.state.form.pregid, this.state.form).then(response=>{
         this.modalInsertar();
-        this.peticionGet();
+        this.peticionGet(this.state.pagina,20);
     })
     }
 
@@ -97,6 +119,24 @@ class preguntas extends React.Component{
 
     render(){
         const {form}=this.state;
+        let paginas = [];
+        for(let i=0;i<this.state.totalPaginas;i++)
+        {
+            if(parseInt(this.state.pagina)==i+1)
+                paginas[i]= [i+1, true];
+            else
+                paginas[i]= [i+1, false];
+        }
+        for(let i=0;i<this.state.categorias.length;i++)
+        {
+            if(this.state.form.catid == this.state.categorias[i].catid)
+            {
+                this.state.categorias[i].select = true;
+                break;
+            }
+            else
+                this.state.categorias[i].select = false;
+        }
         return(
             <>
             <Container>
@@ -136,6 +176,18 @@ class preguntas extends React.Component{
                     </tbody>
                 </Table>
 
+                <Table>
+                    <thead>
+                        <tr>
+                            <th><Button onClick={()=>this.componentDidMount()}>Primera</Button></th> 
+                            {paginas.map(pag=>(
+                                    <th><Button color={pag[1]?"info":"link"} onClick={()=>this.peticionGet(pag[0],this.state.size)}>{pag[0]}</Button></th>
+                            ))}
+                            <th><Button onClick={()=>this.peticionGet(this.state.totalPaginas,this.state.size)}>Ultima</Button></th> 
+                        </tr>
+                    </thead>
+                </Table>
+
                 <Modal isOpen={this.state.modalInsertar}>
                     <ModalHeader style={{display: 'block'}}>
                     <span style={{float: 'right'}} onClick={()=>this.modalInsertar()}>x</span>
@@ -143,14 +195,24 @@ class preguntas extends React.Component{
                     <ModalBody>
                     <div className="form-group">
                         <label htmlFor="id">ID</label>
-                        <input className="form-control" type="text" name="respid" id="respid" readOnly onChange={this.handleChange} value={form?form.respid:''}/>
+                        <input className="form-control" type="text" name="pregid" id="pregid" readOnly onChange={this.handleChange} value={form?form.pregid:''}/>
                         <br/>
                         <input className="form-control" type="hidden" name="userid" id="userid" readOnly onChange={this.handleChange} value={form?form.userid:''}/>
-                        <input className="form-control" type="hidden" name="pregid" id="pregid" readOnly onChange={this.handleChange} value={form?form.pregid:''}/>
-                        <input className="form-control" type="hidden" name="respfecha" id="respfecha" readOnly onChange={this.handleChange} value={form?form.respfecha:''}/>
-                        <input className="form-control" type="hidden" name="resphora" id="resphora" readOnly onChange={this.handleChange} value={form?form.resphora:''}/>
+                        <input className="form-control" type="hidden" name="respid" id="respid" readOnly onChange={this.handleChange} value={form?form.respid:''}/>
+                        <label htmlFor="nombre">Categoría</label>
+                        <select className="form-control" name="catnombre" id="catnombre" onChange={this.handleChange} value={form?form.catid:''}>
+                            {this.state.categorias.map(elemento=>(
+                                <option key={elemento.catnombre} value={elemento.catid} name={elemento.catnombre} >{elemento.catnombre}</option>
+                            
+                                )
+                            )}
+                        </select>
+                        
                         <label htmlFor="nombre">Texto</label>
-                        <input className="form-control" type="text" name="resptexto" id="resptexto" onChange={this.handleChange} value={form?form.resptexto: ''}/>
+                        <input className="form-control" type="text" name="pregtexto" id="pregtexto" onChange={this.handleChange} value={form?form.pregtexto: ''}/>
+                        <label htmlFor="detalle">Detalle</label>
+                        <input className="form-control" type="text" name="pregdetalle" id="pregdetalle" onChange={this.handleChange} value={form?form.pregdetalle: ''}/>
+                    
                     </div>
                     </ModalBody>
 
@@ -170,7 +232,7 @@ class preguntas extends React.Component{
 
                 <Modal isOpen={this.state.modalEliminar}>
                     <ModalBody>
-                        Estás seguro que deseas eliminar la respuesta {form && form.respid}
+                        Estás seguro que deseas eliminar la pregunta {form && form.pregid}
                     </ModalBody>
                     <ModalFooter>
                         <button className="btn btn-danger" onClick={()=>this.peticionDelete()}>Sí</button>
