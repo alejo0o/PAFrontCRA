@@ -1,5 +1,5 @@
 import React from "react";
-import { Header, List, Image, Radio, Form } from "semantic-ui-react";
+import { Header, List, Image, Form } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 import {
   MainContainer,
@@ -43,15 +43,17 @@ const DisplayRespuestas = ({
                 >
                   {fechahorare}
                 </List.Description>
-                <Form.Group>
-                  <Radio
-                    toggle
-                    name="radioGroup"
-                    label="Mejor respuesta"
-                    value={respuesta.respid}
-                    onChange={eventoPregunta}
-                  />
-                </Form.Group>
+                <Form>
+                  <Form.Group>
+                    <Form.Radio
+                      toggle
+                      label="Mejor respuesta"
+                      value={respuesta.respid}
+                      checked={respuestaId === respuesta.respid}
+                      onChange={eventoPregunta}
+                    />
+                  </Form.Group>
+                </Form>
               </List.Content>
             </List.Item>
           );

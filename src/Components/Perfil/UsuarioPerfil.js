@@ -14,7 +14,13 @@ import Cookies from "universal-cookie";
 import UsuarioUpdate from "./UsuarioUpdate";
 import { fecha } from "../utils/utils";
 
-function UsuarioPerfil({ eventoUpdate, formValuesUpdate, buttonClickUpdate }) {
+function UsuarioPerfil({
+  eventoUpdate,
+  formValuesUpdate,
+  buttonClickUpdate,
+  eventoUpdatePassword,
+  updatePassword,
+}) {
   const [open, setOpen] = React.useState(false);
   const cookies = new Cookies();
   const user = cookies.get("cookie1");
@@ -96,6 +102,8 @@ function UsuarioPerfil({ eventoUpdate, formValuesUpdate, buttonClickUpdate }) {
                     eventoUpdate={eventoUpdate}
                     formValuesUpdate={formValuesUpdate}
                     buttonClickUpdate={buttonClickUpdate}
+                    eventoUpdatePassword={eventoUpdatePassword}
+                    updatePassword={updatePassword}
                   />
                 </Modal>
               </Grid.Column>

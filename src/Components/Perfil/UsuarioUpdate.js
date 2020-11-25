@@ -1,12 +1,23 @@
 import React from "react";
-import { Form, Icon, Tab, Header } from "semantic-ui-react";
-import Cookies from "universal-cookie";
+import {
+  Form,
+  Icon,
+  Tab,
+  Header,
+  Modal,
+  Button,
+  FormGroup,
+} from "semantic-ui-react";
+import Password from "./Password";
 
-const cookies = new Cookies();
-const user = cookies.get("cookie1");
-
-function UsuarioUpdate({ eventoUpdate, formValuesUpdate, buttonClickUpdate }) {
-  const [hidden, setHidden] = React.useState(true);
+function UsuarioUpdate({
+  eventoUpdate,
+  formValuesUpdate,
+  buttonClickUpdate,
+  eventoUpdatePassword,
+  updatePassword,
+}) {
+  const [open, setOpen] = React.useState(false);
 
   return (
     <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
@@ -25,27 +36,10 @@ function UsuarioUpdate({ eventoUpdate, formValuesUpdate, buttonClickUpdate }) {
             type="email"
             name="useremail"
             value={formValuesUpdate.useremail}
+            required
           />
         </Form.Group>
-        <Form.Group widths="equal" inline>
-          <Form.Input
-            fluid
-            label="Contraseña"
-            placeholder="Contraseña"
-            type={hidden ? "password" : "text"}
-            onChange={eventoUpdate}
-            name="userpass"
-            value={formValuesUpdate.userpass}
-          />
-          <Icon
-            name="eye"
-            circular
-            inverted
-            width={2}
-            onClick={() => setHidden(!hidden)}
-            style={{ cursor: "pointer" }}
-          ></Icon>
-        </Form.Group>
+
         <Form.Group widths="equal">
           <Form.Input
             fluid
@@ -55,11 +49,48 @@ function UsuarioUpdate({ eventoUpdate, formValuesUpdate, buttonClickUpdate }) {
             type="foto"
             name="userfoto"
             value={formValuesUpdate.userfoto}
+            required
           />
         </Form.Group>
-        <Form.Button fluid size="large" color="black">
-          Editar
-        </Form.Button>
+        <FormGroup widths="equal">
+          <Form.Button
+            fluid
+            size="large"
+            style={{
+              backgroundColor: "#283049",
+              color: "#FFF",
+            }}
+          >
+            Editar
+          </Form.Button>
+          <Modal
+            closeIcon
+            open={open}
+            basic
+            dimmer="blurring"
+            size="small"
+            onClose={() => setOpen(false)}
+            onOpen={() => setOpen(true)}
+            trigger={
+              <Button
+                attached="bottom"
+                fluid
+                style={{
+                  backgroundColor: "#283049",
+                  color: "#FFF",
+                }}
+              >
+                Cambiar contraseña
+              </Button>
+            }
+          >
+            <Password
+              eventoUpdate={eventoUpdate}
+              eventoUpdatePassword={eventoUpdatePassword}
+              updatePassword={updatePassword}
+            />
+          </Modal>
+        </FormGroup>
         {/* </Segment> */}
       </Form>
     </Tab.Pane>
