@@ -11,6 +11,7 @@ import {
 import { MainContainer } from './EstilosPerfil';
 import { fecha } from '../utils/utils';
 import EditRespuesta from './EditRespuesta';
+import 'semantic-ui-css/semantic.min.css';
 
 function PreguntasUsuario({ respuestasData, eventoEdit, buttonEdit }) {
   const [open, setOpen] = React.useState(false);
@@ -63,7 +64,6 @@ function PreguntasUsuario({ respuestasData, eventoEdit, buttonEdit }) {
                               closeIcon
                               open={open}
                               basic
-                              dimmer='blurring'
                               size='small'
                               onClose={() => setOpen(false)}
                               onOpen={() => setOpen(true)}

@@ -12,6 +12,7 @@ import 'semantic-ui-css/semantic.min.css';
 import Login from '../Components/Login/LoginClass';
 import { Button } from 'semantic-ui-react';
 import { api_url } from '../Components/utils/utils';
+import PreguntaCerrada from '../Components/Pregunta/PreguntaCaducada';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -25,7 +26,6 @@ class Respuesta extends Component {
       warning: false,
       error: null,
       loading: true,
-      success: false,
       usuario: cookies.get('cookie1'),
       respuestasPregunta: {},
       preguntaRespuesta: {},
@@ -164,13 +164,12 @@ class Respuesta extends Component {
   render() {
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <div>Error</div>;
-
     return (
       <div style={{ display: 'flex' }}>
         <Categoria />
         <div style={{ display: 'block' }}>
           <PreguntaUsuario preguntaRespuesta={this.state.preguntaRespuesta} />
-          {this.state.usuario && (
+          {this.state.usuario && !this.state.preguntaRespuesta[0].estado && (
             <FormRespuesta
               formValues={this.state.respuesta}
               buttonClick={this.onSubmitRespuesta}
@@ -178,6 +177,9 @@ class Respuesta extends Component {
               success={this.state.success}
               modalSuccessClose={this.modalOnCloseSuccess}
             />
+          )}
+          {this.state.usuario && this.state.preguntaRespuesta[0].estado && (
+            <PreguntaCerrada />
           )}
           {!this.state.usuario && (
             <div style={{ margin: '0 3em 0 3em' }}>

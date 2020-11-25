@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Grid,
   Header,
@@ -8,11 +8,11 @@ import {
   Table,
   Modal,
   Button,
-} from "semantic-ui-react";
-import { MainContainer } from "./EstilosPerfil";
-import Cookies from "universal-cookie";
-import UsuarioUpdate from "./UsuarioUpdate";
-import { fecha } from "../utils/utils";
+} from 'semantic-ui-react';
+import { MainContainer } from './EstilosPerfil';
+import Cookies from 'universal-cookie';
+import UsuarioUpdate from './UsuarioUpdate';
+import { fecha } from '../utils/utils';
 
 function UsuarioPerfil({
   eventoUpdate,
@@ -20,22 +20,25 @@ function UsuarioPerfil({
   buttonClickUpdate,
   eventoUpdatePassword,
   updatePassword,
+
+  cambiadoErroneo,
+  onCloseModales,
 }) {
   const [open, setOpen] = React.useState(false);
   const cookies = new Cookies();
-  const user = cookies.get("cookie1");
+  const user = cookies.get('cookie1');
   const fechaF = fecha(user.userfechanacimiento);
   return (
-    <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
-      <MainContainer style={{ margin: "auto" }}>
+    <Tab.Pane style={{ backgroundColor: ' #dae5ed' }}>
+      <MainContainer style={{ margin: 'auto' }}>
         <Grid>
-          <Grid.Column style={{ maxWidth: "auto" }}>
-            <Header as="h2" textAlign="center">
+          <Grid.Column style={{ maxWidth: 'auto' }}>
+            <Header as='h2' textAlign='center'>
               <Icon
                 circular
                 inverted
-                name="user"
-                style={{ fontSize: "0.7em" }}
+                name='user'
+                style={{ fontSize: '0.7em' }}
               />
               Perfil
             </Header>
@@ -76,41 +79,41 @@ function UsuarioPerfil({
                     </Table.Row>
                   </Table.Body>
                 </Table>
-                <Modal
-                  closeIcon
-                  open={open}
-                  basic
-                  dimmer="blurring"
-                  size="small"
-                  onClose={() => setOpen(false)}
-                  onOpen={() => setOpen(true)}
-                  trigger={
-                    <Button
-                      attached="bottom"
-                      fluid
-                      size="large"
-                      style={{
-                        backgroundColor: "#283049",
-                        color: "#FFF",
-                      }}
-                    >
-                      Editar
-                    </Button>
-                  }
-                >
-                  <UsuarioUpdate
-                    eventoUpdate={eventoUpdate}
-                    formValuesUpdate={formValuesUpdate}
-                    buttonClickUpdate={buttonClickUpdate}
-                    eventoUpdatePassword={eventoUpdatePassword}
-                    updatePassword={updatePassword}
-                  />
-                </Modal>
               </Grid.Column>
             </Grid>
           </Grid.Column>
         </Grid>
       </MainContainer>
+      <Modal
+        closeIcon
+        open={open}
+        basic
+        dimmer='blurring'
+        size='small'
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        trigger={
+          <Button
+            attached='bottom'
+            fluid
+            size='large'
+            style={{
+              backgroundColor: '#283049',
+              color: '#FFF',
+            }}>
+            Editar
+          </Button>
+        }>
+        <UsuarioUpdate
+          eventoUpdate={eventoUpdate}
+          formValuesUpdate={formValuesUpdate}
+          buttonClickUpdate={buttonClickUpdate}
+          eventoUpdatePassword={eventoUpdatePassword}
+          updatePassword={updatePassword}
+          cambiadoErroneo={cambiadoErroneo}
+          onCloseModales={onCloseModales}
+        />
+      </Modal>
     </Tab.Pane>
   );
 }

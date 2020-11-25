@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, Tab } from 'semantic-ui-react';
+import { Modal, Button, Tab, Header, Icon } from 'semantic-ui-react';
 
 import Tab1 from './Pane1';
 import Tab2 from './Pane2';
@@ -15,6 +15,9 @@ function LoginForm({
   FailUser,
   modalOnCloseFail,
   nombreBoton,
+  usuarioErrorSignup,
+  usuarioCreado,
+  nick_del_usuario,
 }) {
   const [open, setOpen] = React.useState(false);
   const handleOnChange = (e, data) => {
@@ -66,6 +69,49 @@ function LoginForm({
           }}
           panes={panes}
         />
+        {/*Modal para la pregunta warning*/}
+        <Modal
+          closeIcon
+          open={usuarioErrorSignup}
+          size='small'
+          style={{ height: 200 }}>
+          <Header icon='remove circle' content='Ups! Hubo un error' />
+          <Modal.Content>
+            <p>
+              El usuario con nick {nick_del_usuario} no pudo ser creado, el nick
+              del usuario ya esta en uso o el nick contiene caracteres
+              especiales.
+            </p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button color='red' onClick={modalOnCloseFail}>
+              <Icon name='checkmark' /> Ok!
+            </Button>
+          </Modal.Actions>
+        </Modal>
+        {/*Modal para la pregunta success*/}
+        <Modal
+          closeIcon
+          open={usuarioCreado}
+          size='small'
+          style={{ height: 200 }}>
+          <Header
+            icon='check circle'
+            content='Usuario creado satisfactoriamente!'
+          />
+          <Modal.Content>
+            <p>
+              El usuario con nick {nick_del_usuario} se ha creado exitosamente,
+              comienza a responder o hacer preguntas.
+            </p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button color='green' onClick={modalOnCloseFail}>
+              <Icon name='smile outline' /> Ok!
+            </Button>
+          </Modal.Actions>
+        </Modal>
+        {/*Formulario de pregunta estructura */}
       </Modal>
     </div>
   );

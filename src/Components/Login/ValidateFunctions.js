@@ -2,8 +2,9 @@ export function validateNick(value) {
   let error;
   if (!value) {
     error = 'Campo requerido';
-  } else if (!/^[A-Z%+][A-Z0-9%+]{0,254}$/i.test(value)) {
-    error = 'Nickname no puede contener -_. o empezar con números';
+  } else if (!/^[A-Z._-][A-Z0-9._-]{0,254}$/i.test(value)) {
+    error =
+      'Nickname no puede contener caracteres especiales o empezar con números, puede contener -_. ';
   }
   return error;
 }

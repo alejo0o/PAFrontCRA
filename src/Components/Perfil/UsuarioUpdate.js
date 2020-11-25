@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Form,
   Icon,
@@ -7,8 +7,8 @@ import {
   Modal,
   Button,
   FormGroup,
-} from "semantic-ui-react";
-import Password from "./Password";
+} from 'semantic-ui-react';
+import Password from './Password';
 
 function UsuarioUpdate({
   eventoUpdate,
@@ -16,83 +16,85 @@ function UsuarioUpdate({
   buttonClickUpdate,
   eventoUpdatePassword,
   updatePassword,
+
+  cambiadoErroneo,
+  onCloseModales,
 }) {
   const [open, setOpen] = React.useState(false);
 
   return (
-    <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
-      <Header as="h2" textAlign="center">
-        <Icon circular inverted name="user" style={{ fontSize: "0.7em" }} />
+    <Tab.Pane style={{ backgroundColor: ' #dae5ed' }}>
+      <Header as='h2' textAlign='center'>
+        <Icon circular inverted name='user' style={{ fontSize: '0.7em' }} />
         Actualizar datos
       </Header>
-      <Form size="large" onSubmit={buttonClickUpdate}>
+      <Form size='large' onSubmit={buttonClickUpdate}>
         {/* <Segment stacked> */}
-        <Form.Group widths="equal">
+        <Form.Group widths='equal'>
           <Form.Input
             fluid
-            label="Email"
-            placeholder="Email"
+            label='Email'
+            placeholder='Email'
             onChange={eventoUpdate}
-            type="email"
-            name="useremail"
+            type='email'
+            name='useremail'
             value={formValuesUpdate.useremail}
             required
           />
         </Form.Group>
 
-        <Form.Group widths="equal">
+        <Form.Group widths='equal'>
           <Form.Input
             fluid
-            label="Foto"
-            placeholder="Foto"
+            label='Foto'
+            placeholder='Foto'
             onChange={eventoUpdate}
-            type="foto"
-            name="userfoto"
+            type='foto'
+            name='userfoto'
             value={formValuesUpdate.userfoto}
             required
           />
         </Form.Group>
-        <FormGroup widths="equal">
+        <FormGroup widths='equal'>
           <Form.Button
             fluid
-            size="large"
+            size='large'
             style={{
-              backgroundColor: "#283049",
-              color: "#FFF",
-            }}
-          >
+              backgroundColor: '#283049',
+              color: '#FFF',
+            }}>
             Editar
           </Form.Button>
-          <Modal
-            closeIcon
-            open={open}
-            basic
-            dimmer="blurring"
-            size="small"
-            onClose={() => setOpen(false)}
-            onOpen={() => setOpen(true)}
-            trigger={
-              <Button
-                attached="bottom"
-                fluid
-                style={{
-                  backgroundColor: "#283049",
-                  color: "#FFF",
-                }}
-              >
-                Cambiar contraseña
-              </Button>
-            }
-          >
-            <Password
-              eventoUpdate={eventoUpdate}
-              eventoUpdatePassword={eventoUpdatePassword}
-              updatePassword={updatePassword}
-            />
-          </Modal>
         </FormGroup>
         {/* </Segment> */}
       </Form>
+      <Modal
+        closeIcon
+        open={open}
+        basic
+        dimmer='blurring'
+        size='small'
+        onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
+        trigger={
+          <Button
+            attached='bottom'
+            fluid
+            style={{
+              backgroundColor: '#283049',
+              color: '#FFF',
+            }}>
+            Cambiar contraseña
+          </Button>
+        }>
+        <Password
+          eventoUpdate={eventoUpdate}
+          eventoUpdatePassword={eventoUpdatePassword}
+          updatePassword={updatePassword}
+          cambiadoErroneo={cambiadoErroneo}
+          onCloseModales={onCloseModales}
+        />
+      </Modal>
     </Tab.Pane>
   );
 }

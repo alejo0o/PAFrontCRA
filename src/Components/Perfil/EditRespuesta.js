@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Icon, Tab, Header, FormGroup } from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css';
 
 function EditRespuesta({ respuesta, buttonEdit, eventoEdit }) {
   return (
@@ -11,7 +12,7 @@ function EditRespuesta({ respuesta, buttonEdit, eventoEdit }) {
       <Form size='large' onSubmit={buttonEdit}>
         {/* <Segment stacked> */}
         <Form.Group widths='equal'>
-          <Form.Input
+          <Form.TextArea
             fluid
             label='Respuesta'
             placeholder='Respuesta'
