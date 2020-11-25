@@ -8,7 +8,7 @@ import Tab1 from "../Components/Perfil/UsuarioPerfil";
 import Tab2 from "../Components/Perfil/PreguntasUsuario";
 import Tab3 from "../Components/Perfil/RespuestasUsuario";
 import Tab4 from "../Components/Perfil/PreguntasCerradasUsuario";
-// import Tab5 from "../Components/Perfil/MensajesUsuario";
+import Tab5 from "../Components/Perfil/Mensajesusuario";
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -22,13 +22,15 @@ class Perfil extends Component {
       error: null,
       loading: true,
 
+      // cookie: new Cookies(),
+      user: {},
       usuarioUpdate: {
         userid: user.userid,
         usernombre: user.usernombre,
         userapellido: user.userapellido,
         userfechanacimiento: user.userfechanacimiento,
         usernick: user.usernick,
-        userpass: user.userpass,
+        userpass: "",
         useremail: user.useremail,
         userfoto: user.userfoto,
         usersexo: user.usersexo,
@@ -37,6 +39,7 @@ class Perfil extends Component {
       preguntas: {},
       preguntasCerradas: {},
       respuestas: {},
+      passwordAnterior: "",
     };
   }
   componentDidMount() {
@@ -59,10 +62,16 @@ class Perfil extends Component {
       const { data: responsePreguntaCerradas } = await axios.get(
         `${api_url}/api/customqueries/predCad/${user.userid}`
       );
+
+      const { data: mensajeUser } = await axios.get(
+        `${api_url}/api/customqueries/menUser/${user.userid}`
+      );
+
       this.setState({
         preguntas: responsePregunta,
         respuestas: responseRespuesta,
         preguntasCerradas: responsePreguntaCerradas,
+        menUser: mensajeUser,
         loading: false,
         error: null,
       });
@@ -105,11 +114,51 @@ class Perfil extends Component {
       );
       cookies.set("cookie1", this.state.usuarioUpdate, { path: "/" });
       window.location.reload();
-
       this.setState({
         loading: false,
         error: null,
       });
+    } catch (error) {
+      this.setState({
+        loading: false,
+        error: error,
+      });
+    }
+  };
+  handleChangeUpdatePassword = (e) => {
+    //maneja el cambio en el componente hijo y setea los valores a las variables de estado
+    this.setState({
+      passwordAnterior: {
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
+  onClickButtonUpdatePassword = async (e) => {
+    //maneja el click del button para hacer el post del formulario pregunta
+    this.setState({
+      loading: true,
+      error: null,
+    });
+    try {
+      e.preventDefault();
+      if (this.state.passwordAnterior === user.userpass) {
+        const response = await axios.put(
+          `${api_url}/api/usuario/${this.state.usuarioUpdate.userid}`,
+          this.state.usuarioUpdate
+        );
+        cookies.set("cookie1", this.state.usuarioUpdate, { path: "/" });
+        // window.location.reload();
+        console.log(this.state.passwordAnterior);
+        console.log(user.userpass);
+        this.setState({
+          loading: false,
+          error: null,
+        });
+      } else {
+        console.log("no");
+        window.location.reload();
+      }
     } catch (error) {
       this.setState({
         loading: false,
@@ -126,6 +175,8 @@ class Perfil extends Component {
           eventoUpdate={this.handleChangeUpdate}
           formValuesUpdate={this.state.usuarioUpdate}
           buttonClickUpdate={this.onClickButtonUpdate}
+          eventoUpdatePassword={this.handleChangeUpdatePassword}
+          updatePassword={this.onClickButtonUpdatePassword}
         />
       ),
     },
@@ -152,10 +203,10 @@ class Perfil extends Component {
     {
       menuItem: {
         key: "Mensajes",
-        icon: "question circle",
+        icon: "inbox",
         content: "Mensajes",
       },
-      render: () => <Tab4 />,
+      render: () => <Tab5 mensajedata={this.state.menUser.data} />,
     },
   ];
   render() {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Loader from '../Components/Spinner/Spinner';
+import Loader from '../Components/Loader/Loader';
 import DisplayPreguntas from '../Components/DisplayPreguntas/DisplayPreguntas';
 import Categorias from '../Components/Categorias/Categorias';
 import Puntajes from '../Components/Clasificacion/Clasificacion';
