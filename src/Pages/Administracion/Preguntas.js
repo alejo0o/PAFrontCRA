@@ -63,7 +63,7 @@ class preguntas extends React.Component{
         delete this.state.form.catid;
         await axios.post(url,this.state.form).then(response=>{
           this.modalInsertar();
-          this.peticionGet();
+          this.peticionGet(this.state.pagina,this.state.size);
         }).catch(error=>{
           console.log(error.message);
         })
@@ -106,14 +106,14 @@ class preguntas extends React.Component{
     })
     axios.put(url+this.state.form.pregid, this.state.form).then(response=>{
         this.modalInsertar();
-        this.peticionGet(this.state.pagina,20);
+        this.peticionGet(this.state.pagina,this.state.size);
     })
     }
 
     peticionDelete=()=>{
         axios.delete(url+this.state.form.pregid).then(response=>{
           this.setState({modalEliminar: false});
-          this.peticionGet();
+          this.peticionGet(this.state.pagina,this.state.size);
         })
       }
 
