@@ -14,7 +14,10 @@ class respuestas extends React.Component{
 
     state={
         data:[],
-        total:[],
+        pagina:'',
+        size:'',
+        totalPaginas:'',
+        totalRegistros:'',
         modalInsertar: false,
         modalEliminar: false,
         form:{
@@ -27,17 +30,21 @@ class respuestas extends React.Component{
             tipoModal:''
         }
     }
-    peticionGet=()=>{
-        axios.get(url).then(response=>{
+    peticionGet=(page, tamano)=>{
+        const urlGet = "https://localhost:5001/api/respuesta/?pageNumber="+page+"&pageSize="+tamano;
+        axios.get(urlGet).then(response=>{
             this.setState({data: response.data.data});
-            this.setState({total: response.data});
+            this.setState({pagina: response.data.pageNumber});
+            this.setState({size: response.data.pageSize});
+            this.setState({totalPaginas: response.data.totalPages});
+            this.setState({totalRegistros: response.data.totalRecords});
         }).catch(error=>{
             console.log(error.message);
         })
     }
 
     componentDidMount(){
-        this.peticionGet();
+        this.peticionGet(1,20);
     }
 
     modalInsertar=()=>{
@@ -48,7 +55,7 @@ class respuestas extends React.Component{
         delete this.state.form.catid;
         await axios.post(url,this.state.form).then(response=>{
           this.modalInsertar();
-          this.peticionGet();
+          this.peticionGet(this.state.pagina,this.state.size);
         }).catch(error=>{
           console.log(error.message);
         })
@@ -83,19 +90,27 @@ class respuestas extends React.Component{
     peticionPut=()=>{
     axios.put(url+this.state.form.respid, this.state.form).then(response=>{
         this.modalInsertar();
-        this.peticionGet();
+        this.peticionGet(this.state.pagina,this.state.size);
     })
     }
 
     peticionDelete=()=>{
         axios.delete(url+this.state.form.respid).then(response=>{
           this.setState({modalEliminar: false});
-          this.peticionGet();
+          this.peticionGet(this.state.pagina,this.state.size);
         })
       }
 
     render(){
         const {form}=this.state;
+        let paginas = [];
+        for(let i=0;i<this.state.totalPaginas;i++)
+        {
+            if(parseInt(this.state.pagina)==i+1)
+                paginas[i]= [i+1, true];
+            else
+                paginas[i]= [i+1, false];
+        }
         return(
             <>
             <Container>
@@ -129,6 +144,18 @@ class respuestas extends React.Component{
                             </tr>
                         ))}
                     </tbody>
+                </Table>
+
+                <Table>
+                    <thead>
+                        <tr>
+                            <th><Button onClick={()=>this.componentDidMount()}>Primera</Button></th> 
+                            {paginas.map(pag=>(
+                                    <th><Button color={pag[1]?"info":"link"} onClick={()=>this.peticionGet(pag[0],this.state.size)}>{pag[0]}</Button></th>
+                            ))}
+                            <th><Button onClick={()=>this.peticionGet(this.state.totalPaginas,this.state.size)}>Ultima</Button></th> 
+                        </tr>
+                    </thead>
                 </Table>
 
                 <Modal isOpen={this.state.modalInsertar}>
