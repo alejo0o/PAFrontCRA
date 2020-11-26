@@ -1,18 +1,17 @@
-import React from "react";
+import React from 'react';
 import {
   Grid,
   Header,
-  Icon,
   Tab,
   Image,
   Table,
   Modal,
   Button,
-} from "semantic-ui-react";
-import { MainContainer } from "./EstilosPerfil";
-import Cookies from "universal-cookie";
-import UsuarioUpdate from "./UsuarioUpdate";
-import { fecha } from "../utils/utils";
+} from 'semantic-ui-react';
+import { MainContainer } from './EstilosPerfil';
+import Cookies from 'universal-cookie';
+import UsuarioUpdate from './UsuarioUpdate';
+import { fecha } from '../utils/utils';
 
 function UsuarioPerfil({
   eventoUpdate,
@@ -23,20 +22,15 @@ function UsuarioPerfil({
 }) {
   const [open, setOpen] = React.useState(false);
   const cookies = new Cookies();
-  const user = cookies.get("cookie1");
+  const user = cookies.get('cookie1');
   const fechaF = fecha(user.userfechanacimiento);
   return (
-    <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
-      <MainContainer style={{ margin: "auto" }}>
+    <Tab.Pane style={{ backgroundColor: ' #dae5ed' }}>
+      <MainContainer style={{ margin: 'auto' }}>
         <Grid>
-          <Grid.Column style={{ maxWidth: "auto" }}>
-            <Header as="h2" textAlign="center">
-              <Icon
-                circular
-                inverted
-                name="user"
-                style={{ fontSize: "0.7em" }}
-              />
+          <Grid.Column style={{ maxWidth: 'auto' }}>
+            <Header as='h2' textAlign='center'>
+              <i className='user icon'></i>
               Perfil
             </Header>
             <Grid>
@@ -80,24 +74,22 @@ function UsuarioPerfil({
                   closeIcon
                   open={open}
                   basic
-                  dimmer="blurring"
-                  size="small"
+                  dimmer='blurring'
+                  size='small'
                   onClose={() => setOpen(false)}
                   onOpen={() => setOpen(true)}
                   trigger={
                     <Button
-                      attached="bottom"
+                      attached='bottom'
                       fluid
-                      size="large"
+                      size='large'
                       style={{
-                        backgroundColor: "#283049",
-                        color: "#FFF",
-                      }}
-                    >
+                        backgroundColor: '#283049',
+                        color: '#FFF',
+                      }}>
                       Editar
                     </Button>
-                  }
-                >
+                  }>
                   <UsuarioUpdate
                     eventoUpdate={eventoUpdate}
                     formValuesUpdate={formValuesUpdate}
