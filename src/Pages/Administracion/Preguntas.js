@@ -4,6 +4,8 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 import {Table, Button, Container, Modal, ModalBody, ModalHeader, FormGroup, ModalFooter} from 'reactstrap';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
+
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const url = "https://localhost:5001/api/pregunta/"
@@ -45,14 +47,24 @@ class preguntas extends React.Component{
     }
 
     componentDidMount(){
-        this.peticionGet(1,20);
-        axios.get('https://localhost:5001/api/categoria/')
-        .then(response =>{
-            this.setState({categorias: response.data.data})
-        })
-        .catch((error) => {
-            console.log(error)
-        });
+        const cookies = new Cookies();
+        if(typeof cookies.get('cookie1') !== "undefined")
+            {
+                if(cookies.get('cookie1').useradmin){
+                    this.peticionGet(1,20);
+                    axios.get('https://localhost:5001/api/categoria/')
+                    .then(response =>{
+                        this.setState({categorias: response.data.data})
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    });
+                }
+                else
+                    this.props.history.push('/');
+            }
+        else   
+            this.props.history.push('/');
     }
 
     modalInsertar=()=>{

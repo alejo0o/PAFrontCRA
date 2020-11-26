@@ -4,6 +4,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons'
 import {Table, Button, Container, Modal, ModalBody, ModalHeader,  ModalFooter} from 'reactstrap';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -37,7 +38,15 @@ class categorias extends React.Component{
     }
 
     componentDidMount(){
-        this.peticionGet(1,20);
+        const cookies = new Cookies();
+        if(typeof cookies.get('cookie1') !== "undefined")
+            if(cookies.get('cookie1').useradmin){
+                this.peticionGet(1,20);
+            }
+            else
+                this.props.history.push('/');
+        else   
+            this.props.history.push('/');
     }
 
     modalInsertar=()=>{
