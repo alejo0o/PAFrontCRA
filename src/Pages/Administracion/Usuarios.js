@@ -59,7 +59,15 @@ class respuestas extends React.Component{
     }
 
     componentDidMount(){
-        this.peticionGet(1,20);
+        const cookies = new Cookies();
+        if(typeof cookies.get('cookie1') !== "undefined")
+            if(cookies.get('cookie1').useradmin){
+                this.peticionGet(1,20);
+            }
+            else
+                this.props.history.push('/');
+        else   
+            this.props.history.push('/');
     }
 
     modalInsertar=()=>{
