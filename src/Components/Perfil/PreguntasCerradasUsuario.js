@@ -1,23 +1,30 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Grid, Header, Icon, Tab, Table, Button } from "semantic-ui-react";
+import {
+  Grid,
+  Header,
+  Tab,
+  Table,
+  Button,
+  Pagination,
+} from "semantic-ui-react";
 import { MainContainer } from "./EstilosPerfil";
 import { fecha } from "../utils/utils";
 
-function PreguntasCerradasUsuario({ preguntasData }) {
+function PreguntasCerradasUsuario({
+  preguntasData,
+  onPageChange,
+  total,
+  page,
+}) {
   return (
     <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
       <MainContainer style={{ margin: "auto" }}>
         <Grid>
           <Grid.Column style={{ maxWidth: "auto" }}>
             <Header as="h2" textAlign="center">
-              <Icon
-                circular
-                inverted
-                name="user"
-                style={{ fontSize: "0.7em" }}
-              />
-              Preguntas
+              <i className="question circle outline icon"></i>
+              Preguntas Cerradas
             </Header>
             <br />
             <Grid>
@@ -60,6 +67,22 @@ function PreguntasCerradasUsuario({ preguntasData }) {
             </Grid>
           </Grid.Column>
         </Grid>
+        <br />
+        <div
+          style={{
+            display: "flex",
+            margin: "auto",
+            justifyContent: "center",
+          }}
+        >
+          <Pagination
+            onPageChange={onPageChange}
+            pointing
+            secondary
+            activePage={page}
+            totalPages={total}
+          />
+        </div>
       </MainContainer>
     </Tab.Pane>
   );

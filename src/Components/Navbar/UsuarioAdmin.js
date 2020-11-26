@@ -16,7 +16,7 @@ const UsuarioAdmin = () => {
       </DropdownItem>
       <DropdownItem className='dropdown-profile'>
         <a
-          href='/administracion/respuestas'
+          href='/administracion/preguntas'
           style={{ color: 'black', textDecoration: 'none' }}>
           <Icon
             fitted
@@ -28,7 +28,7 @@ const UsuarioAdmin = () => {
       </DropdownItem>
       <DropdownItem className='dropdown-profile'>
         <a
-          href='/administracion/preguntas'
+          href='/administracion/respuestas'
           style={{ color: 'black', textDecoration: 'none' }}>
           <Icon fitted name='exclamation' style={{ paddingRight: '0.5em' }} />
           Respuestas

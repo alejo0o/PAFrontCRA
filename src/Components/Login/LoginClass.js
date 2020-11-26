@@ -16,6 +16,8 @@ class LoginClass extends Component {
     this.state = {
       error: null,
       loading: true,
+      usuarioCreado: false,
+      usuarioErrorSignup: false,
       usuarioIncorrecto: false,
       buscar: '',
       usuarioLogin: { usernick: '', userpass: '' },
@@ -103,18 +105,28 @@ class LoginClass extends Component {
     });
     try {
       e.preventDefault();
-      const response = await axios.post(
-        `${api_url}/api/usuario`,
-        this.state.usuarioSignUp
-      );
-      this.setState({
-        loading: false,
-        error: null,
-      });
+      if (
+        /^[A-Z._-][A-Z0-9._-]{0,254}$/i.test(this.state.usuarioSignUp.usernick)
+      ) {
+        const response = await axios.post(
+          `${api_url}/api/usuario`,
+          this.state.usuarioSignUp
+        );
+        this.setState({
+          loading: false,
+          error: null,
+          usuarioCreado: true,
+        });
+      } else {
+        this.setState({
+          usuarioErrorSignup: true,
+        });
+      }
     } catch (error) {
       this.setState({
         loading: false,
         error: error,
+        usuarioErrorSignup: true,
       });
     }
   };
@@ -122,6 +134,8 @@ class LoginClass extends Component {
   modaOnCloseFail = () => {
     this.setState({
       usuarioIncorrecto: false,
+      usuarioCreado: false,
+      usuarioErrorSignup: false,
     });
   };
 
@@ -138,6 +152,9 @@ class LoginClass extends Component {
           FailUser={this.state.usuarioIncorrecto}
           modalOnCloseFail={this.modaOnCloseFail}
           nombreBoton={this.props.nombreBoton}
+          usuarioCreado={this.state.usuarioCreado}
+          usuarioErrorSignup={this.state.usuarioErrorSignup}
+          nick_del_usuario={this.state.usuarioSignUp.usernick}
         />
       </div>
     );

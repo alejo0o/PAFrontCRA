@@ -74,8 +74,8 @@ class Clasificacion extends Component {
         <MainContainer>
           <Header>Tabla de clasificaciones</Header>
           <ContainerDescription>
-            <p style={{ marginRight: '3em' }}>En todas las categorías</p>
-            <p>Puntos</p>
+            <p style={{ marginLeft: '2em' }}>Usuario</p>
+            <p style={{ marginLeft: '8em' }}>Puntos</p>
           </ContainerDescription>
           <List ordered>
             {this.state.puntajes.map((usuario) => (

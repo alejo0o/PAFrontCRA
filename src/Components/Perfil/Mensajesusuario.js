@@ -1,21 +1,22 @@
-import React from 'react';
-import { Grid, Header, Icon, Tab, Table } from 'semantic-ui-react';
-import { MainContainer } from './EstilosPerfil';
-import { fechF } from '../utils/utils';
+import React from "react";
+import { Grid, Header, Tab, Table, Pagination } from "semantic-ui-react";
+import { MainContainer } from "./EstilosPerfil";
+import { fechF } from "../utils/utils";
 
-function Mensajeusuario({ mensajedata }) {
+function Mensajeusuario({ mensajedata, onPageChange, total, page }) {
   //var fecha = fechF(mensaje.menfecha,mensaje.menhora);
   return (
-    <Tab.Pane style={{ backgroundColor: ' #dae5ed' }}>
-      <MainContainer style={{ margin: 'auto' }}>
+    <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
+      <MainContainer style={{ margin: "auto" }}>
         <Grid>
-          <Grid.Column style={{ maxWidth: 'auto' }}>
-            <Header as='h2' textAlign='center'>
-              <i className='inbox icon'></i>
+          <Grid.Column style={{ maxWidth: "auto" }}>
+            <Header as="h2" textAlign="center">
+              <i className="inbox icon"></i>
               Mensajes
             </Header>
+            <br />
             <Grid>
-              <Table color='blue'>
+              <Table color="blue">
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell>Asunto</Table.HeaderCell>
@@ -43,6 +44,22 @@ function Mensajeusuario({ mensajedata }) {
             </Grid>
           </Grid.Column>
         </Grid>
+        <br />
+        <div
+          style={{
+            display: "flex",
+            margin: "auto",
+            justifyContent: "center",
+          }}
+        >
+          <Pagination
+            onPageChange={onPageChange}
+            pointing
+            secondary
+            activePage={page}
+            totalPages={total}
+          />
+        </div>
       </MainContainer>
     </Tab.Pane>
   );

@@ -33,7 +33,10 @@ const DisplayPreguntas = ({
               </Link>
               <List.Description>{pregunta.pregdetalle}</List.Description>
               <br />
-              <Link to="#" style={{ textDecoration: "none", color: "black" }}>
+              <Link
+                to={`/categorias?catid=${pregunta.catid}`}
+                style={{ textDecoration: "none", color: "black" }}
+              >
                 {pregunta.catnombre}
               </Link>
             </List.Content>

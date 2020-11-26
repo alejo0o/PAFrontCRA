@@ -10,10 +10,10 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 export const getServerSideProps = async (ctx) => {
   const { data: pregCategoria } = await axios.get(
-    `https://localhost:5001/api/customqueries/pregCategoria/${ctx.query.catid}`
+    `${api_url}/api/customqueries/pregCategoria/${ctx.query.catid}`
   );
   const { data: categoria } = await axios.get(
-    `https://localhost:5001/api/categoria/${ctx.query.catid}`
+    `${api_url}/api/categoria/${ctx.query.catid}`
   );
   return {
     props: {

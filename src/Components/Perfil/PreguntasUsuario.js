@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Header, Icon, Tab, Table, Pagination } from "semantic-ui-react";
+import { Grid, Header, Tab, Table, Pagination } from "semantic-ui-react";
 import { MainContainer } from "./EstilosPerfil";
 import { fecha } from "../utils/utils";
 
@@ -10,12 +10,7 @@ function PreguntasUsuario({ preguntasData, onPageChange, total, page }) {
         <Grid>
           <Grid.Column style={{ maxWidth: "auto" }}>
             <Header as="h2" textAlign="center">
-              <Icon
-                circular
-                inverted
-                name="user"
-                style={{ fontSize: "0.7em" }}
-              />
+              <i className="question circle icon"></i>
               Preguntas
             </Header>
             <br />

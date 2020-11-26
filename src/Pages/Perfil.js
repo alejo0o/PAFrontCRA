@@ -13,7 +13,6 @@ import Tab5 from "../Components/Perfil/Mensajesusuario";
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const cookies = new Cookies();
-const user = cookies.get("cookie1");
 
 class Perfil extends Component {
   constructor(props) {
@@ -22,34 +21,65 @@ class Perfil extends Component {
       error: null,
       loading: true,
 
+      cambiadoErroneo: false,
       // cookie: new Cookies(),
-      user: {},
+      user: cookies.get("cookie1"),
       usuarioUpdate: {
-        userid: user.userid,
-        usernombre: user.usernombre,
-        userapellido: user.userapellido,
-        userfechanacimiento: user.userfechanacimiento,
-        usernick: user.usernick,
+        userid: "",
+        usernombre: "",
+        userapellido: "",
+        userfechanacimiento: "",
+        usernick: "",
         userpass: "",
-        useremail: user.useremail,
-        userfoto: user.userfoto,
-        usersexo: user.usersexo,
-        userpuntaje: user.userpuntaje,
+        useremail: "",
+        userfoto: "",
+        usersexo: "",
+        userpuntaje: "",
+        useradmin: "",
       },
       preguntas: {},
       preguntasCerradas: {},
       respuestas: {},
       passwordAnterior: "",
+      respuestaModificada: {
+        userid: "",
+        pregid: "",
+        resptexto: "",
+      },
       //paginador
       page: 1,
       totalPreguntas: 0,
       totalPreguntasCerradas: 0,
       totalRespuestas: 0,
       totalMensajes: 0,
+
+      tab: 0,
     };
   }
   componentDidMount() {
     this.fetchData();
+    if (this.state.user) {
+      this.setState({
+        usuarioUpdate: {
+          userid: this.state.user.userid,
+          usernombre: this.state.user.usernombre,
+          userapellido: this.state.user.userapellido,
+          userfechanacimiento: this.state.user.userfechanacimiento,
+          usernick: this.state.user.usernick,
+          userpass: this.state.user.userpass,
+          useremail: this.state.user.useremail,
+          userfoto: this.state.user.userfoto,
+          usersexo: this.state.user.usersexo,
+          userpuntaje: this.state.user.userpuntaje,
+          useradmin: this.state.user.useradmin,
+        },
+        respuestaModificada: {
+          userid: this.state.user.userid,
+          pregid: "",
+          resptexto: "",
+        },
+      });
+    }
   }
   fetchData = async () => {
     this.setState({
@@ -58,19 +88,19 @@ class Perfil extends Component {
     });
     try {
       const { data: responsePregunta } = await axios.get(
-        `${api_url}/api/customqueries/pregXuser/${user.userid}?pageNumber=${this.state.page}`
+        `${api_url}/api/customqueries/pregXuser/${this.state.user.userid}?pageNumber=${this.state.page}`
       );
 
       const { data: responseRespuesta } = await axios.get(
-        `${api_url}/api/customqueries/pregYrespXuser/${user.userid}?pageNumber=${this.state.page}`
+        `${api_url}/api/customqueries/pregYrespXuser/${this.state.user.userid}?pageNumber=${this.state.page}`
       );
 
       const { data: responsePreguntaCerradas } = await axios.get(
-        `${api_url}/api/customqueries/predCad/${user.userid}`
+        `${api_url}/api/customqueries/predCad/${this.state.user.userid}?pageNumber=${this.state.page}`
       );
 
       const { data: mensajeUser } = await axios.get(
-        `${api_url}/api/customqueries/menUser/${user.userid}`
+        `${api_url}/api/customqueries/menUser/${this.state.user.userid}?pageNumber=${this.state.page}`
       );
 
       this.setState({
@@ -82,6 +112,8 @@ class Perfil extends Component {
         error: null,
         totalPreguntas: responsePregunta.totalPages,
         totalRespuestas: responseRespuesta.totalPages,
+        totalPreguntasCerradas: responsePreguntaCerradas.totalPages,
+        totalMensajes: mensajeUser.totalPages,
       });
     } catch (error) {
       this.setState({
@@ -104,23 +136,27 @@ class Perfil extends Component {
         usersexo: this.state.usuarioUpdate.usersexo,
         useremail: this.state.usuarioUpdate.useremail,
         userfoto: this.state.usuarioUpdate.userfoto,
+        useradmin: this.state.usuarioUpdate.useradmin,
         [e.target.name]: e.target.value,
       },
     });
   };
   onClickButtonUpdate = async (e) => {
+    e.preventDefault();
     //maneja el click del button para hacer el post del formulario pregunta
     this.setState({
       loading: true,
       error: null,
     });
     try {
-      e.preventDefault();
       const response = await axios.put(
         `${api_url}/api/usuario/${this.state.usuarioUpdate.userid}`,
         this.state.usuarioUpdate
       );
-      cookies.set("cookie1", this.state.usuarioUpdate, { path: "/" });
+      const { data: usuarioNuevo } = await axios.get(
+        `${api_url}/api/usuario/${this.state.user.userid}`
+      );
+      cookies.set("cookie1", usuarioNuevo, { path: "/" });
       window.location.reload();
       this.setState({
         loading: false,
@@ -136,36 +172,39 @@ class Perfil extends Component {
   handleChangeUpdatePassword = (e) => {
     //maneja el cambio en el componente hijo y setea los valores a las variables de estado
     this.setState({
-      passwordAnterior: {
-        [e.target.name]: e.target.value,
-      },
+      [e.target.name]: e.target.value,
     });
   };
 
   onClickButtonUpdatePassword = async (e) => {
+    e.preventDefault();
     //maneja el click del button para hacer el post del formulario pregunta
     this.setState({
       loading: true,
       error: null,
     });
     try {
-      e.preventDefault();
-      if (this.state.passwordAnterior === user.userpass) {
+      if (this.state.passwordAnterior === this.state.user.userpass) {
         const response = await axios.put(
           `${api_url}/api/usuario/${this.state.usuarioUpdate.userid}`,
           this.state.usuarioUpdate
         );
-        cookies.set("cookie1", this.state.usuarioUpdate, { path: "/" });
-        // window.location.reload();
-        console.log(this.state.passwordAnterior);
-        console.log(user.userpass);
+        const { data: usuarioNuevo } = await axios.get(
+          `${api_url}/api/usuario/${this.state.user.userid}`
+        );
+        cookies.set("cookie1", usuarioNuevo, { path: "/" });
+        window.location.reload();
+
         this.setState({
           loading: false,
           error: null,
         });
       } else {
-        console.log("no");
-        window.location.reload();
+        this.setState({
+          cambiadoErroneo: true,
+          loading: false,
+          error: null,
+        });
       }
     } catch (error) {
       this.setState({
@@ -179,6 +218,50 @@ class Perfil extends Component {
     this.fetchData();
   };
 
+  onCloseModales = (e) => {
+    this.setState({
+      cambiadoErroneo: false,
+    });
+  };
+
+  onTabChange = (e, value) => {
+    this.setState({
+      tab: value.activeIndex,
+    });
+  };
+  editarRespuestaAction = async (
+    respuestaID,
+    userID,
+    preguntaID,
+    respTexto
+  ) => {
+    this.setState({
+      loading: true,
+      error: null,
+    });
+    try {
+      const response = await axios.put(
+        `${api_url}/api/respuesta/${respuestaID}`,
+        {
+          userid: userID,
+          pregid: preguntaID,
+          resptexto: respTexto,
+        }
+      );
+
+      //window.location.reload();
+      this.setState({
+        loading: false,
+        error: null,
+      });
+    } catch (error) {
+      this.setState({
+        loading: false,
+        error: error,
+      });
+    }
+  };
+
   panes = [
     {
       menuItem: { key: "Perfil", icon: "user", content: "Perfil" },
@@ -189,6 +272,8 @@ class Perfil extends Component {
           buttonClickUpdate={this.onClickButtonUpdate}
           eventoUpdatePassword={this.handleChangeUpdatePassword}
           updatePassword={this.onClickButtonUpdatePassword}
+          cambiadoErroneo={this.state.cambiadoErroneo}
+          onCloseModales={this.onCloseModales}
         />
       ),
     },
@@ -212,6 +297,9 @@ class Perfil extends Component {
       render: () => (
         <Tab3
           respuestasData={this.state.respuestas.data}
+          respuestaModificada={this.state.respuestaModificada}
+          editarRespuestaHandleChange={this.editarRespuestaHandleChange}
+          editarRespuestaAction={this.editarRespuestaAction}
           onPageChange={this.handleChangePagination}
           total={this.state.totalRespuestas}
           page={this.state.page}
@@ -224,7 +312,14 @@ class Perfil extends Component {
         icon: "question circle",
         content: "Preguntas cerradas",
       },
-      render: () => <Tab4 preguntasData={this.state.preguntasCerradas.data} />,
+      render: () => (
+        <Tab4
+          preguntasData={this.state.preguntasCerradas.data}
+          onPageChange={this.handleChangePagination}
+          total={this.state.totalPreguntasCerradas}
+          page={this.state.page}
+        />
+      ),
     },
     {
       menuItem: {
@@ -232,7 +327,14 @@ class Perfil extends Component {
         icon: "inbox",
         content: "Mensajes",
       },
-      render: () => <Tab5 mensajedata={this.state.menUser.data} />,
+      render: () => (
+        <Tab5
+          mensajedata={this.state.menUser.data}
+          onPageChange={this.handleChangePagination}
+          total={this.state.totalMensajes}
+          page={this.state.page}
+        />
+      ),
     },
   ];
   render() {
@@ -249,6 +351,8 @@ class Perfil extends Component {
           }}
           panes={this.panes}
           menuPosition="left"
+          onTabChange={this.onTabChange}
+          activeIndex={this.state.tab}
         />
       </div>
     );

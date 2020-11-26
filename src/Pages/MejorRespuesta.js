@@ -139,10 +139,10 @@ class Respuesta extends Component {
         }
       );
       const { data: respuesta } = await axios.get(
-        `https://localhost:5001/api/respuesta/${this.state.respuestaId}`
+        `${api_url}/api/respuesta/${this.state.respuestaId}`
       );
       const { data: usuario } = await axios.get(
-        `https://localhost:5001/api/usuario/${respuesta.userid}`
+        `${api_url}/api/usuario/${respuesta.userid}`
       );
       this.setState({
         loading: false,
@@ -167,9 +167,7 @@ class Respuesta extends Component {
         }
       );
       const { data: usuarioPregunta } = await axios.get(
-        `https://localhost:5001/api/usuario/${
-          this.state.cookies.get("cookie1").userid
-        }`
+        `${api_url}/api/usuario/${this.state.cookies.get("cookie1").userid}`
       );
       this.setState({
         usuarioPregunta: usuarioPregunta,
