@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import Loader from '../Components/Spinner/Spinner';
-import DisplayCategorias from '../Components/DisplayCategorias/DisplayCategorias';
-import { api_url } from '../Components/utils/utils';
-import CategoriasList from '../Components/Categorias/Categorias';
-import Puntajes from '../Components/Clasificacion/Clasificacion';
+import React, { Component } from "react";
+import axios from "axios";
+import Loader from "../Components/Spinner/Spinner";
+import DisplayCategorias from "../Components/DisplayCategorias/DisplayCategorias";
+import { api_url } from "../Components/utils/utils";
+import CategoriasList from "../Components/Categorias/Categorias";
+import Puntajes from "../Components/Clasificacion/Clasificacion";
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 export const getServerSideProps = async (ctx) => {
   const { data: pregCategoria } = await axios.get(
@@ -31,6 +31,9 @@ class Categorias extends Component {
       loading: true,
       pregCategoria: {},
       categoria: {},
+      //paginador
+      page: 1,
+      total: 0,
     };
   }
 
@@ -47,18 +50,20 @@ class Categorias extends Component {
       const { data: preguntasAleatorias } = await axios.get(
         `${api_url}/api/customqueries/pregCategoria/${new URLSearchParams(
           this.props.location.search
-        ).get('catid')}`
+        ).get("catid")}?pageNumber=${this.state.page}`
       );
       const { data: categoria } = await axios.get(
         `${api_url}/api/categoria/${new URLSearchParams(
           this.props.location.search
-        ).get('catid')}`
+        ).get("catid")}`
       );
       this.setState({
         pregCategoria: preguntasAleatorias,
         categoria: categoria,
         loading: false,
         error: null,
+        //total de paginas
+        total: preguntasAleatorias.totalPages,
       });
     } catch (error) {
       this.setState({
@@ -67,15 +72,24 @@ class Categorias extends Component {
       });
     }
   };
+
+  handleChangePagination = (e, value) => {
+    this.state.page = value.activePage;
+    this.fetchData();
+  };
+
   render() {
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <div>Error</div>;
     return (
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: "flex" }}>
         <CategoriasList />
         <DisplayCategorias
           pregCategoria={this.state.pregCategoria.data}
           categoria={this.state.categoria}
+          onPageChange={this.handleChangePagination}
+          total={this.state.total}
+          page={this.state.page}
         />
         <Puntajes />
       </div>

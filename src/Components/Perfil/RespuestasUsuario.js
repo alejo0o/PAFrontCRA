@@ -1,4 +1,6 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
+
 import {
   Grid,
   Header,
@@ -6,33 +8,33 @@ import {
   Tab,
   Table,
   Button,
-  Modal,
-} from 'semantic-ui-react';
-import { MainContainer } from './EstilosPerfil';
-import { fecha } from '../utils/utils';
-import EditRespuesta from './EditRespuesta';
-import 'semantic-ui-css/semantic.min.css';
+  Pagination,
+} from "semantic-ui-react";
+import { MainContainer } from "./EstilosPerfil";
+import { fecha } from "../utils/utils";
+import "semantic-ui-css/semantic.min.css";
 
 function PreguntasUsuario({
   respuestasData,
   editarRespuestaHandleChange,
   editarRespuestaAction,
   respuestaModificada,
+  onPageChange,
+  total,
+  page,
 }) {
-  const [open, setOpen] = React.useState(false);
-
   return (
-    <Tab.Pane style={{ backgroundColor: ' #dae5ed' }}>
-      <MainContainer style={{ margin: 'auto' }}>
+    <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
+      <MainContainer style={{ margin: "auto" }}>
         <Grid>
-          <Grid.Column style={{ maxWidth: 'auto' }}>
-            <Header as='h2' textAlign='center'>
-              <i className='talk icon'></i>
+          <Grid.Column style={{ maxWidth: "auto" }}>
+            <Header as="h2" textAlign="center">
+              <i className="talk icon"></i>
               Respuestas
             </Header>
             <br />
             <Grid>
-              <Table color='blue'>
+              <Table color="blue">
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell>Pregunta</Table.HeaderCell>
@@ -46,9 +48,9 @@ function PreguntasUsuario({
                 <Table.Body>
                   {respuestasData.map((respuesta) => {
                     var fechaF = fecha(respuesta.respfecha);
-                    var estado = 'Abierta';
+                    var estado = "Abierta";
                     if (respuesta.pregestado) {
-                      estado = 'Cerrada';
+                      estado = "Cerrada";
                     }
 
                     return (
@@ -61,28 +63,18 @@ function PreguntasUsuario({
                         <Table.Cell>{estado}</Table.Cell>
                         <Table.Cell>
                           {!respuesta.pregestado && (
-                            <Modal
-                              closeIcon
-                              open={open}
-                              basic
-                              size='small'
-                              onClose={() => setOpen(false)}
-                              onOpen={() => setOpen(true)}
-                              trigger={
-                                <Button icon>
-                                  <Icon name='edit' />
-                                </Button>
-                              }>
-                              <EditRespuesta
-                                respuestaModificada={respuestaModificada}
-                                editarRespuestaAction={editarRespuestaAction}
-                                respuestaID={respuesta.respid}
-                                userID={respuesta.userid}
-                                preguntaID={respuesta.pregid}
-                                respuestaTexto={respuesta.resptexto}
-                                respuestaCompleta={respuesta}
-                              />
-                            </Modal>
+                            <Link to={`/respuestaEditar/${respuesta.respid}`}>
+                              <Button
+                                size="large"
+                                fluid
+                                style={{
+                                  backgroundColor: "#283049",
+                                  color: "#FFF",
+                                }}
+                              >
+                                <Icon name="edit" />
+                              </Button>
+                            </Link>
                           )}
                         </Table.Cell>
                       </Table.Row>
@@ -93,6 +85,22 @@ function PreguntasUsuario({
             </Grid>
           </Grid.Column>
         </Grid>
+        <br />
+        <div
+          style={{
+            display: "flex",
+            margin: "auto",
+            justifyContent: "center",
+          }}
+        >
+          <Pagination
+            onPageChange={onPageChange}
+            pointing
+            secondary
+            activePage={page}
+            totalPages={total}
+          />
+        </div>
       </MainContainer>
     </Tab.Pane>
   );

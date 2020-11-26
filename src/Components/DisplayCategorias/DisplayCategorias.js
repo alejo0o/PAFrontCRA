@@ -1,19 +1,25 @@
-import React from 'react';
-import { Header, List } from 'semantic-ui-react';
-import 'semantic-ui-css/semantic.min.css';
+import React from "react";
+import { Header, List, Pagination } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
 import {
   MainContainer,
   ListaItem,
-} from '../DisplayCategorias/EstilosDisplayCategorias';
-import { Link } from 'react-router-dom';
+} from "../DisplayCategorias/EstilosDisplayCategorias";
+import { Link } from "react-router-dom";
 
-const DisplayCategorias = ({ pregCategoria, categoria }) => {
+const DisplayCategorias = ({
+  pregCategoria,
+  categoria,
+  total,
+  onPageChange,
+  page,
+}) => {
   return (
     <MainContainer>
       <List>
         <List.Item key={categoria.catid} style={ListaItem}>
           <List.Content>
-            <Header style={{ marginBottom: '0.5em' }}>
+            <Header style={{ marginBottom: "0.5em" }}>
               {categoria.catnombre}
             </Header>
             <List.Description>{categoria.catdescripcion}</List.Description>
@@ -28,29 +34,31 @@ const DisplayCategorias = ({ pregCategoria, categoria }) => {
 
           var horapre =
             pregunta.preghora.hours +
-            'h ' +
+            "h " +
             pregunta.preghora.minutes +
-            'm ' +
+            "m " +
             pregunta.preghora.seconds +
-            's';
+            "s";
 
-          var fechahorapre = fechapre + '\t' + horapre;
+          var fechahorapre = fechapre + "\t" + horapre;
           return (
             <List.Item key={pregunta.pregid} style={ListaItem}>
               <List.Icon>
-                <i className='question icon'></i>
+                <i className="question icon"></i>
               </List.Icon>
 
               <List.Content>
                 <Link
                   key={pregunta.pregid}
                   to={`/respuesta/${pregunta.pregid}`}
-                  style={{ textDecoration: 'none', color: 'black' }}>
+                  style={{ textDecoration: "none", color: "black" }}
+                >
                   <Header
                     style={{
-                      marginBottom: '0.5em',
-                      fontSize: '15px',
-                    }}>
+                      marginBottom: "0.5em",
+                      fontSize: "15px",
+                    }}
+                  >
                     {pregunta.pregtexto}
                   </Header>
                 </Link>
@@ -59,9 +67,10 @@ const DisplayCategorias = ({ pregCategoria, categoria }) => {
                 <br />
                 <List.Description
                   style={{
-                    fontSize: '12px',
-                    color: 'lightgray',
-                  }}>
+                    fontSize: "12px",
+                    color: "lightgray",
+                  }}
+                >
                   {fechahorapre}
                 </List.Description>
               </List.Content>
@@ -69,6 +78,21 @@ const DisplayCategorias = ({ pregCategoria, categoria }) => {
           );
         })}
       </List>
+      <div
+        style={{
+          display: "flex",
+          margin: "auto",
+          justifyContent: "center",
+        }}
+      >
+        <Pagination
+          onPageChange={onPageChange}
+          pointing
+          secondary
+          activePage={page}
+          totalPages={total}
+        />
+      </div>
     </MainContainer>
   );
 };

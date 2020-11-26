@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import Loader from '../Components/Spinner/Spinner';
-import { api_url } from '../Components/utils/utils';
-import Cookies from 'universal-cookie';
-import axios from 'axios';
-import { Tab } from 'semantic-ui-react';
-import Tab1 from '../Components/Perfil/UsuarioPerfil';
-import Tab2 from '../Components/Perfil/PreguntasUsuario';
-import Tab3 from '../Components/Perfil/RespuestasUsuario';
-import Tab4 from '../Components/Perfil/PreguntasCerradasUsuario';
-import Tab5 from '../Components/Perfil/Mensajesusuario';
+import React, { Component } from "react";
+import Loader from "../Components/Spinner/Spinner";
+import { api_url } from "../Components/utils/utils";
+import Cookies from "universal-cookie";
+import axios from "axios";
+import { Tab } from "semantic-ui-react";
+import Tab1 from "../Components/Perfil/UsuarioPerfil";
+import Tab2 from "../Components/Perfil/PreguntasUsuario";
+import Tab3 from "../Components/Perfil/RespuestasUsuario";
+import Tab4 from "../Components/Perfil/PreguntasCerradasUsuario";
+import Tab5 from "../Components/Perfil/Mensajesusuario";
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 const cookies = new Cookies();
 
@@ -23,29 +23,37 @@ class Perfil extends Component {
 
       cambiadoErroneo: false,
       // cookie: new Cookies(),
-      user: cookies.get('cookie1'),
+      user: cookies.get("cookie1"),
       usuarioUpdate: {
-        userid: '',
-        usernombre: '',
-        userapellido: '',
-        userfechanacimiento: '',
-        usernick: '',
-        userpass: '',
-        useremail: '',
-        userfoto: '',
-        usersexo: '',
-        userpuntaje: '',
-        useradmin: '',
+        userid: "",
+        usernombre: "",
+        userapellido: "",
+        userfechanacimiento: "",
+        usernick: "",
+        userpass: "",
+        useremail: "",
+        userfoto: "",
+        usersexo: "",
+        userpuntaje: "",
+        useradmin: "",
       },
       preguntas: {},
       preguntasCerradas: {},
       respuestas: {},
-      passwordAnterior: '',
+      passwordAnterior: "",
       respuestaModificada: {
-        userid: '',
-        pregid: '',
-        resptexto: '',
+        userid: "",
+        pregid: "",
+        resptexto: "",
       },
+      //paginador
+      page: 1,
+      totalPreguntas: 0,
+      totalPreguntasCerradas: 0,
+      totalRespuestas: 0,
+      totalMensajes: 0,
+
+      tab: 0,
     };
   }
   componentDidMount() {
@@ -67,8 +75,8 @@ class Perfil extends Component {
         },
         respuestaModificada: {
           userid: this.state.user.userid,
-          pregid: '',
-          resptexto: '',
+          pregid: "",
+          resptexto: "",
         },
       });
     }
@@ -80,19 +88,19 @@ class Perfil extends Component {
     });
     try {
       const { data: responsePregunta } = await axios.get(
-        `${api_url}/api/customqueries/pregXuser/${this.state.user.userid}`
+        `${api_url}/api/customqueries/pregXuser/${this.state.user.userid}?pageNumber=${this.state.page}`
       );
 
       const { data: responseRespuesta } = await axios.get(
-        `${api_url}/api/customqueries/pregYrespXuser/${this.state.user.userid}`
+        `${api_url}/api/customqueries/pregYrespXuser/${this.state.user.userid}?pageNumber=${this.state.page}`
       );
 
       const { data: responsePreguntaCerradas } = await axios.get(
-        `${api_url}/api/customqueries/predCad/${this.state.user.userid}`
+        `${api_url}/api/customqueries/predCad/${this.state.user.userid}?pageNumber=${this.state.page}`
       );
 
       const { data: mensajeUser } = await axios.get(
-        `${api_url}/api/customqueries/menUser/${this.state.user.userid}`
+        `${api_url}/api/customqueries/menUser/${this.state.user.userid}?pageNumber=${this.state.page}`
       );
 
       this.setState({
@@ -102,6 +110,10 @@ class Perfil extends Component {
         menUser: mensajeUser,
         loading: false,
         error: null,
+        totalPreguntas: responsePregunta.totalPages,
+        totalRespuestas: responseRespuesta.totalPages,
+        totalPreguntasCerradas: responsePreguntaCerradas.totalPages,
+        totalMensajes: mensajeUser.totalPages,
       });
     } catch (error) {
       this.setState({
@@ -144,7 +156,7 @@ class Perfil extends Component {
       const { data: usuarioNuevo } = await axios.get(
         `${api_url}/api/usuario/${this.state.user.userid}`
       );
-      cookies.set('cookie1', usuarioNuevo, { path: '/' });
+      cookies.set("cookie1", usuarioNuevo, { path: "/" });
       window.location.reload();
       this.setState({
         loading: false,
@@ -180,7 +192,7 @@ class Perfil extends Component {
         const { data: usuarioNuevo } = await axios.get(
           `${api_url}/api/usuario/${this.state.user.userid}`
         );
-        cookies.set('cookie1', usuarioNuevo, { path: '/' });
+        cookies.set("cookie1", usuarioNuevo, { path: "/" });
         window.location.reload();
 
         this.setState({
@@ -201,13 +213,22 @@ class Perfil extends Component {
       });
     }
   };
+  handleChangePagination = (e, value) => {
+    this.state.page = value.activePage;
+    this.fetchData();
+  };
 
-  onCloseModales = () => {
+  onCloseModales = (e) => {
     this.setState({
       cambiadoErroneo: false,
     });
   };
 
+  onTabChange = (e, value) => {
+    this.setState({
+      tab: value.activeIndex,
+    });
+  };
   editarRespuestaAction = async (
     respuestaID,
     userID,
@@ -243,7 +264,7 @@ class Perfil extends Component {
 
   panes = [
     {
-      menuItem: { key: 'Perfil', icon: 'user', content: 'Perfil' },
+      menuItem: { key: "Perfil", icon: "user", content: "Perfil" },
       render: () => (
         <Tab1
           eventoUpdate={this.handleChangeUpdate}
@@ -258,54 +279,80 @@ class Perfil extends Component {
     },
     {
       menuItem: {
-        key: 'Preguntas',
-        icon: 'question circle',
-        content: 'Preguntas',
+        key: "Preguntas",
+        icon: "question circle",
+        content: "Preguntas",
       },
-      render: () => <Tab2 preguntasData={this.state.preguntas.data} />,
+      render: () => (
+        <Tab2
+          preguntasData={this.state.preguntas}
+          onPageChange={this.handleChangePagination}
+          total={this.state.totalPreguntas}
+          page={this.state.page}
+        />
+      ),
     },
     {
-      menuItem: { key: 'Respuestas', icon: 'talk', content: 'Respuestas' },
+      menuItem: { key: "Respuestas", icon: "talk", content: "Respuestas" },
       render: () => (
         <Tab3
           respuestasData={this.state.respuestas.data}
           respuestaModificada={this.state.respuestaModificada}
           editarRespuestaHandleChange={this.editarRespuestaHandleChange}
           editarRespuestaAction={this.editarRespuestaAction}
+          onPageChange={this.handleChangePagination}
+          total={this.state.totalRespuestas}
+          page={this.state.page}
         />
       ),
     },
     {
       menuItem: {
-        key: 'Preguntas cerradas',
-        icon: 'question circle',
-        content: 'Preguntas cerradas',
+        key: "Preguntas cerradas",
+        icon: "question circle",
+        content: "Preguntas cerradas",
       },
-      render: () => <Tab4 preguntasData={this.state.preguntasCerradas.data} />,
+      render: () => (
+        <Tab4
+          preguntasData={this.state.preguntasCerradas.data}
+          onPageChange={this.handleChangePagination}
+          total={this.state.totalPreguntasCerradas}
+          page={this.state.page}
+        />
+      ),
     },
     {
       menuItem: {
-        key: 'Mensajes',
-        icon: 'inbox',
-        content: 'Mensajes',
+        key: "Mensajes",
+        icon: "inbox",
+        content: "Mensajes",
       },
-      render: () => <Tab5 mensajedata={this.state.menUser.data} />,
+      render: () => (
+        <Tab5
+          mensajedata={this.state.menUser.data}
+          onPageChange={this.handleChangePagination}
+          total={this.state.totalMensajes}
+          page={this.state.page}
+        />
+      ),
     },
   ];
   render() {
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <div>Error</div>;
     return (
-      <div style={{ marginTop: '2em' }}>
+      <div style={{ marginTop: "2em" }}>
         <Tab
           menu={{
-            style: { backgroundColor: '#283049' },
+            style: { backgroundColor: "#283049" },
             inverted: true,
             fluid: true,
             vertical: true,
           }}
           panes={this.panes}
-          menuPosition='left'
+          menuPosition="left"
+          onTabChange={this.onTabChange}
+          activeIndex={this.state.tab}
         />
       </div>
     );

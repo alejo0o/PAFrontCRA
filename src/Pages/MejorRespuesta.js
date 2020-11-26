@@ -17,6 +17,9 @@ class Respuesta extends Component {
     this.state = {
       error: null,
       loading: true,
+      success: false,
+      warning: false,
+
       cookies: new Cookies(),
 
       respuestasPregunta: {
@@ -49,6 +52,10 @@ class Respuesta extends Component {
       pregunta: {},
       usuario: {},
       respuesta: {},
+      usuarioPregunta: {},
+      //paginador
+      page: 1,
+      total: 0,
     };
   }
   componentDidMount() {
@@ -62,7 +69,7 @@ class Respuesta extends Component {
     });
     try {
       const { data: respuestasPregunta } = await axios.get(
-        `${api_url}/api/customqueries/respPregunta/${this.props.match.params.preguntaID}`
+        `${api_url}/api/customqueries/respPregunta/${this.props.match.params.preguntaID}?pageNumber=${this.state.page}`
       );
       const { data: preguntaRespuesta } = await axios.get(
         `${api_url}/api/customqueries/pregResp/${this.props.match.params.preguntaID}`
@@ -79,6 +86,8 @@ class Respuesta extends Component {
         respFav: respFav,
         pregunta: responsePregunta,
         loading: false,
+        //total de paginas
+        total: respuestasPregunta.totalPages,
       });
     } catch (error) {
       this.setState({
@@ -88,10 +97,27 @@ class Respuesta extends Component {
     }
   };
   handleChange = async (e, { value }) => {
-    this.setState({ respuestaId: value });
+    this.setState({
+      success: true,
+      respuestaId: value,
+      error: null,
+    });
+  };
+  modalOnCloseSuccess = () => {
+    this.setState({
+      success: false,
+    });
+    // window.location.reload();
+  };
+  handleChangePagination = (e, value) => {
+    this.state.page = value.activePage;
+    this.fetchData();
+  };
+  onclickChange = async (e) => {
     this.setState({
       loading: true,
       error: null,
+      success: false,
     });
 
     try {
@@ -108,15 +134,15 @@ class Respuesta extends Component {
           pregfecha: this.state.pregunta.pregfecha,
           preghora: this.state.pregunta.preghora,
           pregestado: this.state.pregunta.pregestado,
-          pregmejorresp: value,
+          pregmejorresp: this.state.respuestaId,
           pregmulta: this.state.pregunta.pregmulta,
         }
       );
       const { data: respuesta } = await axios.get(
-        `https://localhost:5001/api/respuesta/${value}`
+        `${api_url}/api/respuesta/${this.state.respuestaId}`
       );
       const { data: usuario } = await axios.get(
-        `https://localhost:5001/api/usuario/${respuesta.userid}`
+        `${api_url}/api/usuario/${respuesta.userid}`
       );
       this.setState({
         loading: false,
@@ -140,11 +166,19 @@ class Respuesta extends Component {
           userpass: this.state.usuario.userpass,
         }
       );
-      this.state.cookies.set("cookie1", this.state.usuario, { path: "/" });
+      const { data: usuarioPregunta } = await axios.get(
+        `${api_url}/api/usuario/${this.state.cookies.get("cookie1").userid}`
+      );
+      this.setState({
+        usuarioPregunta: usuarioPregunta,
+        loading: false,
+        error: null,
+      });
+      this.state.cookies.set("cookie1", this.state.usuarioPregunta, {
+        path: "/",
+      });
       window.location.reload();
     } catch (error) {
-      console.log(error);
-
       this.setState({
         loading: false,
         error: error,
@@ -164,6 +198,12 @@ class Respuesta extends Component {
           <DisplayRespuestas
             respuestasPregunta={this.state.respuestasPregunta.data}
             eventoPregunta={this.handleChange}
+            success={this.state.success}
+            onclickChange={this.onclickChange}
+            modalSuccessClose={this.modalOnCloseSuccess}
+            onPageChange={this.handleChangePagination}
+            total={this.state.total}
+            page={this.state.page}
           />
         </div>
         <Clasificacion />

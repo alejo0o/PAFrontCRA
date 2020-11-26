@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import Loader from '../Components/Loader/Loader';
-import DisplayPerfil from '../Components/DisplayPerfil/DisplayPerfil';
-import Categorias from '../Components/Categorias/Categorias';
-import Puntajes from '../Components/Clasificacion/Clasificacion';
+import React, { Component } from "react";
+import axios from "axios";
+import Loader from "../Components/Loader/Loader";
+import DisplayPerfil from "../Components/DisplayPerfil/DisplayPerfil";
+import Categorias from "../Components/Categorias/Categorias";
+import Puntajes from "../Components/Clasificacion/Clasificacion";
 //Styles
-import { PreguntaIndexContainer } from '../Components/Layout/EstilosGlobales';
-import { api_url } from '../Components/utils/utils';
+import { PreguntaIndexContainer } from "../Components/Layout/EstilosGlobales";
+import { api_url } from "../Components/utils/utils";
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 class PerfilDisplay extends Component {
   constructor(props) {

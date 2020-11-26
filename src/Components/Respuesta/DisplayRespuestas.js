@@ -1,14 +1,19 @@
-import React from 'react';
-import { Header, List, Image } from 'semantic-ui-react';
-import 'semantic-ui-css/semantic.min.css';
+import React from "react";
+import { Header, List, Image, Pagination } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
 import {
   MainContainer,
   ListaItem,
-} from '../Respuesta/EstilosDisplayRespuestas';
-import { fechF } from '../utils/utils';
-import { Link } from 'react-router-dom';
+} from "../Respuesta/EstilosDisplayRespuestas";
+import { fechF } from "../utils/utils";
+import { Link } from "react-router-dom";
 
-const DisplayRespuestas = ({ respuestasPregunta }) => {
+const DisplayRespuestas = ({
+  respuestasPregunta,
+  total,
+  onPageChange,
+  page,
+}) => {
   return (
     <MainContainer>
       <List>
@@ -20,9 +25,10 @@ const DisplayRespuestas = ({ respuestasPregunta }) => {
                 <Link to={`/DisplayPerfil/${respuesta.userid}`}>
                   <Header
                     style={{
-                      marginBottom: '0.5em',
-                      fontSize: '15px',
-                    }}>
+                      marginBottom: "0.5em",
+                      fontSize: "15px",
+                    }}
+                  >
                     <Image
                       avatar
                       src={respuesta.userfoto}
@@ -36,9 +42,10 @@ const DisplayRespuestas = ({ respuestasPregunta }) => {
                 <br />
                 <List.Description
                   style={{
-                    fontSize: '12px',
-                    color: 'lightgray',
-                  }}>
+                    fontSize: "12px",
+                    color: "lightgray",
+                  }}
+                >
                   {fechahorare}
                 </List.Description>
               </List.Content>
@@ -46,6 +53,21 @@ const DisplayRespuestas = ({ respuestasPregunta }) => {
           );
         })}
       </List>
+      <div
+        style={{
+          display: "flex",
+          margin: "auto",
+          justifyContent: "center",
+        }}
+      >
+        <Pagination
+          onPageChange={onPageChange}
+          pointing
+          secondary
+          activePage={page}
+          totalPages={total}
+        />
+      </div>
     </MainContainer>
   );
 };
