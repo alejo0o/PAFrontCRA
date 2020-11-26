@@ -1,26 +1,21 @@
-import React from "react";
-import { Grid, Header, Icon, Tab, Table } from "semantic-ui-react";
-import { MainContainer } from "./EstilosPerfil";
-import { fecha } from "../utils/utils";
+import React from 'react';
+import { Grid, Header, Tab, Table } from 'semantic-ui-react';
+import { MainContainer } from './EstilosPerfil';
+import { fecha } from '../utils/utils';
 
 function PreguntasUsuario({ preguntasData }) {
   return (
-    <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
-      <MainContainer style={{ margin: "auto" }}>
+    <Tab.Pane style={{ backgroundColor: ' #dae5ed' }}>
+      <MainContainer style={{ margin: 'auto' }}>
         <Grid>
-          <Grid.Column style={{ maxWidth: "auto" }}>
-            <Header as="h2" textAlign="center">
-              <Icon
-                circular
-                inverted
-                name="user"
-                style={{ fontSize: "0.7em" }}
-              />
+          <Grid.Column style={{ maxWidth: 'auto' }}>
+            <Header as='h2' textAlign='center'>
+              <i className='question circle icon'></i>
               Preguntas
             </Header>
             <br />
             <Grid>
-              <Table color="blue">
+              <Table color='blue'>
                 <Table.Header>
                   <Table.Row>
                     <Table.HeaderCell>Pregunta</Table.HeaderCell>

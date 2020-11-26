@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import Loader from "../Components/Spinner/Spinner";
-import { api_url } from "../Components/utils/utils";
-import Cookies from "universal-cookie";
-import axios from "axios";
-import { Tab } from "semantic-ui-react";
-import Tab1 from "../Components/Perfil/UsuarioPerfil";
-import Tab2 from "../Components/Perfil/PreguntasUsuario";
-import Tab3 from "../Components/Perfil/RespuestasUsuario";
-import Tab4 from "../Components/Perfil/PreguntasCerradasUsuario";
-import Tab5 from "../Components/Perfil/Mensajesusuario";
+import React, { Component } from 'react';
+import Loader from '../Components/Spinner/Spinner';
+import { api_url } from '../Components/utils/utils';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
+import { Tab } from 'semantic-ui-react';
+import Tab1 from '../Components/Perfil/UsuarioPerfil';
+import Tab2 from '../Components/Perfil/PreguntasUsuario';
+import Tab3 from '../Components/Perfil/RespuestasUsuario';
+import Tab4 from '../Components/Perfil/PreguntasCerradasUsuario';
+import Tab5 from '../Components/Perfil/Mensajesusuario';
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const cookies = new Cookies();
-const user = cookies.get("cookie1");
+const user = cookies.get('cookie1');
 
 class Perfil extends Component {
   constructor(props) {
@@ -30,7 +30,7 @@ class Perfil extends Component {
         userapellido: user.userapellido,
         userfechanacimiento: user.userfechanacimiento,
         usernick: user.usernick,
-        userpass: "",
+        userpass: '',
         useremail: user.useremail,
         userfoto: user.userfoto,
         usersexo: user.usersexo,
@@ -39,7 +39,7 @@ class Perfil extends Component {
       preguntas: {},
       preguntasCerradas: {},
       respuestas: {},
-      passwordAnterior: "",
+      passwordAnterior: '',
     };
   }
   componentDidMount() {
@@ -112,7 +112,7 @@ class Perfil extends Component {
         `${api_url}/api/usuario/${this.state.usuarioUpdate.userid}`,
         this.state.usuarioUpdate
       );
-      cookies.set("cookie1", this.state.usuarioUpdate, { path: "/" });
+      cookies.set('cookie1', this.state.usuarioUpdate, { path: '/' });
       window.location.reload();
       this.setState({
         loading: false,
@@ -147,7 +147,7 @@ class Perfil extends Component {
           `${api_url}/api/usuario/${this.state.usuarioUpdate.userid}`,
           this.state.usuarioUpdate
         );
-        cookies.set("cookie1", this.state.usuarioUpdate, { path: "/" });
+        cookies.set('cookie1', this.state.usuarioUpdate, { path: '/' });
         // window.location.reload();
         console.log(this.state.passwordAnterior);
         console.log(user.userpass);
@@ -156,7 +156,7 @@ class Perfil extends Component {
           error: null,
         });
       } else {
-        console.log("no");
+        console.log('no');
         window.location.reload();
       }
     } catch (error) {
@@ -169,7 +169,7 @@ class Perfil extends Component {
 
   panes = [
     {
-      menuItem: { key: "Perfil", icon: "user", content: "Perfil" },
+      menuItem: { key: 'Perfil', icon: 'user', content: 'Perfil' },
       render: () => (
         <Tab1
           eventoUpdate={this.handleChangeUpdate}
@@ -182,29 +182,29 @@ class Perfil extends Component {
     },
     {
       menuItem: {
-        key: "Preguntas",
-        icon: "question circle",
-        content: "Preguntas",
+        key: 'Preguntas',
+        icon: 'question circle',
+        content: 'Preguntas',
       },
       render: () => <Tab2 preguntasData={this.state.preguntas.data} />,
     },
     {
-      menuItem: { key: "Respuestas", icon: "talk", content: "Respuestas" },
+      menuItem: { key: 'Respuestas', icon: 'talk', content: 'Respuestas' },
       render: () => <Tab3 respuestasData={this.state.respuestas.data} />,
     },
     {
       menuItem: {
-        key: "Preguntas cerradas",
-        icon: "question circle",
-        content: "Preguntas cerradas",
+        key: 'Preguntas cerradas',
+        icon: 'question circle outline',
+        content: 'Preguntas cerradas',
       },
       render: () => <Tab4 preguntasData={this.state.preguntasCerradas.data} />,
     },
     {
       menuItem: {
-        key: "Mensajes",
-        icon: "inbox",
-        content: "Mensajes",
+        key: 'Mensajes',
+        icon: 'inbox',
+        content: 'Mensajes',
       },
       render: () => <Tab5 mensajedata={this.state.menUser.data} />,
     },
@@ -213,16 +213,16 @@ class Perfil extends Component {
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <div>Error</div>;
     return (
-      <div style={{ marginTop: "2em" }}>
+      <div style={{ marginTop: '2em' }}>
         <Tab
           menu={{
-            style: { backgroundColor: "#283049" },
+            style: { backgroundColor: '#283049' },
             inverted: true,
             fluid: true,
             vertical: true,
           }}
           panes={this.panes}
-          menuPosition="left"
+          menuPosition='left'
         />
       </div>
     );
