@@ -13,7 +13,12 @@ import { fecha } from '../utils/utils';
 import EditRespuesta from './EditRespuesta';
 import 'semantic-ui-css/semantic.min.css';
 
-function PreguntasUsuario({ respuestasData, eventoEdit, buttonEdit }) {
+function PreguntasUsuario({
+  respuestasData,
+  editarRespuestaHandleChange,
+  editarRespuestaAction,
+  respuestaModificada,
+}) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -50,6 +55,7 @@ function PreguntasUsuario({ respuestasData, eventoEdit, buttonEdit }) {
                     if (respuesta.pregestado) {
                       estado = 'Cerrada';
                     }
+
                     return (
                       <Table.Row key={respuesta.respid}>
                         <Table.Cell collapsing>
@@ -73,9 +79,13 @@ function PreguntasUsuario({ respuestasData, eventoEdit, buttonEdit }) {
                                 </Button>
                               }>
                               <EditRespuesta
-                                respuesta={respuesta}
-                                buttonEdit={buttonEdit}
-                                eventoEdit={eventoEdit}
+                                respuestaModificada={respuestaModificada}
+                                editarRespuestaAction={editarRespuestaAction}
+                                respuestaID={respuesta.respid}
+                                userID={respuesta.userid}
+                                preguntaID={respuesta.pregid}
+                                respuestaTexto={respuesta.resptexto}
+                                respuestaCompleta={respuesta}
                               />
                             </Modal>
                           )}

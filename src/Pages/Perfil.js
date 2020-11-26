@@ -41,6 +41,11 @@ class Perfil extends Component {
       preguntasCerradas: {},
       respuestas: {},
       passwordAnterior: '',
+      respuestaModificada: {
+        userid: '',
+        pregid: '',
+        resptexto: '',
+      },
     };
   }
   componentDidMount() {
@@ -59,6 +64,11 @@ class Perfil extends Component {
           usersexo: this.state.user.usersexo,
           userpuntaje: this.state.user.userpuntaje,
           useradmin: this.state.user.useradmin,
+        },
+        respuestaModificada: {
+          userid: this.state.user.userid,
+          pregid: '',
+          resptexto: '',
         },
       });
     }
@@ -198,6 +208,39 @@ class Perfil extends Component {
     });
   };
 
+  editarRespuestaAction = async (
+    respuestaID,
+    userID,
+    preguntaID,
+    respTexto
+  ) => {
+    this.setState({
+      loading: true,
+      error: null,
+    });
+    try {
+      const response = await axios.put(
+        `${api_url}/api/respuesta/${respuestaID}`,
+        {
+          userid: userID,
+          pregid: preguntaID,
+          resptexto: respTexto,
+        }
+      );
+
+      //window.location.reload();
+      this.setState({
+        loading: false,
+        error: null,
+      });
+    } catch (error) {
+      this.setState({
+        loading: false,
+        error: error,
+      });
+    }
+  };
+
   panes = [
     {
       menuItem: { key: 'Perfil', icon: 'user', content: 'Perfil' },
@@ -223,7 +266,14 @@ class Perfil extends Component {
     },
     {
       menuItem: { key: 'Respuestas', icon: 'talk', content: 'Respuestas' },
-      render: () => <Tab3 respuestasData={this.state.respuestas.data} />,
+      render: () => (
+        <Tab3
+          respuestasData={this.state.respuestas.data}
+          respuestaModificada={this.state.respuestaModificada}
+          editarRespuestaHandleChange={this.editarRespuestaHandleChange}
+          editarRespuestaAction={this.editarRespuestaAction}
+        />
+      ),
     },
     {
       menuItem: {

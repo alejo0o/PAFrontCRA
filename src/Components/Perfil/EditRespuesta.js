@@ -1,24 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Icon, Tab, Header, FormGroup } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 
-function EditRespuesta({ respuesta, buttonEdit, eventoEdit }) {
+function EditRespuesta({
+  respuestaModificada,
+  editarRespuestaAction,
+  respuestaID,
+  preguntaID,
+  respuestaTexto,
+  userID,
+  respuestaCompleta,
+}) {
+  const [resptexto, setresptexto] = useState('');
+
+  const handleChange = (e) => {
+    setresptexto(e.target.value);
+    console.log(resptexto);
+  };
+
+  const handleSubmit = () => {
+    editarRespuestaAction(respuestaID, userID, preguntaID, resptexto);
+  };
+
   return (
     <Tab.Pane style={{ backgroundColor: ' #dae5ed' }}>
       <Header as='h2' textAlign='center'>
         <Icon circular inverted name='edit' style={{ fontSize: '0.7em' }} />
         Editar Respuesta
       </Header>
-      <Form size='large' onSubmit={buttonEdit}>
+      <Form size='large' onSubmit={handleSubmit}>
         {/* <Segment stacked> */}
         <Form.Group widths='equal'>
           <Form.TextArea
-            fluid
             label='Respuesta'
             placeholder='Respuesta'
-            onChange={eventoEdit}
+            onChange={handleChange}
+            value={respuestaCompleta.resptexto}
             name='resptexto'
-            value={respuesta.resptexto}
             required
           />
         </Form.Group>
