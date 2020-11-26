@@ -18,7 +18,7 @@ import { api_url } from '../../Components/utils/utils';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-const url = `${api_url}/api/Usuario/`;
+const url = `${api_url}/api/usuario/`;
 const size = 5;
 
 class respuestas extends React.Component {
@@ -69,7 +69,12 @@ class respuestas extends React.Component {
   };
 
   componentDidMount() {
-    this.peticionGet(1, 20);
+    const cookies = new Cookies();
+    if (typeof cookies.get('cookie1') !== 'undefined')
+      if (cookies.get('cookie1').useradmin) {
+        this.peticionGet(1, 20);
+      } else this.props.history.push('/');
+    else this.props.history.push('/');
   }
 
   modalInsertar = () => {
