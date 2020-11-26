@@ -40,7 +40,7 @@ class categorias extends React.Component{
     componentDidMount(){
         const cookies = new Cookies();
         if(typeof cookies.get('cookie1') !== "undefined")
-           c
+            if(cookies.get('cookie1').useradmin){
                 this.peticionGet(1,20);
             }
             else
