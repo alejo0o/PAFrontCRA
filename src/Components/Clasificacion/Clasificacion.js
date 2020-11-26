@@ -9,6 +9,7 @@ import {
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../Loader/Loader';
+import { api_url } from '../utils/utils';
 
 class Clasificacion extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class Clasificacion extends Component {
     });
     try {
       const { data } = await axios.get(
-        'https://localhost:5001/api/customqueries/ordenarusuarios'
+        `${api_url}/api/customqueries/ordenarusuarios`
       );
 
       this.setState({
