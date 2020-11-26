@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import Loader from '../Components/Loader/Loader';
-import DisplayPreguntas from '../Components/DisplayPreguntas/DisplayPreguntas';
-import Categorias from '../Components/Categorias/Categorias';
-import Puntajes from '../Components/Clasificacion/Clasificacion';
+import React, { Component } from "react";
+import axios from "axios";
+import Loader from "../Components/Loader/Loader";
+import DisplayPreguntas from "../Components/DisplayPreguntas/DisplayPreguntas";
+import Categorias from "../Components/Categorias/Categorias";
+import Puntajes from "../Components/Clasificacion/Clasificacion";
 //Styles
-import { PreguntaIndexContainer } from '../Components/Layout/EstilosGlobales';
-import { api_url } from '../Components/utils/utils';
+import { PreguntaIndexContainer } from "../Components/Layout/EstilosGlobales";
+import { api_url } from "../Components/utils/utils";
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 class Main extends Component {
   constructor(props) {
@@ -19,10 +19,13 @@ class Main extends Component {
       data: {
         pregid: 0,
         pregtexto: 0,
-        pregdetalle: '',
-        pregfecha: '',
-        catnombre: '',
+        pregdetalle: "",
+        pregfecha: "",
+        catnombre: "",
       },
+      //paginador
+      page: 1,
+      total: 0,
     };
   }
 
@@ -37,12 +40,14 @@ class Main extends Component {
     });
     try {
       const { data: preguntasAleatorias } = await axios.get(
-        `${api_url}/api/customqueries/getpreguntasaleatorias`
+        `${api_url}/api/customqueries/getpreguntasaleatorias?pageNumber=${this.state.page}`
       );
       this.setState({
         data: preguntasAleatorias,
         loading: false,
         error: null,
+        //total de paginas
+        total: preguntasAleatorias.totalPages,
       });
     } catch (error) {
       this.setState({
@@ -52,6 +57,11 @@ class Main extends Component {
     }
   };
 
+  handleChangePagination = (e, value) => {
+    this.state.page = value.activePage;
+    this.fetchData();
+  };
+
   render() {
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <div>Error</div>;
@@ -59,7 +69,13 @@ class Main extends Component {
       <div>
         <PreguntaIndexContainer>
           <Categorias></Categorias>
-          <DisplayPreguntas preguntasAleatorias={this.state.data.data} />
+          <DisplayPreguntas
+            preguntasAleatorias={this.state.data.data}
+            activePage={this.state.activePage}
+            onPageChange={this.handleChangePagination}
+            total={this.state.total}
+            page={this.state.page}
+          />
           <Puntajes></Puntajes>
         </PreguntaIndexContainer>
       </div>

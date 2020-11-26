@@ -1,6 +1,14 @@
 import React from "react";
-import { Header, List, Image, Form } from "semantic-ui-react";
-import "semantic-ui-css/semantic.min.css";
+import {
+  Header,
+  List,
+  Image,
+  Form,
+  Modal,
+  Button,
+  Icon,
+  Pagination,
+} from "semantic-ui-react";
 import {
   MainContainer,
   ListaItem,
@@ -11,9 +19,33 @@ const DisplayRespuestas = ({
   respuestasPregunta,
   eventoPregunta,
   respuestaId,
+  success,
+  onclickChange,
+  modalSuccessClose,
+  onPageChange,
+  total,
+  page,
 }) => {
   return (
     <MainContainer>
+      <Modal open={success} size="small" style={{ height: 200 }}>
+        <Header icon="check circle" content="Mejor respuesta seleccionada!" />
+        <Modal.Content>
+          <p>
+            ¿Desea seleccionar esta respuesta como <b>Mejor respuesta</b>?
+          </p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color="red" onClick={modalSuccessClose}>
+            <Icon name="x" />
+            Cancelar
+          </Button>
+          <Button color="green" onClick={onclickChange}>
+            <Icon name="smile outline" />
+            Aceptar
+          </Button>
+        </Modal.Actions>
+      </Modal>
       <List>
         {respuestasPregunta.map((respuesta) => {
           var fechahorare = fechF(respuesta.respfecha, respuesta.resphora);
@@ -59,6 +91,21 @@ const DisplayRespuestas = ({
           );
         })}
       </List>
+      <div
+        style={{
+          display: "flex",
+          margin: "auto",
+          justifyContent: "center",
+        }}
+      >
+        <Pagination
+          onPageChange={onPageChange}
+          pointing
+          secondary
+          activePage={page}
+          totalPages={total}
+        />
+      </div>
     </MainContainer>
   );
 };

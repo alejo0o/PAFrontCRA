@@ -1,9 +1,9 @@
 import React from "react";
-import { Grid, Header, Icon, Tab, Table } from "semantic-ui-react";
+import { Grid, Header, Icon, Tab, Table, Pagination } from "semantic-ui-react";
 import { MainContainer } from "./EstilosPerfil";
 import { fecha } from "../utils/utils";
 
-function PreguntasUsuario({ preguntasData }) {
+function PreguntasUsuario({ preguntasData, onPageChange, total, page }) {
   return (
     <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
       <MainContainer style={{ margin: "auto" }}>
@@ -29,7 +29,7 @@ function PreguntasUsuario({ preguntasData }) {
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  {preguntasData.map((pregunta) => {
+                  {preguntasData.data.map((pregunta) => {
                     var fechaF = fecha(pregunta.pregfecha);
                     return (
                       <Table.Row key={pregunta.pregid}>
@@ -44,6 +44,22 @@ function PreguntasUsuario({ preguntasData }) {
             </Grid>
           </Grid.Column>
         </Grid>
+        <br />
+        <div
+          style={{
+            display: "flex",
+            margin: "auto",
+            justifyContent: "center",
+          }}
+        >
+          <Pagination
+            onPageChange={onPageChange}
+            pointing
+            secondary
+            activePage={page}
+            totalPages={total}
+          />
+        </div>
       </MainContainer>
     </Tab.Pane>
   );

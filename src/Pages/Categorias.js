@@ -31,6 +31,9 @@ class Categorias extends Component {
       loading: true,
       pregCategoria: {},
       categoria: {},
+      //paginador
+      page: 1,
+      total: 0,
     };
   }
 
@@ -47,7 +50,7 @@ class Categorias extends Component {
       const { data: preguntasAleatorias } = await axios.get(
         `${api_url}/api/customqueries/pregCategoria/${new URLSearchParams(
           this.props.location.search
-        ).get("catid")}`
+        ).get("catid")}?pageNumber=${this.state.page}`
       );
       const { data: categoria } = await axios.get(
         `${api_url}/api/categoria/${new URLSearchParams(
@@ -59,6 +62,8 @@ class Categorias extends Component {
         categoria: categoria,
         loading: false,
         error: null,
+        //total de paginas
+        total: preguntasAleatorias.totalPages,
       });
     } catch (error) {
       this.setState({
@@ -67,6 +72,12 @@ class Categorias extends Component {
       });
     }
   };
+
+  handleChangePagination = (e, value) => {
+    this.state.page = value.activePage;
+    this.fetchData();
+  };
+
   render() {
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <div>Error</div>;
@@ -76,6 +87,9 @@ class Categorias extends Component {
         <DisplayCategorias
           pregCategoria={this.state.pregCategoria.data}
           categoria={this.state.categoria}
+          onPageChange={this.handleChangePagination}
+          total={this.state.total}
+          page={this.state.page}
         />
         <Puntajes />
       </div>

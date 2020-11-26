@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const MainContainer = styled.div`
   margin: 3em;
@@ -6,8 +6,8 @@ export const MainContainer = styled.div`
 `;
 
 export const ListaItem = {
-  border: 'solid 1px #DEDEDF',
-  borderTopLeftRadius: '5px',
-  borderTopRightRadius: '5px',
-  padding: '1em',
+  border: "solid 1px #DEDEDF",
+  borderTopLeftRadius: "5px",
+  borderTopRightRadius: "5px",
+  padding: "1em",
 };

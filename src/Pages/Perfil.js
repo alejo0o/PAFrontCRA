@@ -40,6 +40,12 @@ class Perfil extends Component {
       preguntasCerradas: {},
       respuestas: {},
       passwordAnterior: "",
+      //paginador
+      page: 1,
+      totalPreguntas: 0,
+      totalPreguntasCerradas: 0,
+      totalRespuestas: 0,
+      totalMensajes: 0,
     };
   }
   componentDidMount() {
@@ -52,11 +58,11 @@ class Perfil extends Component {
     });
     try {
       const { data: responsePregunta } = await axios.get(
-        `${api_url}/api/customqueries/pregXuser/${user.userid}`
+        `${api_url}/api/customqueries/pregXuser/${user.userid}?pageNumber=${this.state.page}`
       );
 
       const { data: responseRespuesta } = await axios.get(
-        `${api_url}/api/customqueries/pregYrespXuser/${user.userid}`
+        `${api_url}/api/customqueries/pregYrespXuser/${user.userid}?pageNumber=${this.state.page}`
       );
 
       const { data: responsePreguntaCerradas } = await axios.get(
@@ -74,6 +80,8 @@ class Perfil extends Component {
         menUser: mensajeUser,
         loading: false,
         error: null,
+        totalPreguntas: responsePregunta.totalPages,
+        totalRespuestas: responseRespuesta.totalPages,
       });
     } catch (error) {
       this.setState({
@@ -166,6 +174,10 @@ class Perfil extends Component {
       });
     }
   };
+  handleChangePagination = (e, value) => {
+    this.state.page = value.activePage;
+    this.fetchData();
+  };
 
   panes = [
     {
@@ -186,11 +198,25 @@ class Perfil extends Component {
         icon: "question circle",
         content: "Preguntas",
       },
-      render: () => <Tab2 preguntasData={this.state.preguntas.data} />,
+      render: () => (
+        <Tab2
+          preguntasData={this.state.preguntas}
+          onPageChange={this.handleChangePagination}
+          total={this.state.totalPreguntas}
+          page={this.state.page}
+        />
+      ),
     },
     {
       menuItem: { key: "Respuestas", icon: "talk", content: "Respuestas" },
-      render: () => <Tab3 respuestasData={this.state.respuestas.data} />,
+      render: () => (
+        <Tab3
+          respuestasData={this.state.respuestas.data}
+          onPageChange={this.handleChangePagination}
+          total={this.state.totalRespuestas}
+          page={this.state.page}
+        />
+      ),
     },
     {
       menuItem: {
