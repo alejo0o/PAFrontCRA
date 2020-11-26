@@ -14,6 +14,7 @@ function Mensajeusuario({ mensajedata }) {
               <i className='inbox icon'></i>
               Mensajes
             </Header>
+            <br />
             <Grid>
               <Table color='blue'>
                 <Table.Header>

@@ -27,12 +27,7 @@ function PreguntasUsuario({
         <Grid>
           <Grid.Column style={{ maxWidth: 'auto' }}>
             <Header as='h2' textAlign='center'>
-              <Icon
-                circular
-                inverted
-                name='user'
-                style={{ fontSize: '0.7em' }}
-              />
+              <i className='talk icon'></i>
               Respuestas
             </Header>
             <br />

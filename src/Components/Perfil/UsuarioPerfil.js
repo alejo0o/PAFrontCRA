@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Grid,
   Header,
-  Icon,
   Tab,
   Image,
   Table,
@@ -34,12 +33,7 @@ function UsuarioPerfil({
         <Grid>
           <Grid.Column style={{ maxWidth: 'auto' }}>
             <Header as='h2' textAlign='center'>
-              <Icon
-                circular
-                inverted
-                name='user'
-                style={{ fontSize: '0.7em' }}
-              />
+              <i className='user icon'></i>
               Perfil
             </Header>
             <Grid>

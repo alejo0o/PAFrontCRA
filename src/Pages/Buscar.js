@@ -6,6 +6,7 @@ import Categorias from '../Components/Categorias/Categorias';
 import Clasificacion from '../Components/Clasificacion/Clasificacion';
 //Styles
 import { PreguntaIndexContainer } from '../Components/Layout/EstilosGlobales';
+import { api_url } from '../Components/utils/utils';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -56,7 +57,7 @@ class Buscar extends Component {
     });
     try {
       const { data } = await axios.get(
-        `https://localhost:5001/api/customqueries/getBuscar/${encodeURIComponent(
+        `${api_url}/api/customqueries/getBuscar/${encodeURIComponent(
           new URLSearchParams(this.props.location.search).get('buscar')
         )}`
       );

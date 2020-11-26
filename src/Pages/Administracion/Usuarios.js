@@ -113,14 +113,14 @@ class respuestas extends React.Component{
          }
     axios.put(url+this.state.form.userid, this.state.form).then(response=>{
         this.setState({modalInsertar: false});
-        this.peticionGet();
+        this.peticionGet(this.state.pagina,this.state.size);
     })
     }
 
     peticionDelete=()=>{
         axios.delete(url+this.state.form.userid).then(response=>{
           this.setState({modalEliminar: false});
-          this.peticionGet();
+          this.peticionGet(this.state.pagina,this.state.size);
         })
       }
 
@@ -135,7 +135,7 @@ class respuestas extends React.Component{
         this.state.formMensaje.adminid = cookies.get('cookie1').userid;
         this.state.formMensaje.userid = this.state.form.userid;
         this.peticionPost();
-        this.peticionGet();
+        this.peticionGet(this.state.pagina,this.state.size);
         })
       }
 

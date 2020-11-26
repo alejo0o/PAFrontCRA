@@ -48,7 +48,7 @@ class categorias extends React.Component{
         delete this.state.form.catid;
         await axios.post(url,this.state.form).then(response=>{
           this.modalInsertar();
-          this.peticionGet();
+          this.peticionGet(this.state.pagina,this.state.size);
         }).catch(error=>{
           console.log(error.message);
         })
@@ -79,14 +79,14 @@ class categorias extends React.Component{
     peticionPut=()=>{
     axios.put(url+this.state.form.catid, this.state.form).then(response=>{
         this.modalInsertar();
-        this.peticionGet();
+        this.peticionGet(this.state.pagina,this.state.size);
     })
     }
 
     peticionDelete=()=>{
         axios.delete(url+this.state.form.catid).then(response=>{
           this.setState({modalEliminar: false});
-          this.peticionGet();
+          this.peticionGet(this.state.pagina,this.state.size);
         })
       }
 
