@@ -10,35 +10,33 @@ import { fechF } from '../utils/utils';
 
 const PreguntaUsuario = ({ preguntaRespuesta }) => {
   //console.log(preguntaRespuesta);
+  var fechahora = fechF(
+    preguntaRespuesta.pregfecha,
+    preguntaRespuesta.preghora
+  );
   return (
     <MainContainer>
       <List>
-        {preguntaRespuesta.map((pregunta) => {
-          var fechahora = fechF(pregunta.pregfecha, pregunta.preghora);
-
-          return (
-            <List.Item key={pregunta.pregid} style={ListaItem}>
-              <Image
-                avatar
-                src={pregunta.userfoto}
-                style={{ width: 50, height: 50 }}
-              />
-              <List.Content>
-                <Header style={{ marginBottom: '0.5em' }}>
-                  {pregunta.pregtexto}
-                </Header>
-                <List.Description style={{ marginBottom: '1em' }}>
-                  {fechahora}
-                </List.Description>
-                <List.Description>{pregunta.pregdetalle}</List.Description>
-                <br />
-                <Link to={`/DisplayPerfil/${pregunta.userid}`}>
-                  {pregunta.usernick}
-                </Link>
-              </List.Content>
-            </List.Item>
-          );
-        })}
+        <List.Item key={preguntaRespuesta.pregid} style={ListaItem}>
+          <Image
+            avatar
+            src={preguntaRespuesta.userfoto}
+            style={{ width: 50, height: 50 }}
+          />
+          <List.Content>
+            <Header style={{ marginBottom: '0.5em' }}>
+              {preguntaRespuesta.pregtexto}
+            </Header>
+            <List.Description style={{ marginBottom: '1em' }}>
+              {fechahora}
+            </List.Description>
+            <List.Description>{preguntaRespuesta.pregdetalle}</List.Description>
+            <br />
+            <Link to={`/DisplayPerfil/${preguntaRespuesta.userid}`}>
+              {preguntaRespuesta.usernick}
+            </Link>
+          </List.Content>
+        </List.Item>
       </List>
     </MainContainer>
   );

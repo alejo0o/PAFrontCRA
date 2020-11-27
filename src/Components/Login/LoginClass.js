@@ -103,8 +103,8 @@ class LoginClass extends Component {
       const response = await axios.get(
         `${api_url}/api/customqueries/getUsuario/${this.state.usuarioLogin.usernick}/${this.state.usuarioLogin.userpass}`
       );
-      if (response.data.length !== 0) {
-        cookies.set('cookie1', response.data[0], { path: '/' });
+      if (response.data) {
+        cookies.set('cookie1', response.data, { path: '/' });
         this.props.history.push(
           this.props.location.pathname + this.props.location.search
         );
