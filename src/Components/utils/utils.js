@@ -1,5 +1,5 @@
 export const api_url = 'https://proyectoprograavanzada.azurewebsites.net';
-export const serverImageURL = 'https://26917bd90872.ngrok.io';
+export const serverImageURL = 'https://1002ba7ddb5f.ngrok.io';
 export const fechF = (fecha, hora) => {
   var fechare = fecha.substring(0, 10);
 
