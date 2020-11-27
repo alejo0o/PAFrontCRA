@@ -9,46 +9,50 @@ import { fechF } from '../utils/utils';
 import { Link } from 'react-router-dom';
 
 const RespFav = ({ respFav }) => {
-  var fechahorare = fechF(respFav.respfecha, respFav.resphora);
   return (
     <MainContainer>
       <List>
-        <List.Item key={respFav.respid} style={ListaItem1}>
-          <List.Content>
-            <Link to={`/DisplayPerfil/${respFav.userid}`}>
-              <Header
-                style={{
-                  marginBottom: '0.5em',
-                  fontSize: '15px',
-                }}>
-                <Image
-                  avatar
-                  src={respFav.userfoto}
-                  style={{ width: 35, height: 35 }}
-                />
-                {respFav.usernick}
-              </Header>
-            </Link>
-            <List.Description
-              style={{
-                fontSize: '12px',
-                color: 'lightgray',
-              }}>
-              <i className='trophy icon'></i>
-              Mejor respFav
-            </List.Description>
-            <br />
-            <List.Description>{respFav.resptexto}</List.Description>
-            <br />
-            <List.Description
-              style={{
-                fontSize: '12px',
-                color: 'lightgray',
-              }}>
-              {fechahorare}
-            </List.Description>
-          </List.Content>
-        </List.Item>
+        {respFav.map((respuesta) => {
+          var fechahorare = fechF(respuesta.respfecha, respuesta.resphora);
+          return (
+            <List.Item key={respuesta.respid} style={ListaItem1}>
+              <List.Content>
+                <Link to={`/DisplayPerfil/${respuesta.userid}`}>
+                  <Header
+                    style={{
+                      marginBottom: '0.5em',
+                      fontSize: '15px',
+                    }}>
+                    <Image
+                      avatar
+                      src={respuesta.userfoto}
+                      style={{ width: 35, height: 35 }}
+                    />
+                    {respuesta.usernick}
+                  </Header>
+                </Link>
+                <List.Description
+                  style={{
+                    fontSize: '12px',
+                    color: 'lightgray',
+                  }}>
+                  <i className='trophy icon'></i>
+                  Mejor Respuesta
+                </List.Description>
+                <br />
+                <List.Description>{respuesta.resptexto}</List.Description>
+                <br />
+                <List.Description
+                  style={{
+                    fontSize: '12px',
+                    color: 'lightgray',
+                  }}>
+                  {fechahorare}
+                </List.Description>
+              </List.Content>
+            </List.Item>
+          );
+        })}
       </List>
     </MainContainer>
   );
