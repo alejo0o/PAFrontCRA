@@ -1,14 +1,15 @@
-import React, { Component } from "react";
-import axios from "axios";
-import Loader from "../Components/Loader/Loader";
-import DisplayPerfil from "../Components/DisplayPerfil/DisplayPerfil";
-import Categorias from "../Components/Categorias/Categorias";
-import Puntajes from "../Components/Clasificacion/Clasificacion";
+import React, { Component } from 'react';
+import axios from 'axios';
+import Loader from '../Components/Loader/Loader';
+import DisplayPerfil from '../Components/DisplayPerfil/DisplayPerfil';
+import Categorias from '../Components/Categorias/Categorias';
+import Puntajes from '../Components/Clasificacion/Clasificacion';
 //Styles
-import { PreguntaIndexContainer } from "../Components/Layout/EstilosGlobales";
-import { api_url } from "../Components/utils/utils";
+import { PreguntaIndexContainer } from '../Components/Layout/EstilosGlobales';
+import { api_url } from '../Components/utils/utils';
+import Error from '../Components/Error/Error';
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 class PerfilDisplay extends Component {
   constructor(props) {
@@ -58,7 +59,7 @@ class PerfilDisplay extends Component {
 
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>Error</div>;
+    if (this.state.error) return <Error />;
     return (
       <div>
         <PreguntaIndexContainer>

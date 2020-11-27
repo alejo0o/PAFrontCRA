@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Segment, List, Header } from 'semantic-ui-react';
 import 'semantic-ui-css/semantic.min.css';
 import { MainContainer, ItemsLista } from './EstilosCategorias';
-
+import Error from '../Error/Error';
 import axios from 'axios';
 import Loader from '../Loader/Loader';
 import { api_url } from '../utils/utils';
@@ -45,7 +45,7 @@ class Categorias extends Component {
 
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>Error</div>;
+    if (this.state.error) return <Error />;
 
     return (
       <MainContainer>

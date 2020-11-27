@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import axios from "axios";
-import Loader from "../Components/Spinner/Spinner";
-import Categoria from "../Components/Categorias/Categorias";
-import Clasificacion from "../Components/Clasificacion/Clasificacion";
-import Cookies from "universal-cookie";
-import FormRespuestaEditar from "../Components/RespuestaEditar/RespuestaEditar";
-import "semantic-ui-css/semantic.min.css";
-import { api_url } from "../Components/utils/utils";
-import PreguntaUsuario from "../Components/Respuesta/PreguntaUsuario";
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+import React, { Component } from 'react';
+import axios from 'axios';
+import Loader from '../Components/Loader/Loader';
+import Categoria from '../Components/Categorias/Categorias';
+import Clasificacion from '../Components/Clasificacion/Clasificacion';
+import Cookies from 'universal-cookie';
+import FormRespuestaEditar from '../Components/RespuestaEditar/RespuestaEditar';
+import 'semantic-ui-css/semantic.min.css';
+import { api_url } from '../Components/utils/utils';
+import PreguntaUsuario from '../Components/Respuesta/PreguntaUsuario';
+import Error from '../Components/Error/Error';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const cookies = new Cookies();
 
@@ -20,7 +20,7 @@ class Respuesta extends Component {
       success: false,
       error: null,
       loading: true,
-      usuario: cookies.get("cookie1"),
+      usuario: cookies.get('cookie1'),
       respuesta: {},
       pregunta: {},
     };
@@ -103,11 +103,11 @@ class Respuesta extends Component {
 
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>Error</div>;
+    if (this.state.error) return <Error />;
     return (
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <Categoria />
-        <div style={{ display: "block" }}>
+        <div style={{ display: 'block' }}>
           <PreguntaUsuario preguntaRespuesta={this.state.pregunta} />
           <FormRespuestaEditar
             formValues={this.state.respuesta}
