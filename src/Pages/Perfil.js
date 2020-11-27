@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Loader from "../Components/Spinner/Spinner";
+import Loader from "../Components/Loader/Loader";
 import { api_url, serverImageURL } from "../Components/utils/utils";
 import Cookies from "universal-cookie";
 import axios from "axios";
@@ -9,6 +9,7 @@ import Tab2 from "../Components/Perfil/PreguntasUsuario";
 import Tab3 from "../Components/Perfil/RespuestasUsuario";
 import Tab4 from "../Components/Perfil/PreguntasCerradasUsuario";
 import Tab5 from "../Components/Perfil/Mensajesusuario";
+import Error from "../Components/Error/Error";
 
 const cookies = new Cookies();
 
@@ -389,7 +390,7 @@ class Perfil extends Component {
   ];
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>Error</div>;
+    if (this.state.error) return <Error />;
     return (
       <div style={{ marginTop: "2em" }}>
         <Tab

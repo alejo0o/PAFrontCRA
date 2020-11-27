@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Component } from "react";
 import axios from "axios";
-import Loader from "../Components/Spinner/Spinner";
+import Loader from "../Components/Loader/Loader";
+import Error from "../Components/Error/Error";
 import DisplayPreguntas from "../Components/DisplayPreguntas/DisplayPreguntas";
 import Categorias from "../Components/Categorias/Categorias";
 import Clasificacion from "../Components/Clasificacion/Clasificacion";
@@ -72,7 +73,7 @@ class Buscar extends Component {
   };
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>no olvides ingresar tu busqueda</div>;
+    if (this.state.error) return <Error />;
     return (
       <div>
         <PreguntaIndexContainer>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Loader from "../Components/Spinner/Spinner";
+import Loader from "../Components/Loader/Loader";
 import DisplayRespuestas from "../Components/MejorRespuesta/DisplayPreguntasM";
 import PreguntaUsuario from "../Components/Respuesta/PreguntaUsuario";
 import RespFav from "../Components/Respuesta/RespFav";
@@ -8,8 +8,7 @@ import Categoria from "../Components/Categorias/Categorias";
 import Clasificacion from "../Components/Clasificacion/Clasificacion";
 import { api_url } from "../Components/utils/utils";
 import Cookies from "universal-cookie";
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+import Error from "../Components/Error/Error";
 
 class Respuesta extends Component {
   constructor(props) {
@@ -188,7 +187,7 @@ class Respuesta extends Component {
 
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>Error</div>;
+    if (this.state.error) return <Error />;
     return (
       <div style={{ display: "flex" }}>
         <Categoria />

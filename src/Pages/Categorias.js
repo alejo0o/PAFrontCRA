@@ -1,12 +1,11 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Loader from "../Components/Spinner/Spinner";
+import Loader from "../Components/Loader/Loader";
 import DisplayCategorias from "../Components/DisplayCategorias/DisplayCategorias";
 import { api_url } from "../Components/utils/utils";
 import CategoriasList from "../Components/Categorias/Categorias";
 import Puntajes from "../Components/Clasificacion/Clasificacion";
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+import Error from "../Components/Error/Error";
 
 export const getServerSideProps = async (ctx) => {
   const { data: pregCategoria } = await axios.get(
@@ -80,7 +79,7 @@ class Categorias extends Component {
 
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>Error</div>;
+    if (this.state.error) return <Error />;
     return (
       <div style={{ display: "flex" }}>
         <CategoriasList />

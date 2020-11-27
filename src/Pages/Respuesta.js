@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Loader from "../Components/Spinner/Spinner";
+import Loader from "../Components/Loader/Loader";
 import DisplayRespuestas from "../Components/Respuesta/DisplayRespuestas";
 import PreguntaUsuario from "../Components/Respuesta/PreguntaUsuario";
 import RespFav from "../Components/Respuesta/RespFav";
@@ -13,8 +13,7 @@ import Login from "../Components/Login/LoginClass";
 import { Button } from "semantic-ui-react";
 import { api_url } from "../Components/utils/utils";
 import PreguntaCerrada from "../Components/Pregunta/PreguntaCaducada";
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+import Error from "../Components/Error/Error";
 
 const cookies = new Cookies();
 
@@ -173,13 +172,13 @@ class Respuesta extends Component {
 
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>Error</div>;
+    if (this.state.error) return <Error />;
     return (
       <div style={{ display: "flex" }}>
         <Categoria />
         <div style={{ display: "block" }}>
           <PreguntaUsuario preguntaRespuesta={this.state.preguntaRespuesta} />
-          {this.state.usuario && !this.state.preguntaRespuesta[0].estado && (
+          {this.state.usuario && !this.state.preguntaRespuesta.estado && (
             <FormRespuesta
               formValues={this.state.respuesta}
               buttonClick={this.onSubmitRespuesta}
@@ -188,7 +187,7 @@ class Respuesta extends Component {
               modalSuccessClose={this.modalOnCloseSuccess}
             />
           )}
-          {this.state.usuario && this.state.preguntaRespuesta[0].estado && (
+          {this.state.usuario && this.state.preguntaRespuesta.estado && (
             <PreguntaCerrada />
           )}
           {!this.state.usuario && (
