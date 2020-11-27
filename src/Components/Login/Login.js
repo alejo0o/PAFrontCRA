@@ -18,6 +18,7 @@ function LoginForm({
   usuarioErrorSignup,
   usuarioCreado,
   nick_del_usuario,
+  handleOnChangeFoto,
 }) {
   const [open, setOpen] = React.useState(false);
   const handleOnChange = (e, data) => {
@@ -45,6 +46,7 @@ function LoginForm({
           formValuesSignUp={formValuesSignUp}
           buttonClickSignUp={buttonClickSignUp}
           handleOnChange={handleOnChange}
+          handleOnChangeFoto={handleOnChangeFoto}
         />
       ),
     },
