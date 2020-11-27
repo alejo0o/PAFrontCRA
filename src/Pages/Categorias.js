@@ -1,12 +1,13 @@
-import React, { Component } from "react";
-import axios from "axios";
-import Loader from "../Components/Spinner/Spinner";
-import DisplayCategorias from "../Components/DisplayCategorias/DisplayCategorias";
-import { api_url } from "../Components/utils/utils";
-import CategoriasList from "../Components/Categorias/Categorias";
-import Puntajes from "../Components/Clasificacion/Clasificacion";
+import React, { Component } from 'react';
+import axios from 'axios';
+import Loader from '../Components/Loader/Loader';
+import DisplayCategorias from '../Components/DisplayCategorias/DisplayCategorias';
+import { api_url } from '../Components/utils/utils';
+import CategoriasList from '../Components/Categorias/Categorias';
+import Puntajes from '../Components/Clasificacion/Clasificacion';
+import Error from '../Components/Error/Error';
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 export const getServerSideProps = async (ctx) => {
   const { data: pregCategoria } = await axios.get(
@@ -50,12 +51,12 @@ class Categorias extends Component {
       const { data: preguntasAleatorias } = await axios.get(
         `${api_url}/api/customqueries/pregCategoria/${new URLSearchParams(
           this.props.location.search
-        ).get("catid")}?pageNumber=${this.state.page}`
+        ).get('catid')}?pageNumber=${this.state.page}`
       );
       const { data: categoria } = await axios.get(
         `${api_url}/api/categoria/${new URLSearchParams(
           this.props.location.search
-        ).get("catid")}`
+        ).get('catid')}`
       );
       this.setState({
         pregCategoria: preguntasAleatorias,
@@ -80,9 +81,9 @@ class Categorias extends Component {
 
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>Error</div>;
+    if (this.state.error) return <Error />;
     return (
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <CategoriasList />
         <DisplayCategorias
           pregCategoria={this.state.pregCategoria.data}

@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Loader from '../Loader/Loader';
 import { api_url } from '../utils/utils';
+import Error from '../Error/Error';
 
 class Clasificacion extends Component {
   constructor(props) {
@@ -52,7 +53,7 @@ class Clasificacion extends Component {
   };
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>Error</div>;
+    if (this.state.error) return <Error />;
     return (
       <div>
         <div

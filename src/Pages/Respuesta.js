@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Loader from '../Components/Spinner/Spinner';
+import Loader from '../Components/Loader/Loader';
 import DisplayRespuestas from '../Components/Respuesta/DisplayRespuestas';
 import PreguntaUsuario from '../Components/Respuesta/PreguntaUsuario';
 import RespFav from '../Components/Respuesta/RespFav';
@@ -13,7 +13,7 @@ import Login from '../Components/Login/LoginClass';
 import { Button } from 'semantic-ui-react';
 import { api_url } from '../Components/utils/utils';
 import PreguntaCerrada from '../Components/Pregunta/PreguntaCaducada';
-
+import Error from '../Components/Error/Error';
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const cookies = new Cookies();
@@ -173,7 +173,7 @@ class Respuesta extends Component {
 
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>Error</div>;
+    if (this.state.error) return <Error />;
     return (
       <div style={{ display: 'flex' }}>
         <Categoria />
