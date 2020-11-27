@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Form,
   Icon,
@@ -7,8 +7,9 @@ import {
   Modal,
   Button,
   FormGroup,
-} from 'semantic-ui-react';
-import Password from './Password';
+} from "semantic-ui-react";
+import Password from "./Password";
+import "semantic-ui-css/semantic.min.css";
 
 function UsuarioUpdate({
   eventoUpdate,
@@ -23,43 +24,44 @@ function UsuarioUpdate({
   const [open, setOpen] = React.useState(false);
 
   return (
-    <Tab.Pane style={{ backgroundColor: ' #dae5ed' }}>
-      <Header as='h2' textAlign='center'>
-        <Icon circular inverted name='user' style={{ fontSize: '0.7em' }} />
+    <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
+      <Header as="h2" textAlign="center">
+        <Icon circular inverted name="user" style={{ fontSize: "0.7em" }} />
         Actualizar datos
       </Header>
-      <Form size='large' onSubmit={buttonClickUpdate}>
+      <Form size="large" onSubmit={buttonClickUpdate}>
         {/* <Segment stacked> */}
-        <Form.Group widths='equal'>
+        <Form.Group widths="equal">
           <Form.Input
             fluid
-            label='Email'
-            placeholder='Email'
+            label="Email"
+            placeholder="Email"
             onChange={eventoUpdate}
-            type='email'
-            name='useremail'
+            type="email"
+            name="useremail"
             value={formValuesUpdate.useremail}
           />
         </Form.Group>
 
-        <Form.Group widths='equal'>
+        <Form.Group widths="equal">
           <Form.Input
             fluid
-            type='file'
-            label='Foto'
-            placeholder='Foto'
-            accept='image/*'
+            type="file"
+            label="Foto"
+            placeholder="Foto"
+            accept="image/*"
             onChange={handleOnChangeFoto}
           />
         </Form.Group>
-        <FormGroup widths='equal'>
+        <FormGroup widths="equal">
           <Form.Button
             fluid
-            size='large'
+            size="large"
             style={{
-              backgroundColor: '#283049',
-              color: '#FFF',
-            }}>
+              backgroundColor: "#283049",
+              color: "#FFF",
+            }}
+          >
             Editar
           </Form.Button>
         </FormGroup>
@@ -69,21 +71,24 @@ function UsuarioUpdate({
         closeIcon
         open={open}
         basic
-        dimmer='blurring'
-        size='small'
+        dimmer="blurring"
+        size="small"
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
+        centered={true}
         trigger={
           <Button
-            attached='bottom'
+            attached="bottom"
             fluid
             style={{
-              backgroundColor: '#283049',
-              color: '#FFF',
-            }}>
+              backgroundColor: "#283049",
+              color: "#FFF",
+            }}
+          >
             Cambiar contraseña
           </Button>
-        }>
+        }
+      >
         <Password
           eventoUpdate={eventoUpdate}
           eventoUpdatePassword={eventoUpdatePassword}
