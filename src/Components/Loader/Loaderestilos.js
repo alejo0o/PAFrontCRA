@@ -31,6 +31,6 @@ export const LoaderC = styled.div`
     border-color: #283049 transparent #283049 transparent;
     animation-name: ${animacion};
     animation-duration: 4s;
-    animation-iteration-count: infinite;  }
+    animation-iteration-count: infinite;
+  }
 `;
-

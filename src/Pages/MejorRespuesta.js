@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import axios from "axios";
-import Loader from "../Components/Spinner/Spinner";
-import DisplayRespuestas from "../Components/MejorRespuesta/DisplayPreguntasM";
-import PreguntaUsuario from "../Components/Respuesta/PreguntaUsuario";
-import RespFav from "../Components/Respuesta/RespFav";
-import Categoria from "../Components/Categorias/Categorias";
-import Clasificacion from "../Components/Clasificacion/Clasificacion";
-import { api_url } from "../Components/utils/utils";
-import Cookies from "universal-cookie";
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+import React, { Component } from 'react';
+import axios from 'axios';
+import Loader from '../Components/Loader/Loader';
+import DisplayRespuestas from '../Components/MejorRespuesta/DisplayPreguntasM';
+import PreguntaUsuario from '../Components/Respuesta/PreguntaUsuario';
+import RespFav from '../Components/Respuesta/RespFav';
+import Categoria from '../Components/Categorias/Categorias';
+import Clasificacion from '../Components/Clasificacion/Clasificacion';
+import { api_url } from '../Components/utils/utils';
+import Cookies from 'universal-cookie';
+import Error from '../Components/Error/Error';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 class Respuesta extends Component {
   constructor(props) {
@@ -23,32 +23,32 @@ class Respuesta extends Component {
       cookies: new Cookies(),
 
       respuestasPregunta: {
-        respid: "",
-        respfecha: "",
-        resptexto: "",
+        respid: '',
+        respfecha: '',
+        resptexto: '',
         resphora: {},
-        usernick: "",
-        userfoto: "",
+        usernick: '',
+        userfoto: '',
       },
       preguntaRespuesta: {
-        pregid: "",
-        pregtexto: "",
-        pregdetalle: "",
-        pregfecha: "",
+        pregid: '',
+        pregtexto: '',
+        pregdetalle: '',
+        pregfecha: '',
         preghora: {},
-        pregmejorresp: "",
-        usernick: "",
-        userfoto: "",
+        pregmejorresp: '',
+        usernick: '',
+        userfoto: '',
       },
       respFav: {
-        respid: "",
-        respfecha: "",
-        resptexto: "",
+        respid: '',
+        respfecha: '',
+        resptexto: '',
         resphora: {},
-        usernick: "",
-        userfoto: "",
+        usernick: '',
+        userfoto: '',
       },
-      respuestaId: "",
+      respuestaId: '',
       pregunta: {},
       usuario: {},
       respuesta: {},
@@ -167,15 +167,15 @@ class Respuesta extends Component {
         }
       );
       const { data: usuarioPregunta } = await axios.get(
-        `${api_url}/api/usuario/${this.state.cookies.get("cookie1").userid}`
+        `${api_url}/api/usuario/${this.state.cookies.get('cookie1').userid}`
       );
       this.setState({
         usuarioPregunta: usuarioPregunta,
         loading: false,
         error: null,
       });
-      this.state.cookies.set("cookie1", this.state.usuarioPregunta, {
-        path: "/",
+      this.state.cookies.set('cookie1', this.state.usuarioPregunta, {
+        path: '/',
       });
       window.location.reload();
     } catch (error) {
@@ -188,11 +188,11 @@ class Respuesta extends Component {
 
   render() {
     if (this.state.loading) return <Loader />;
-    if (this.state.error) return <div>Error</div>;
+    if (this.state.error) return <Error />;
     return (
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <Categoria />
-        <div style={{ display: "block" }}>
+        <div style={{ display: 'block' }}>
           <PreguntaUsuario preguntaRespuesta={this.state.preguntaRespuesta} />
           <RespFav respFav={this.state.respFav} />
           <DisplayRespuestas
