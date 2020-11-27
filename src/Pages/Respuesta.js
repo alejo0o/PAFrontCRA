@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import Loader from '../Components/Loader/Loader';
-import DisplayRespuestas from '../Components/Respuesta/DisplayRespuestas';
-import PreguntaUsuario from '../Components/Respuesta/PreguntaUsuario';
-import RespFav from '../Components/Respuesta/RespFav';
-import Categoria from '../Components/Categorias/Categorias';
-import Clasificacion from '../Components/Clasificacion/Clasificacion';
-import Cookies from 'universal-cookie';
-import FormRespuesta from '../Components/FormRespuesta/FormRespuesta';
-import 'semantic-ui-css/semantic.min.css';
-import Login from '../Components/Login/LoginClass';
-import { Button } from 'semantic-ui-react';
-import { api_url } from '../Components/utils/utils';
-import PreguntaCerrada from '../Components/Pregunta/PreguntaCaducada';
-import Error from '../Components/Error/Error';
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+import React, { Component } from "react";
+import axios from "axios";
+import Loader from "../Components/Loader/Loader";
+import DisplayRespuestas from "../Components/Respuesta/DisplayRespuestas";
+import PreguntaUsuario from "../Components/Respuesta/PreguntaUsuario";
+import RespFav from "../Components/Respuesta/RespFav";
+import Categoria from "../Components/Categorias/Categorias";
+import Clasificacion from "../Components/Clasificacion/Clasificacion";
+import Cookies from "universal-cookie";
+import FormRespuesta from "../Components/FormRespuesta/FormRespuesta";
+import "semantic-ui-css/semantic.min.css";
+import Login from "../Components/Login/LoginClass";
+import { Button } from "semantic-ui-react";
+import { api_url } from "../Components/utils/utils";
+import PreguntaCerrada from "../Components/Pregunta/PreguntaCaducada";
+import Error from "../Components/Error/Error";
 
 const cookies = new Cookies();
 
@@ -26,14 +25,14 @@ class Respuesta extends Component {
       warning: false,
       error: null,
       loading: true,
-      usuario: cookies.get('cookie1'),
+      usuario: cookies.get("cookie1"),
       respuestasPregunta: {},
       preguntaRespuesta: {},
       respFav: {},
       respuesta: {
-        userid: '',
-        pregid: '',
-        resptexto: '',
+        userid: "",
+        pregid: "",
+        resptexto: "",
       },
       //paginador
       page: 1,
@@ -47,7 +46,7 @@ class Respuesta extends Component {
         respuesta: {
           userid: this.state.usuario.userid,
           pregid: parseInt(this.props.match.params.preguntaID),
-          resptexto: '',
+          resptexto: "",
         },
       });
   }
@@ -101,7 +100,7 @@ class Respuesta extends Component {
         `${api_url}/api/usuario/${this.state.usuario.userid}`
       );
 
-      cookies.set('cookie1', usuarioNuevo, { path: '/' });
+      cookies.set("cookie1", usuarioNuevo, { path: "/" });
       this.setState({
         success: true,
         usuario: usuarioNuevo,
@@ -175,9 +174,9 @@ class Respuesta extends Component {
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <Error />;
     return (
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: "flex" }}>
         <Categoria />
-        <div style={{ display: 'block' }}>
+        <div style={{ display: "block" }}>
           <PreguntaUsuario preguntaRespuesta={this.state.preguntaRespuesta} />
           {this.state.usuario && !this.state.preguntaRespuesta.estado && (
             <FormRespuesta
@@ -192,8 +191,8 @@ class Respuesta extends Component {
             <PreguntaCerrada />
           )}
           {!this.state.usuario && (
-            <div style={{ margin: '0 3em 0 3em' }}>
-              <Login nombreBoton='Responder' />
+            <div style={{ margin: "0 3em 0 3em" }}>
+              <Login nombreBoton="Responder" />
             </div>
           )}
           <RespFav respFav={this.state.respFav} />

@@ -1,7 +1,7 @@
-import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import React from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import {
   Table,
   Button,
@@ -11,37 +11,35 @@ import {
   ModalHeader,
   FormGroup,
   ModalFooter,
-} from 'reactstrap';
-import axios from 'axios';
-import moment from 'moment';
-import Cookies from 'universal-cookie';
-import { api_url } from '../../Components/utils/utils';
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+} from "reactstrap";
+import axios from "axios";
+import moment from "moment";
+import Cookies from "universal-cookie";
+import { api_url } from "../../Components/utils/utils";
 
 const url = `${api_url}/api/respuesta/`;
 
 class respuestas extends React.Component {
   state = {
     data: [],
-    pagina: '',
-    size: '',
-    totalPaginas: '',
-    totalRegistros: '',
+    pagina: "",
+    size: "",
+    totalPaginas: "",
+    totalRegistros: "",
     modalInsertar: false,
     modalEliminar: false,
     form: {
-      respid: '',
-      userid: '',
-      pregid: '',
-      resptexto: '',
-      respfecha: '',
+      respid: "",
+      userid: "",
+      pregid: "",
+      resptexto: "",
+      respfecha: "",
       resphora: Date,
-      tipoModal: '',
+      tipoModal: "",
     },
   };
   peticionGet = (page, tamano) => {
-    const urlGet = url + '?pageNumber=' + page + '&pageSize=' + tamano;
+    const urlGet = url + "?pageNumber=" + page + "&pageSize=" + tamano;
     axios
       .get(urlGet)
       .then((response) => {
@@ -58,11 +56,11 @@ class respuestas extends React.Component {
 
   componentDidMount() {
     const cookies = new Cookies();
-    if (typeof cookies.get('cookie1') !== 'undefined')
-      if (cookies.get('cookie1').useradmin) {
+    if (typeof cookies.get("cookie1") !== "undefined")
+      if (cookies.get("cookie1").useradmin) {
         this.peticionGet(1, 20);
-      } else this.props.history.push('/');
-    else this.props.history.push('/');
+      } else this.props.history.push("/");
+    else this.props.history.push("/");
   }
 
   modalInsertar = () => {
@@ -95,13 +93,13 @@ class respuestas extends React.Component {
 
   seleccionar = (respuesta) => {
     this.setState({
-      tipoModal: 'actualizar',
+      tipoModal: "actualizar",
       form: {
         respid: respuesta.respid,
         userid: respuesta.userid,
         pregid: respuesta.pregid,
         resptexto: respuesta.resptexto,
-        respfecha: moment(respuesta.respfecha).format('YYYY-MM-DD'),
+        respfecha: moment(respuesta.respfecha).format("YYYY-MM-DD"),
         //resphora: respuesta.resphora.hours+":"+respuesta.resphora.minutes+":"+respuesta.resphora.seconds
         resphora: respuesta.resphora,
       },
@@ -157,27 +155,29 @@ class respuestas extends React.Component {
                   <td>{respuesta.userid}</td>
                   <td>{respuesta.pregid}</td>
                   <td>{respuesta.resptexto}</td>
-                  <td>{moment(respuesta.respfecha).format('YYYY-MM-DD')}</td>
+                  <td>{moment(respuesta.respfecha).format("YYYY-MM-DD")}</td>
                   <td>
                     {respuesta.resphora.hours}:{respuesta.resphora.minutes}:
                     {respuesta.resphora.seconds}
                   </td>
                   <td>
                     <Button
-                      color='primary'
+                      color="primary"
                       onClick={() => {
                         this.seleccionar(respuesta);
                         this.modalInsertar();
-                      }}>
+                      }}
+                    >
                       <FontAwesomeIcon icon={faEdit} />
                     </Button>
-                    {'  '}
+                    {"  "}
                     <Button
-                      color='danger'
+                      color="danger"
                       onClick={() => {
                         this.seleccionar(respuesta);
                         this.setState({ modalEliminar: true });
-                      }}>
+                      }}
+                    >
                       <FontAwesomeIcon icon={faTrashAlt} />
                     </Button>
                   </td>
@@ -197,8 +197,9 @@ class respuestas extends React.Component {
                 {paginas.map((pag) => (
                   <th>
                     <Button
-                      color={pag[1] ? 'info' : 'link'}
-                      onClick={() => this.peticionGet(pag[0], this.state.size)}>
+                      color={pag[1] ? "info" : "link"}
+                      onClick={() => this.peticionGet(pag[0], this.state.size)}
+                    >
                       {pag[0]}
                     </Button>
                   </th>
@@ -207,7 +208,8 @@ class respuestas extends React.Component {
                   <Button
                     onClick={() =>
                       this.peticionGet(this.state.totalPaginas, this.state.size)
-                    }>
+                    }
+                  >
                     Ultima
                   </Button>
                 </th>
@@ -216,91 +218,95 @@ class respuestas extends React.Component {
           </Table>
 
           <Modal isOpen={this.state.modalInsertar}>
-            <ModalHeader style={{ display: 'block' }}>
+            <ModalHeader style={{ display: "block" }}>
               <span
-                style={{ float: 'right' }}
-                onClick={() => this.modalInsertar()}>
+                style={{ float: "right" }}
+                onClick={() => this.modalInsertar()}
+              >
                 x
               </span>
             </ModalHeader>
             <ModalBody>
-              <div className='form-group'>
-                <label htmlFor='id'>ID</label>
+              <div className="form-group">
+                <label htmlFor="id">ID</label>
                 <input
-                  className='form-control'
-                  type='text'
-                  name='respid'
-                  id='respid'
+                  className="form-control"
+                  type="text"
+                  name="respid"
+                  id="respid"
                   readOnly
                   onChange={this.handleChange}
-                  value={form ? form.respid : ''}
+                  value={form ? form.respid : ""}
                 />
                 <br />
                 <input
-                  className='form-control'
-                  type='hidden'
-                  name='userid'
-                  id='userid'
+                  className="form-control"
+                  type="hidden"
+                  name="userid"
+                  id="userid"
                   readOnly
                   onChange={this.handleChange}
-                  value={form ? form.userid : ''}
+                  value={form ? form.userid : ""}
                 />
                 <input
-                  className='form-control'
-                  type='hidden'
-                  name='pregid'
-                  id='pregid'
+                  className="form-control"
+                  type="hidden"
+                  name="pregid"
+                  id="pregid"
                   readOnly
                   onChange={this.handleChange}
-                  value={form ? form.pregid : ''}
+                  value={form ? form.pregid : ""}
                 />
                 <input
-                  className='form-control'
-                  type='hidden'
-                  name='respfecha'
-                  id='respfecha'
+                  className="form-control"
+                  type="hidden"
+                  name="respfecha"
+                  id="respfecha"
                   readOnly
                   onChange={this.handleChange}
-                  value={form ? form.respfecha : ''}
+                  value={form ? form.respfecha : ""}
                 />
                 <input
-                  className='form-control'
-                  type='hidden'
-                  name='resphora'
-                  id='resphora'
+                  className="form-control"
+                  type="hidden"
+                  name="resphora"
+                  id="resphora"
                   readOnly
                   onChange={this.handleChange}
-                  value={form ? form.resphora : ''}
+                  value={form ? form.resphora : ""}
                 />
-                <label htmlFor='nombre'>Texto</label>
+                <label htmlFor="nombre">Texto</label>
                 <input
-                  className='form-control'
-                  type='text'
-                  name='resptexto'
-                  id='resptexto'
+                  className="form-control"
+                  type="text"
+                  name="resptexto"
+                  id="resptexto"
                   onChange={this.handleChange}
-                  value={form ? form.resptexto : ''}
+                  value={form ? form.resptexto : ""}
                 />
               </div>
             </ModalBody>
 
             <ModalFooter>
-              {this.state.tipoModal == 'insertar' ? (
+              {this.state.tipoModal == "insertar" ? (
                 <button
-                  className='btn btn-success'
-                  onClick={() => this.peticionPost()}>
+                  className="btn btn-success"
+                  onClick={() => this.peticionPost()}
+                >
                   Insertar
                 </button>
               ) : (
                 <button
-                  className='btn btn-primary'
-                  onClick={() => this.peticionPut()}>
+                  className="btn btn-primary"
+                  onClick={() => this.peticionPut()}
+                >
                   Actualizar
                 </button>
               )}
               <button
-                className='btn btn-danger'
-                onClick={() => this.modalInsertar()}>
+                className="btn btn-danger"
+                onClick={() => this.modalInsertar()}
+              >
                 Cancelar
               </button>
             </ModalFooter>
@@ -308,18 +314,20 @@ class respuestas extends React.Component {
 
           <Modal isOpen={this.state.modalEliminar}>
             <ModalBody>
-              Estás seguro que deseas eliminar la respuesta{' '}
+              Estás seguro que deseas eliminar la respuesta{" "}
               {form && form.respid}
             </ModalBody>
             <ModalFooter>
               <button
-                className='btn btn-danger'
-                onClick={() => this.peticionDelete()}>
+                className="btn btn-danger"
+                onClick={() => this.peticionDelete()}
+              >
                 Sí
               </button>
               <button
-                className='btn btn-secundary'
-                onClick={() => this.setState({ modalEliminar: false })}>
+                className="btn btn-secundary"
+                onClick={() => this.setState({ modalEliminar: false })}
+              >
                 No
               </button>
             </ModalFooter>

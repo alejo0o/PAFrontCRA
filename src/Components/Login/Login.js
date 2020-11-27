@@ -1,9 +1,9 @@
-import React from 'react';
-import { Modal, Button, Tab, Header, Icon } from 'semantic-ui-react';
+import React from "react";
+import { Modal, Button, Tab, Header, Icon } from "semantic-ui-react";
 
-import Tab1 from './Pane1';
-import Tab2 from './Pane2';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Tab1 from "./Pane1";
+import Tab2 from "./Pane2";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function LoginForm({
   eventoLogin,
@@ -27,7 +27,7 @@ function LoginForm({
 
   const panes = [
     {
-      menuItem: { key: 'Login', icon: 'user', content: 'Login' },
+      menuItem: { key: "Login", icon: "user", content: "Login" },
       render: () => (
         <Tab1
           eventoLogin={eventoLogin}
@@ -39,7 +39,7 @@ function LoginForm({
       ),
     },
     {
-      menuItem: { key: 'SignUp', icon: 'users', content: 'SignUp' },
+      menuItem: { key: "SignUp", icon: "users", content: "SignUp" },
       render: () => (
         <Tab2
           eventoSignUp={eventoSignUp}
@@ -57,14 +57,15 @@ function LoginForm({
         closeIcon
         open={open}
         basic
-        dimmer='blurring'
-        size='small'
+        dimmer="blurring"
+        size="small"
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        trigger={<Button color='teal'>{nombreBoton}</Button>}>
+        trigger={<Button color="teal">{nombreBoton}</Button>}
+      >
         <Tab
           menu={{
-            style: { backgroundColor: '#283049' },
+            style: { backgroundColor: "#283049" },
             inverted: true,
             attached: false,
             tabular: false,
@@ -75,9 +76,10 @@ function LoginForm({
         <Modal
           closeIcon
           open={usuarioErrorSignup}
-          size='small'
-          style={{ height: 200 }}>
-          <Header icon='remove circle' content='Ups! Hubo un error' />
+          size="small"
+          style={{ height: 200 }}
+        >
+          <Header icon="remove circle" content="Ups! Hubo un error" />
           <Modal.Content>
             <p>
               El usuario con nick {nick_del_usuario} no pudo ser creado, el nick
@@ -86,8 +88,8 @@ function LoginForm({
             </p>
           </Modal.Content>
           <Modal.Actions>
-            <Button color='red' onClick={modalOnCloseFail}>
-              <Icon name='checkmark' /> Ok!
+            <Button color="red" onClick={modalOnCloseFail}>
+              <Icon name="checkmark" /> Ok!
             </Button>
           </Modal.Actions>
         </Modal>
@@ -95,11 +97,12 @@ function LoginForm({
         <Modal
           closeIcon
           open={usuarioCreado}
-          size='small'
-          style={{ height: 200 }}>
+          size="small"
+          style={{ height: 200 }}
+        >
           <Header
-            icon='check circle'
-            content='Usuario creado satisfactoriamente!'
+            icon="check circle"
+            content="Usuario creado satisfactoriamente!"
           />
           <Modal.Content>
             <p>
@@ -108,8 +111,8 @@ function LoginForm({
             </p>
           </Modal.Content>
           <Modal.Actions>
-            <Button color='green' onClick={modalOnCloseFail}>
-              <Icon name='smile outline' /> Ok!
+            <Button color="green" onClick={modalOnCloseFail}>
+              <Icon name="smile outline" /> Ok!
             </Button>
           </Modal.Actions>
         </Modal>

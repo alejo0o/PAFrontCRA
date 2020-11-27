@@ -1,15 +1,13 @@
-import React, { useState, useEffect, Component } from 'react';
-import axios from 'axios';
-import Loader from '../Components/Loader/Loader';
-import Error from '../Components/Error/Error';
-import DisplayPreguntas from '../Components/DisplayPreguntas/DisplayPreguntas';
-import Categorias from '../Components/Categorias/Categorias';
-import Clasificacion from '../Components/Clasificacion/Clasificacion';
+import React, { useState, useEffect, Component } from "react";
+import axios from "axios";
+import Loader from "../Components/Loader/Loader";
+import Error from "../Components/Error/Error";
+import DisplayPreguntas from "../Components/DisplayPreguntas/DisplayPreguntas";
+import Categorias from "../Components/Categorias/Categorias";
+import Clasificacion from "../Components/Clasificacion/Clasificacion";
 //Styles
-import { PreguntaIndexContainer } from '../Components/Layout/EstilosGlobales';
-import { api_url } from '../Components/utils/utils';
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+import { PreguntaIndexContainer } from "../Components/Layout/EstilosGlobales";
+import { api_url } from "../Components/utils/utils";
 
 class Buscar extends Component {
   constructor(props) {
@@ -18,25 +16,25 @@ class Buscar extends Component {
       error: null,
       loading: true,
       preguntas: {
-        pregid: '',
-        userid: '',
-        catid: '',
-        pregtexto: '',
-        pregdetalle: '',
-        catnombre: '',
-        pregfecha: '',
+        pregid: "",
+        userid: "",
+        catid: "",
+        pregtexto: "",
+        pregdetalle: "",
+        catnombre: "",
+        pregfecha: "",
         preghora: {
-          ticks: '',
-          days: '',
-          hours: '',
-          milliseconds: '',
-          minutes: '',
-          seconds: '',
-          totalDays: '',
-          totalHours: '',
-          totalMilliseconds: '',
-          totalMinutes: '',
-          totalSeconds: '',
+          ticks: "",
+          days: "",
+          hours: "",
+          milliseconds: "",
+          minutes: "",
+          seconds: "",
+          totalDays: "",
+          totalHours: "",
+          totalMilliseconds: "",
+          totalMinutes: "",
+          totalSeconds: "",
         },
         pregestado: false,
         pregmejorresp: null,
@@ -59,7 +57,7 @@ class Buscar extends Component {
     try {
       const { data } = await axios.get(
         `${api_url}/api/customqueries/getBuscar/${encodeURIComponent(
-          new URLSearchParams(this.props.location.search).get('buscar')
+          new URLSearchParams(this.props.location.search).get("buscar")
         )}`
       );
       this.setState({
