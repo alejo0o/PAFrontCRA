@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Container,
   Button,
@@ -7,15 +7,15 @@ import {
   Segment,
   Modal,
   Icon,
-} from 'semantic-ui-react';
-import 'semantic-ui-css/semantic.min.css';
+} from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
 import {
   FormInput1,
   TextArea,
   SendButton,
   ListDropdown,
-} from './EstilosPregunta';
-import { MainContainer } from './EstilosPregunta';
+} from "./EstilosPregunta";
+import { MainContainer } from "./EstilosPregunta";
 
 const Pregunta = ({
   evento,
@@ -41,8 +41,14 @@ const Pregunta = ({
     <MainContainer>
       {/*Modales*/}
       {/*Modal para la pregunta warning*/}
-      <Modal closeIcon open={warning} size='small' style={{ height: 200 }}>
-        <Header icon='remove circle' content='Ups! Hubo un error' />
+      <Modal
+        closeIcon
+        open={warning}
+        size="small"
+        style={{ height: 200 }}
+        centered={true}
+      >
+        <Header icon="remove circle" content="Ups! Hubo un error" />
         <Modal.Content>
           <p>
             Tu puntaje es de <strong>{usuarioPuntaje}</strong> puntos por lo que
@@ -51,16 +57,22 @@ const Pregunta = ({
           </p>
         </Modal.Content>
         <Modal.Actions>
-          <Button color='green' onClick={modalOnClose}>
-            <Icon name='checkmark' /> Ok!
+          <Button color="green" onClick={modalOnClose}>
+            <Icon name="checkmark" /> Ok!
           </Button>
         </Modal.Actions>
       </Modal>
       {/*Modal para la pregunta success*/}
-      <Modal closeIcon open={success} size='small' style={{ height: 200 }}>
+      <Modal
+        closeIcon
+        open={success}
+        size="small"
+        style={{ height: 200 }}
+        centered={true}
+      >
         <Header
-          icon='check circle'
-          content='Pregunta ingresada satisfactoriamente!'
+          icon="check circle"
+          content="Pregunta ingresada satisfactoriamente!"
         />
         <Modal.Content>
           <p>
@@ -69,23 +81,24 @@ const Pregunta = ({
           </p>
         </Modal.Content>
         <Modal.Actions>
-          <Button color='green' onClick={modalSuccessClose}>
-            <Icon name='smile outline' /> Ok!
+          <Button color="green" onClick={modalSuccessClose}>
+            <Icon name="smile outline" /> Ok!
           </Button>
         </Modal.Actions>
       </Modal>
       {/*Formulario de pregunta estructura */}
-      <Form size='large' onSubmit={buttonClick}>
-        <Segment stacked style={{ padding: '30px' }}>
+      <Form size="large" onSubmit={buttonClick}>
+        <Segment stacked style={{ padding: "30px" }}>
           <Header
-            as='h2'
-            color='grey'
-            textAlign='left'
-            style={{ display: 'flex' }}>
-            <i className='user circle icon'></i>
+            as="h2"
+            color="grey"
+            textAlign="left"
+            style={{ display: "flex" }}
+          >
+            <i className="user circle icon"></i>
             <Form.Dropdown
-              placeholder={'Sexualidad'}
-              name='dropdown'
+              placeholder={"Sexualidad"}
+              name="dropdown"
               style={ListDropdown}
               options={ListCategorias}
               onChange={dropDownChange}
@@ -94,22 +107,22 @@ const Pregunta = ({
           </Header>
 
           <Form.Input
-            placeholder='Qué pregunta tienes?'
+            placeholder="Qué pregunta tienes?"
             style={FormInput1}
             onChange={evento}
-            name='pregtexto'
+            name="pregtexto"
             value={formValues.pregtexto}
             required
           />
           <Form.TextArea
             style={TextArea}
-            placeholder='Quieres añadir más información? Incluir información detallada ayuda a los usuarios a dar mejores respuestas'
+            placeholder="Quieres añadir más información? Incluir información detallada ayuda a los usuarios a dar mejores respuestas"
             onChange={evento}
-            name='pregdetalle'
+            name="pregdetalle"
             value={formValues.pregdetalle}
             required
           />
-          <Button color='blue' fluid={true} size='large' style={SendButton}>
+          <Button color="blue" fluid={true} size="large" style={SendButton}>
             Enviar
           </Button>
         </Segment>

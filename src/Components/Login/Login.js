@@ -1,9 +1,8 @@
 import React from "react";
 import { Modal, Button, Tab, Header, Icon } from "semantic-ui-react";
-
 import Tab1 from "./Pane1";
 import Tab2 from "./Pane2";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "semantic-ui-css/semantic.min.css";
 
 function LoginForm({
   eventoLogin,
@@ -55,6 +54,7 @@ function LoginForm({
     <div>
       <Modal
         closeIcon
+        centered={true}
         open={open}
         basic
         dimmer="blurring"
@@ -78,6 +78,7 @@ function LoginForm({
           open={usuarioErrorSignup}
           size="small"
           style={{ height: 200 }}
+          centered={true}
         >
           <Header icon="remove circle" content="Ups! Hubo un error" />
           <Modal.Content>
@@ -99,6 +100,7 @@ function LoginForm({
           open={usuarioCreado}
           size="small"
           style={{ height: 200 }}
+          centered={true}
         >
           <Header
             icon="check circle"
