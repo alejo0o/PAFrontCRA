@@ -21,6 +21,7 @@ function UsuarioPerfil({
   updatePassword,
   cambiadoErroneo,
   onCloseModales,
+  handleOnChangeFoto,
 }) {
   const [open, setOpen] = React.useState(false);
   const cookies = new Cookies();
@@ -100,6 +101,7 @@ function UsuarioPerfil({
         }
       >
         <UsuarioUpdate
+          handleOnChangeFoto={handleOnChangeFoto}
           eventoUpdate={eventoUpdate}
           formValuesUpdate={formValuesUpdate}
           buttonClickUpdate={buttonClickUpdate}

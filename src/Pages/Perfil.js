@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import Loader from "../Components/Spinner/Spinner";
-import { api_url } from "../Components/utils/utils";
-import Cookies from "universal-cookie";
-import axios from "axios";
-import { Tab } from "semantic-ui-react";
-import Tab1 from "../Components/Perfil/UsuarioPerfil";
-import Tab2 from "../Components/Perfil/PreguntasUsuario";
-import Tab3 from "../Components/Perfil/RespuestasUsuario";
-import Tab4 from "../Components/Perfil/PreguntasCerradasUsuario";
-import Tab5 from "../Components/Perfil/Mensajesusuario";
+import React, { Component } from 'react';
+import Loader from '../Components/Spinner/Spinner';
+import { api_url, serverImageURL } from '../Components/utils/utils';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
+import { Tab } from 'semantic-ui-react';
+import Tab1 from '../Components/Perfil/UsuarioPerfil';
+import Tab2 from '../Components/Perfil/PreguntasUsuario';
+import Tab3 from '../Components/Perfil/RespuestasUsuario';
+import Tab4 from '../Components/Perfil/PreguntasCerradasUsuario';
+import Tab5 from '../Components/Perfil/Mensajesusuario';
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const cookies = new Cookies();
 
@@ -23,28 +23,30 @@ class Perfil extends Component {
 
       cambiadoErroneo: false,
       // cookie: new Cookies(),
-      user: cookies.get("cookie1"),
+      user: cookies.get('cookie1'),
+      fotoUsuario: '',
+      fileNameFotoUsuario: '',
       usuarioUpdate: {
-        userid: "",
-        usernombre: "",
-        userapellido: "",
-        userfechanacimiento: "",
-        usernick: "",
-        userpass: "",
-        useremail: "",
-        userfoto: "",
-        usersexo: "",
-        userpuntaje: "",
-        useradmin: "",
+        userid: '',
+        usernombre: '',
+        userapellido: '',
+        userfechanacimiento: '',
+        usernick: '',
+        userpass: '',
+        useremail: '',
+        userfoto: '',
+        usersexo: '',
+        userpuntaje: '',
+        useradmin: '',
       },
       preguntas: {},
       preguntasCerradas: {},
       respuestas: {},
-      passwordAnterior: "",
+      passwordAnterior: '',
       respuestaModificada: {
-        userid: "",
-        pregid: "",
-        resptexto: "",
+        userid: '',
+        pregid: '',
+        resptexto: '',
       },
       //paginador
       page: 1,
@@ -75,8 +77,8 @@ class Perfil extends Component {
         },
         respuestaModificada: {
           userid: this.state.user.userid,
-          pregid: "",
-          resptexto: "",
+          pregid: '',
+          resptexto: '',
         },
       });
     }
@@ -141,22 +143,71 @@ class Perfil extends Component {
       },
     });
   };
+
+  //obtiene la extension del archivo que se ingresa en el input
+  getFileExtension1(filename) {
+    return /[.]/.exec(filename) ? /[^.]+$/.exec(filename)[0] : undefined;
+  }
+
+  handleOnChangeFoto = (e) => {
+    this.setState({
+      usuarioUpdate: {
+        ...this.state.usuarioUpdate,
+        userid: this.state.usuarioUpdate.userid,
+        usernombre: this.state.usuarioUpdate.usernombre,
+        userapellido: this.state.usuarioUpdate.userapellido,
+        userfechanacimiento: this.state.usuarioUpdate.userfechanacimiento,
+        usernick: this.state.usuarioUpdate.usernick,
+        userpass: this.state.usuarioUpdate.userpass,
+        usersexo: this.state.usuarioUpdate.usersexo,
+        useremail: this.state.usuarioUpdate.useremail,
+        useradmin: this.state.usuarioUpdate.useradmin,
+        userfoto: `${serverImageURL}/getImagen?imagen=${
+          this.state.usuarioUpdate.usernick
+        }.${this.getFileExtension1(e.target.files[0].name)}`,
+      },
+      fotoUsuario: e.target.files[0],
+      fileNameFotoUsuario: `${
+        this.state.usuarioUpdate.usernick
+      }.${this.getFileExtension1(e.target.files[0].name)}`.toString(),
+    });
+  };
+
   onClickButtonUpdate = async (e) => {
     e.preventDefault();
+
     //maneja el click del button para hacer el post del formulario pregunta
     this.setState({
       loading: true,
       error: null,
     });
     try {
+      //update del usuarioen el servidor de fotos
+      if (this.state.fileNameFotoUsuario && this.state.fotoUsuario) {
+        const formData = new FormData();
+        formData.append('file', this.state.fotoUsuario);
+
+        const res = await axios.post(
+          `${serverImageURL}/upload?usuario=${this.state.fileNameFotoUsuario}`,
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+              'Access-Control-Allow-Origin': '*',
+            },
+          }
+        );
+      }
       const response = await axios.put(
         `${api_url}/api/usuario/${this.state.usuarioUpdate.userid}`,
         this.state.usuarioUpdate
       );
+      //saca el nuevo usuario modificado para poder seteralo en la cookie
       const { data: usuarioNuevo } = await axios.get(
         `${api_url}/api/usuario/${this.state.user.userid}`
       );
-      cookies.set("cookie1", usuarioNuevo, { path: "/" });
+      cookies.set('cookie1', usuarioNuevo, { path: '/' });
+      //////////////////////////////////
       window.location.reload();
       this.setState({
         loading: false,
@@ -192,7 +243,7 @@ class Perfil extends Component {
         const { data: usuarioNuevo } = await axios.get(
           `${api_url}/api/usuario/${this.state.user.userid}`
         );
-        cookies.set("cookie1", usuarioNuevo, { path: "/" });
+        cookies.set('cookie1', usuarioNuevo, { path: '/' });
         window.location.reload();
 
         this.setState({
@@ -264,7 +315,7 @@ class Perfil extends Component {
 
   panes = [
     {
-      menuItem: { key: "Perfil", icon: "user", content: "Perfil" },
+      menuItem: { key: 'Perfil', icon: 'user', content: 'Perfil' },
       render: () => (
         <Tab1
           eventoUpdate={this.handleChangeUpdate}
@@ -274,14 +325,15 @@ class Perfil extends Component {
           updatePassword={this.onClickButtonUpdatePassword}
           cambiadoErroneo={this.state.cambiadoErroneo}
           onCloseModales={this.onCloseModales}
+          handleOnChangeFoto={this.handleOnChangeFoto}
         />
       ),
     },
     {
       menuItem: {
-        key: "Preguntas",
-        icon: "question circle",
-        content: "Preguntas",
+        key: 'Preguntas',
+        icon: 'question circle',
+        content: 'Preguntas',
       },
       render: () => (
         <Tab2
@@ -293,7 +345,7 @@ class Perfil extends Component {
       ),
     },
     {
-      menuItem: { key: "Respuestas", icon: "talk", content: "Respuestas" },
+      menuItem: { key: 'Respuestas', icon: 'talk', content: 'Respuestas' },
       render: () => (
         <Tab3
           respuestasData={this.state.respuestas.data}
@@ -308,9 +360,9 @@ class Perfil extends Component {
     },
     {
       menuItem: {
-        key: "Preguntas cerradas",
-        icon: "question circle",
-        content: "Preguntas cerradas",
+        key: 'Preguntas cerradas',
+        icon: 'question circle',
+        content: 'Preguntas cerradas',
       },
       render: () => (
         <Tab4
@@ -323,9 +375,9 @@ class Perfil extends Component {
     },
     {
       menuItem: {
-        key: "Mensajes",
-        icon: "inbox",
-        content: "Mensajes",
+        key: 'Mensajes',
+        icon: 'inbox',
+        content: 'Mensajes',
       },
       render: () => (
         <Tab5
@@ -341,16 +393,16 @@ class Perfil extends Component {
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <div>Error</div>;
     return (
-      <div style={{ marginTop: "2em" }}>
+      <div style={{ marginTop: '2em' }}>
         <Tab
           menu={{
-            style: { backgroundColor: "#283049" },
+            style: { backgroundColor: '#283049' },
             inverted: true,
             fluid: true,
             vertical: true,
           }}
           panes={this.panes}
-          menuPosition="left"
+          menuPosition='left'
           onTabChange={this.onTabChange}
           activeIndex={this.state.tab}
         />

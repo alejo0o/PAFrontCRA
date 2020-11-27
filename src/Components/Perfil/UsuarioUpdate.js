@@ -16,9 +16,9 @@ function UsuarioUpdate({
   buttonClickUpdate,
   eventoUpdatePassword,
   updatePassword,
-
   cambiadoErroneo,
   onCloseModales,
+  handleOnChangeFoto,
 }) {
   const [open, setOpen] = React.useState(false);
 
@@ -39,20 +39,17 @@ function UsuarioUpdate({
             type='email'
             name='useremail'
             value={formValuesUpdate.useremail}
-            required
           />
         </Form.Group>
 
         <Form.Group widths='equal'>
           <Form.Input
             fluid
+            type='file'
             label='Foto'
             placeholder='Foto'
-            onChange={eventoUpdate}
-            type='foto'
-            name='userfoto'
-            value={formValuesUpdate.userfoto}
-            required
+            accept='image/*'
+            onChange={handleOnChangeFoto}
           />
         </Form.Group>
         <FormGroup widths='equal'>
