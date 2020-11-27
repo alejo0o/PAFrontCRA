@@ -12,6 +12,7 @@ import { MainContainer } from "./EstilosPerfil";
 import Cookies from "universal-cookie";
 import UsuarioUpdate from "./UsuarioUpdate";
 import { fecha } from "../utils/utils";
+import "semantic-ui-css/semantic.min.css";
 
 function UsuarioPerfil({
   eventoUpdate,
@@ -86,6 +87,7 @@ function UsuarioPerfil({
         size="small"
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
+        style={{ marginTop: "20%", marginLeft: "20%" }}
         trigger={
           <Button
             attached="bottom"

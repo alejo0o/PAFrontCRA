@@ -21,7 +21,12 @@ const FormRespuesta = ({
   return (
     <div style={{ padding: "0em 3em 0em 3em" }}>
       {/*Modal para la pregunta success*/}
-      <Modal closeIcon open={success} size="small" style={{ height: 200 }}>
+      <Modal
+        closeIcon
+        open={success}
+        size="small"
+        style={{ height: 200, marginTop: "20%", marginLeft: "20%" }}
+      >
         <Header
           icon="check circle"
           content="Respuesta editada satisfactoriamente!"

@@ -14,6 +14,7 @@ import {
   ListaItem,
 } from "../Respuesta/EstilosDisplayRespuestas";
 import { fechF } from "../utils/utils";
+import "semantic-ui-css/semantic.min.css";
 
 const DisplayRespuestas = ({
   respuestasPregunta,
@@ -28,7 +29,11 @@ const DisplayRespuestas = ({
 }) => {
   return (
     <MainContainer>
-      <Modal open={success} size="small" style={{ height: 200 }}>
+      <Modal
+        open={success}
+        size="small"
+        style={{ height: 200, marginTop: "20%", marginLeft: "20%" }}
+      >
         <Header icon="check circle" content="Mejor respuesta seleccionada!" />
         <Modal.Content>
           <p>

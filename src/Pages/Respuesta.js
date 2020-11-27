@@ -10,7 +10,6 @@ import Cookies from "universal-cookie";
 import FormRespuesta from "../Components/FormRespuesta/FormRespuesta";
 import "semantic-ui-css/semantic.min.css";
 import Login from "../Components/Login/LoginClass";
-import { Button } from "semantic-ui-react";
 import { api_url } from "../Components/utils/utils";
 import PreguntaCerrada from "../Components/Pregunta/PreguntaCaducada";
 import Error from "../Components/Error/Error";
