@@ -1,28 +1,14 @@
 import React from "react";
-import {
-  Form,
-  Icon,
-  Tab,
-  Header,
-  Modal,
-  Button,
-  FormGroup,
-} from "semantic-ui-react";
-import Password from "./Password";
+import { Form, Icon, Tab, Header, FormGroup } from "semantic-ui-react";
 import "semantic-ui-css/semantic.min.css";
 
 function UsuarioUpdate({
   eventoUpdate,
   formValuesUpdate,
   buttonClickUpdate,
-  eventoUpdatePassword,
-  updatePassword,
-  cambiadoErroneo,
-  onCloseModales,
+
   handleOnChangeFoto,
 }) {
-  const [open, setOpen] = React.useState(false);
-
   return (
     <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
       <Header as="h2" textAlign="center">
@@ -67,36 +53,6 @@ function UsuarioUpdate({
         </FormGroup>
         {/* </Segment> */}
       </Form>
-      <Modal
-        closeIcon
-        open={open}
-        basic
-        dimmer="blurring"
-        size="small"
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-        centered={true}
-        trigger={
-          <Button
-            attached="bottom"
-            fluid
-            style={{
-              backgroundColor: "#283049",
-              color: "#FFF",
-            }}
-          >
-            Cambiar contraseña
-          </Button>
-        }
-      >
-        <Password
-          eventoUpdate={eventoUpdate}
-          eventoUpdatePassword={eventoUpdatePassword}
-          updatePassword={updatePassword}
-          cambiadoErroneo={cambiadoErroneo}
-          onCloseModales={onCloseModales}
-        />
-      </Modal>
     </Tab.Pane>
   );
 }
