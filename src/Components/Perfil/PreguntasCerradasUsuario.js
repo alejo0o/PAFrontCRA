@@ -38,7 +38,6 @@ function PreguntasCerradasUsuario({
                 </Table.Header>
                 <Table.Body>
                   {preguntasData.map((pregunta) => {
-                    console.log(preguntasData);
                     var fechaF = fecha(pregunta.pregfecha);
                     return (
                       <Table.Row key={pregunta.pregid}>

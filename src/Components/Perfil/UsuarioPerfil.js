@@ -13,6 +13,7 @@ import Cookies from "universal-cookie";
 import UsuarioUpdate from "./UsuarioUpdate";
 import { fecha } from "../utils/utils";
 import "semantic-ui-css/semantic.min.css";
+import Password from "./Password";
 
 function UsuarioPerfil({
   eventoUpdate,
@@ -24,7 +25,9 @@ function UsuarioPerfil({
   onCloseModales,
   handleOnChangeFoto,
 }) {
+  const [openPass, setOpenPass] = React.useState(false);
   const [open, setOpen] = React.useState(false);
+
   const cookies = new Cookies();
   const user = cookies.get("cookie1");
   const fechaF = fecha(user.userfechanacimiento);
@@ -79,40 +82,66 @@ function UsuarioPerfil({
           </Grid.Column>
         </Grid>
       </MainContainer>
-      <Modal
-        closeIcon
-        open={open}
-        basic
-        dimmer="blurring"
-        size="small"
-        onClose={() => setOpen(false)}
-        onOpen={() => setOpen(true)}
-        centered={true}
-        trigger={
-          <Button
-            attached="bottom"
-            fluid
-            size="large"
-            style={{
-              backgroundColor: "#283049",
-              color: "#FFF",
-            }}
-          >
-            Editar
-          </Button>
-        }
-      >
-        <UsuarioUpdate
-          handleOnChangeFoto={handleOnChangeFoto}
-          eventoUpdate={eventoUpdate}
-          formValuesUpdate={formValuesUpdate}
-          buttonClickUpdate={buttonClickUpdate}
-          eventoUpdatePassword={eventoUpdatePassword}
-          updatePassword={updatePassword}
-          cambiadoErroneo={cambiadoErroneo}
-          onCloseModales={onCloseModales}
-        />
-      </Modal>
+      <div style={{ display: "flex" }}>
+        <Modal
+          closeIcon
+          open={open}
+          basic
+          dimmer="blurring"
+          size="small"
+          onClose={() => setOpen(false)}
+          onOpen={() => setOpen(true)}
+          centered={true}
+          trigger={
+            <Button
+              fluid
+              style={{
+                backgroundColor: "#283049",
+                color: "#FFF",
+              }}
+            >
+              Editar
+            </Button>
+          }
+        >
+          <UsuarioUpdate
+            handleOnChangeFoto={handleOnChangeFoto}
+            eventoUpdate={eventoUpdate}
+            formValuesUpdate={formValuesUpdate}
+            buttonClickUpdate={buttonClickUpdate}
+            cambiadoErroneo={cambiadoErroneo}
+            onCloseModales={onCloseModales}
+          />
+        </Modal>
+        <Modal
+          closeIcon
+          open={openPass}
+          basic
+          dimmer="blurring"
+          onClose={() => setOpenPass(false)}
+          onOpen={() => setOpenPass(true)}
+          centered={true}
+          trigger={
+            <Button
+              fluid
+              style={{
+                backgroundColor: "#283049",
+                color: "#FFF",
+              }}
+            >
+              Cambiar contraseña
+            </Button>
+          }
+        >
+          <Password
+            eventoUpdate={eventoUpdate}
+            eventoUpdatePassword={eventoUpdatePassword}
+            updatePassword={updatePassword}
+            cambiadoErroneo={cambiadoErroneo}
+            onCloseModales={onCloseModales}
+          />
+        </Modal>
+      </div>
     </Tab.Pane>
   );
 }

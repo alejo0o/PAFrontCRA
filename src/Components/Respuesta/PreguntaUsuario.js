@@ -1,15 +1,14 @@
-import React from 'react';
-import { Header, List, Image } from 'semantic-ui-react';
-import 'semantic-ui-css/semantic.min.css';
+import React from "react";
+import { Header, List, Image } from "semantic-ui-react";
+import "semantic-ui-css/semantic.min.css";
 import {
   MainContainer,
   ListaItem,
-} from '../Respuesta/EstilosDisplayRespuestas';
-import { Link } from 'react-router-dom';
-import { fechF } from '../utils/utils';
+} from "../Respuesta/EstilosDisplayRespuestas";
+import { Link } from "react-router-dom";
+import { fechF } from "../utils/utils";
 
 const PreguntaUsuario = ({ preguntaRespuesta }) => {
-  //console.log(preguntaRespuesta);
   var fechahora = fechF(
     preguntaRespuesta.pregfecha,
     preguntaRespuesta.preghora
@@ -24,10 +23,10 @@ const PreguntaUsuario = ({ preguntaRespuesta }) => {
             style={{ width: 50, height: 50 }}
           />
           <List.Content>
-            <Header style={{ marginBottom: '0.5em' }}>
+            <Header style={{ marginBottom: "0.5em" }}>
               {preguntaRespuesta.pregtexto}
             </Header>
-            <List.Description style={{ marginBottom: '1em' }}>
+            <List.Description style={{ marginBottom: "1em" }}>
               {fechahora}
             </List.Description>
             <List.Description>{preguntaRespuesta.pregdetalle}</List.Description>

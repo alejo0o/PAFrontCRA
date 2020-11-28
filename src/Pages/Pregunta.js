@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import Loader from '../Components/Loader/Loader';
-import Categorias from '../Components/Categorias/Categorias';
-import Clasificacion from '../Components/Clasificacion/Clasificacion';
-import FormPregunta from '../Components/Pregunta/Pregunta';
-import { api_url } from '../Components/utils/utils';
-import Cookies from 'universal-cookie';
-import Logearse from '../Components/Pregunta/Logearse';
-import Error from '../Components/Error/Error';
+import React, { Component } from "react";
+import axios from "axios";
+import Loader from "../Components/Loader/Loader";
+import Categorias from "../Components/Categorias/Categorias";
+import Clasificacion from "../Components/Clasificacion/Clasificacion";
+import FormPregunta from "../Components/Pregunta/Pregunta";
+import { api_url } from "../Components/utils/utils";
+import Cookies from "universal-cookie";
+import Logearse from "../Components/Pregunta/Logearse";
+import Error from "../Components/Error/Error";
 const cookies = new Cookies();
 
 class Pregunta extends Component {
@@ -18,18 +18,18 @@ class Pregunta extends Component {
       warning: false,
       error: null,
       loading: true,
-      usuario: cookies.get('cookie1'),
+      usuario: cookies.get("cookie1"),
       categorias: {
-        catid: '',
-        catnombre: '',
-        catdescripcion: '',
+        catid: "",
+        catnombre: "",
+        catdescripcion: "",
       },
       pregunta: {
-        userid: '',
+        userid: "",
         catid: 1,
-        pregtexto: '',
-        pregdetalle: '',
-        catnombre: 'Sexualidad',
+        pregtexto: "",
+        pregdetalle: "",
+        catnombre: "Sexualidad",
       },
     };
   }
@@ -40,9 +40,9 @@ class Pregunta extends Component {
         pregunta: {
           userid: this.state.usuario.userid,
           catid: 1,
-          pregtexto: '',
-          pregdetalle: '',
-          catnombre: 'Sexualidad',
+          pregtexto: "",
+          pregdetalle: "",
+          catnombre: "Sexualidad",
         },
       });
   }
@@ -105,7 +105,7 @@ class Pregunta extends Component {
             `${api_url}/api/usuario/${this.state.usuario.userid}`
           );
           //seteo del nuevo usuario en la cookie
-          cookies.set('cookie1', usuarioNuevo, { path: '/' });
+          cookies.set("cookie1", usuarioNuevo, { path: "/" });
 
           this.setState({
             usuario: usuarioNuevo,
@@ -127,7 +127,6 @@ class Pregunta extends Component {
         loading: false,
         error: error,
       });
-      console.log(error);
     }
   };
 
@@ -168,7 +167,7 @@ class Pregunta extends Component {
     if (this.state.error) return <Error />;
 
     return (
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: "flex" }}>
         <Categorias />
         {this.state.usuario && (
           <FormPregunta
