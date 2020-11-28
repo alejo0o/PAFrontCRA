@@ -75,6 +75,7 @@ const NavBar = (props) => {
                   src={cookies.get('cookie1').userfoto}
                   alt='Profile'
                   className='nav-user-profile rounded-circle'
+                  height='50'
                   width='50'
                   style={{ paddingRight: '0.5em' }}
                 />
