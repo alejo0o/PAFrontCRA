@@ -1,12 +1,11 @@
-import React, { Component } from "react";
-import { api_url, serverImageURL } from "../utils/utils";
-import Cookies from "universal-cookie";
-import axios from "axios";
-import Login from "../Login/Login";
-import { withRouter } from "react-router-dom";
+import React, { Component } from 'react';
+import { api_url, serverImageURL } from '../utils/utils';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
+import Login from '../Login/Login';
+import { withRouter } from 'react-router-dom';
 
 const cookies = new Cookies();
-console.log(cookies.get("cookie1"));
 
 class LoginClass extends Component {
   constructor(props) {
@@ -17,19 +16,19 @@ class LoginClass extends Component {
       usuarioCreado: false,
       usuarioErrorSignup: false,
       usuarioIncorrecto: false,
-      fotoUsuario: "",
-      fileNameFotoUsuario: "",
-      buscar: "",
-      usuarioLogin: { usernick: "", userpass: "" },
+      fotoUsuario: '',
+      fileNameFotoUsuario: '',
+      buscar: '',
+      usuarioLogin: { usernick: '', userpass: '' },
       usuarioSignUp: {
-        usernombre: "",
-        userapellido: "",
-        userfechanacimiento: "",
-        usernick: "",
-        userpass: "",
-        useremail: "",
-        userfoto: "https://www.remtur.com/admin/img/colaboradores/usuario.png",
-        usersexo: "Masculino",
+        usernombre: '',
+        userapellido: '',
+        userfechanacimiento: '',
+        usernick: '',
+        userpass: '',
+        useremail: '',
+        userfoto: 'https://www.remtur.com/admin/img/colaboradores/usuario.png',
+        usersexo: 'Masculino',
         userpuntaje: 20,
       },
     };
@@ -102,7 +101,7 @@ class LoginClass extends Component {
         `${api_url}/api/customqueries/getUsuario/${this.state.usuarioLogin.usernick}/${this.state.usuarioLogin.userpass}`
       );
       if (response.data.length !== 0) {
-        cookies.set("cookie1", response.data[0], { path: "/" });
+        cookies.set('cookie1', response.data[0], { path: '/' });
         this.props.history.push(
           this.props.location.pathname + this.props.location.search
         );
@@ -133,7 +132,7 @@ class LoginClass extends Component {
     try {
       e.preventDefault();
       const formData = new FormData();
-      formData.append("file", this.state.fotoUsuario);
+      formData.append('file', this.state.fotoUsuario);
       if (
         /^[A-Z._-][A-Z0-9._-]{0,254}$/i.test(this.state.usuarioSignUp.usernick)
       ) {
@@ -153,8 +152,8 @@ class LoginClass extends Component {
             formData,
             {
               headers: {
-                "Content-Type": "multipart/form-data",
-                "Access-Control-Allow-Origin": "*",
+                'Content-Type': 'multipart/form-data',
+                'Access-Control-Allow-Origin': '*',
               },
             }
           );
