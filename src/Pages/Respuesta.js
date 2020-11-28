@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import axios from "axios";
-import Loader from "../Components/Loader/Loader";
-import DisplayRespuestas from "../Components/Respuesta/DisplayRespuestas";
-import PreguntaUsuario from "../Components/Respuesta/PreguntaUsuario";
-import RespFav from "../Components/Respuesta/RespFav";
-import Categoria from "../Components/Categorias/Categorias";
-import Clasificacion from "../Components/Clasificacion/Clasificacion";
-import Cookies from "universal-cookie";
-import FormRespuesta from "../Components/FormRespuesta/FormRespuesta";
-import "semantic-ui-css/semantic.min.css";
-import Login from "../Components/Login/LoginClass";
-import { api_url } from "../Components/utils/utils";
-import PreguntaCerrada from "../Components/Pregunta/PreguntaCaducada";
-import Error from "../Components/Error/Error";
+import React, { Component } from 'react';
+import axios from 'axios';
+import Loader from '../Components/Loader/Loader';
+import DisplayRespuestas from '../Components/Respuesta/DisplayRespuestas';
+import PreguntaUsuario from '../Components/Respuesta/PreguntaUsuario';
+import RespFav from '../Components/Respuesta/RespFav';
+import Categoria from '../Components/Categorias/Categorias';
+import Clasificacion from '../Components/Clasificacion/Clasificacion';
+import Cookies from 'universal-cookie';
+import FormRespuesta from '../Components/FormRespuesta/FormRespuesta';
+import 'semantic-ui-css/semantic.min.css';
+import Login from '../Components/Login/LoginClass';
+import { api_url } from '../Components/utils/utils';
+import PreguntaCerrada from '../Components/Pregunta/PreguntaCaducada';
+import Error from '../Components/Error/Error';
 
 const cookies = new Cookies();
 
@@ -24,14 +24,14 @@ class Respuesta extends Component {
       warning: false,
       error: null,
       loading: true,
-      usuario: cookies.get("cookie1"),
+      usuario: cookies.get('cookie1'),
       respuestasPregunta: {},
       preguntaRespuesta: {},
       respFav: {},
       respuesta: {
-        userid: "",
-        pregid: "",
-        resptexto: "",
+        userid: '',
+        pregid: '',
+        resptexto: '',
       },
       //paginador
       page: 1,
@@ -45,7 +45,7 @@ class Respuesta extends Component {
         respuesta: {
           userid: this.state.usuario.userid,
           pregid: parseInt(this.props.match.params.preguntaID),
-          resptexto: "",
+          resptexto: '',
         },
       });
   }
@@ -87,9 +87,45 @@ class Respuesta extends Component {
       error: null,
     });
     try {
+      //detecta la primera respuesta
       ///////////////////////////////////
-      this.isFirstAnswer();
-
+      const { data: numero_de_respuestas } = await axios.get(
+        `${api_url}/api/customqueries/primeraRespuesta/${this.props.match.params.preguntaID}`
+      );
+      numero_de_respuestas === 0
+        ? await axios.put(
+            `${api_url}/api/usuario/${this.state.usuario.userid}`,
+            {
+              useradmin: this.state.usuario.useradmin,
+              userapellido: this.state.usuario.userapellido,
+              useremail: this.state.usuario.useremail,
+              userfechanacimiento: this.state.usuario.userfechanacimiento,
+              userfoto: this.state.usuario.userfoto,
+              userid: this.state.usuario.userid,
+              usernick: this.state.usuario.usernick,
+              usernombre: this.state.usuario.usernombre,
+              userpass: this.state.usuario.userpass,
+              userpuntaje: this.state.usuario.userpuntaje + 3,
+              usersexo: this.state.usuario.usersexo,
+            }
+          )
+        : await axios.put(
+            `${api_url}/api/usuario/${this.state.usuario.userid}`,
+            {
+              useradmin: this.state.usuario.useradmin,
+              userapellido: this.state.usuario.userapellido,
+              useremail: this.state.usuario.useremail,
+              userfechanacimiento: this.state.usuario.userfechanacimiento,
+              userfoto: this.state.usuario.userfoto,
+              userid: this.state.usuario.userid,
+              usernick: this.state.usuario.usernick,
+              usernombre: this.state.usuario.usernombre,
+              userpass: this.state.usuario.userpass,
+              userpuntaje: this.state.usuario.userpuntaje + 2,
+              usersexo: this.state.usuario.usersexo,
+            }
+          );
+      //////////////////////////////////////
       const response = await axios.post(
         `${api_url}/api/respuesta`,
         this.state.respuesta
@@ -99,7 +135,7 @@ class Respuesta extends Component {
         `${api_url}/api/usuario/${this.state.usuario.userid}`
       );
 
-      cookies.set("cookie1", usuarioNuevo, { path: "/" });
+      cookies.set('cookie1', usuarioNuevo, { path: '/' });
       this.setState({
         success: true,
         usuario: usuarioNuevo,
@@ -136,46 +172,13 @@ class Respuesta extends Component {
     this.fetchData();
   };
 
-  isFirstAnswer = async () => {
-    const { data: numero_de_respuestas } = await axios.get(
-      `${api_url}/api/customqueries/primeraRespuesta/${this.props.match.params.preguntaID}`
-    );
-    numero_de_respuestas === 0
-      ? await axios.put(`${api_url}/api/usuario/${this.state.usuario.userid}`, {
-          useradmin: this.state.usuario.useradmin,
-          userapellido: this.state.usuario.userapellido,
-          useremail: this.state.usuario.useremail,
-          userfechanacimiento: this.state.usuario.userfechanacimiento,
-          userfoto: this.state.usuario.userfoto,
-          userid: this.state.usuario.userid,
-          usernick: this.state.usuario.usernick,
-          usernombre: this.state.usuario.usernombre,
-          userpass: this.state.usuario.userpass,
-          userpuntaje: this.state.usuario.userpuntaje + 3,
-          usersexo: this.state.usuario.usersexo,
-        })
-      : await axios.put(`${api_url}/api/usuario/${this.state.usuario.userid}`, {
-          useradmin: this.state.usuario.useradmin,
-          userapellido: this.state.usuario.userapellido,
-          useremail: this.state.usuario.useremail,
-          userfechanacimiento: this.state.usuario.userfechanacimiento,
-          userfoto: this.state.usuario.userfoto,
-          userid: this.state.usuario.userid,
-          usernick: this.state.usuario.usernick,
-          usernombre: this.state.usuario.usernombre,
-          userpass: this.state.usuario.userpass,
-          userpuntaje: this.state.usuario.userpuntaje + 2,
-          usersexo: this.state.usuario.usersexo,
-        });
-  };
-
   render() {
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <Error />;
     return (
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <Categoria />
-        <div style={{ display: "block" }}>
+        <div style={{ display: 'block' }}>
           <PreguntaUsuario preguntaRespuesta={this.state.preguntaRespuesta} />
           {this.state.usuario && !this.state.preguntaRespuesta.estado && (
             <FormRespuesta
@@ -190,8 +193,8 @@ class Respuesta extends Component {
             <PreguntaCerrada />
           )}
           {!this.state.usuario && (
-            <div style={{ margin: "0 3em 0 3em" }}>
-              <Login nombreBoton="Responder" />
+            <div style={{ margin: '0 3em 0 3em' }}>
+              <Login nombreBoton='Responder' />
             </div>
           )}
           <RespFav respFav={this.state.respFav} />
