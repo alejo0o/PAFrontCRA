@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Grid,
   Header,
@@ -7,13 +7,13 @@ import {
   Table,
   Modal,
   Button,
-} from "semantic-ui-react";
-import { MainContainer } from "./EstilosPerfil";
-import Cookies from "universal-cookie";
-import UsuarioUpdate from "./UsuarioUpdate";
-import { fecha } from "../utils/utils";
-import "semantic-ui-css/semantic.min.css";
-import Password from "./Password";
+} from 'semantic-ui-react';
+import { MainContainer } from './EstilosPerfil';
+import Cookies from 'universal-cookie';
+import UsuarioUpdate from './UsuarioUpdate';
+import { fecha } from '../utils/utils';
+import 'semantic-ui-css/semantic.min.css';
+import Password from './Password';
 
 function UsuarioPerfil({
   eventoUpdate,
@@ -24,20 +24,21 @@ function UsuarioPerfil({
   cambiadoErroneo,
   onCloseModales,
   handleOnChangeFoto,
+  handleChangeNewPassword,
 }) {
   const [openPass, setOpenPass] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
   const cookies = new Cookies();
-  const user = cookies.get("cookie1");
+  const user = cookies.get('cookie1');
   const fechaF = fecha(user.userfechanacimiento);
   return (
-    <Tab.Pane style={{ backgroundColor: " #dae5ed" }}>
-      <MainContainer style={{ margin: "auto" }}>
+    <Tab.Pane style={{ backgroundColor: ' #dae5ed' }}>
+      <MainContainer style={{ margin: 'auto' }}>
         <Grid>
-          <Grid.Column style={{ maxWidth: "auto" }}>
-            <Header as="h2" textAlign="center">
-              <i className="user icon"></i>
+          <Grid.Column style={{ maxWidth: 'auto' }}>
+            <Header as='h2' textAlign='center'>
+              <i className='user icon'></i>
               Perfil
             </Header>
             <Grid>
@@ -82,13 +83,13 @@ function UsuarioPerfil({
           </Grid.Column>
         </Grid>
       </MainContainer>
-      <div style={{ display: "flex" }}>
+      <div style={{ display: 'flex' }}>
         <Modal
           closeIcon
           open={open}
           basic
-          dimmer="blurring"
-          size="small"
+          dimmer='blurring'
+          size='small'
           onClose={() => setOpen(false)}
           onOpen={() => setOpen(true)}
           centered={true}
@@ -96,14 +97,12 @@ function UsuarioPerfil({
             <Button
               fluid
               style={{
-                backgroundColor: "#283049",
-                color: "#FFF",
-              }}
-            >
+                backgroundColor: '#283049',
+                color: '#FFF',
+              }}>
               Editar
             </Button>
-          }
-        >
+          }>
           <UsuarioUpdate
             handleOnChangeFoto={handleOnChangeFoto}
             eventoUpdate={eventoUpdate}
@@ -117,7 +116,7 @@ function UsuarioPerfil({
           closeIcon
           open={openPass}
           basic
-          dimmer="blurring"
+          dimmer='blurring'
           onClose={() => setOpenPass(false)}
           onOpen={() => setOpenPass(true)}
           centered={true}
@@ -125,20 +124,19 @@ function UsuarioPerfil({
             <Button
               fluid
               style={{
-                backgroundColor: "#283049",
-                color: "#FFF",
-              }}
-            >
+                backgroundColor: '#283049',
+                color: '#FFF',
+              }}>
               Cambiar contraseña
             </Button>
-          }
-        >
+          }>
           <Password
             eventoUpdate={eventoUpdate}
             eventoUpdatePassword={eventoUpdatePassword}
             updatePassword={updatePassword}
             cambiadoErroneo={cambiadoErroneo}
             onCloseModales={onCloseModales}
+            handleChangeNewPassword={handleChangeNewPassword}
           />
         </Modal>
       </div>

@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import Loader from "../Components/Loader/Loader";
-import { api_url, serverImageURL } from "../Components/utils/utils";
-import Cookies from "universal-cookie";
-import axios from "axios";
-import { Tab } from "semantic-ui-react";
-import Tab1 from "../Components/Perfil/UsuarioPerfil";
-import Tab2 from "../Components/Perfil/PreguntasUsuario";
-import Tab3 from "../Components/Perfil/RespuestasUsuario";
-import Tab4 from "../Components/Perfil/PreguntasCerradasUsuario";
-import Tab5 from "../Components/Perfil/Mensajesusuario";
-import Error from "../Components/Error/Error";
+import React, { Component } from 'react';
+import Loader from '../Components/Loader/Loader';
+import { api_url, serverImageURL } from '../Components/utils/utils';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
+import { Tab } from 'semantic-ui-react';
+import Tab1 from '../Components/Perfil/UsuarioPerfil';
+import Tab2 from '../Components/Perfil/PreguntasUsuario';
+import Tab3 from '../Components/Perfil/RespuestasUsuario';
+import Tab4 from '../Components/Perfil/PreguntasCerradasUsuario';
+import Tab5 from '../Components/Perfil/Mensajesusuario';
+import Error from '../Components/Error/Error';
 
 const cookies = new Cookies();
 
@@ -22,30 +22,43 @@ class Perfil extends Component {
 
       cambiadoErroneo: false,
       // cookie: new Cookies(),
-      user: cookies.get("cookie1"),
-      fotoUsuario: "",
-      fileNameFotoUsuario: "",
+      user: cookies.get('cookie1'),
+      fotoUsuario: '',
+      fileNameFotoUsuario: '',
       usuarioUpdate: {
-        userid: "",
-        usernombre: "",
-        userapellido: "",
-        userfechanacimiento: "",
-        usernick: "",
-        userpass: "",
-        useremail: "",
-        userfoto: "",
-        usersexo: "",
-        userpuntaje: "",
-        useradmin: "",
+        userid: '',
+        usernombre: '',
+        userapellido: '',
+        userfechanacimiento: '',
+        usernick: '',
+        userpass: '',
+        useremail: '',
+        userfoto: '',
+        usersexo: '',
+        userpuntaje: '',
+        useradmin: '',
+      },
+      usuarioPasswordUpdate: {
+        userid: '',
+        usernombre: '',
+        userapellido: '',
+        userfechanacimiento: '',
+        usernick: '',
+        userpass: '',
+        useremail: '',
+        userfoto: '',
+        usersexo: '',
+        userpuntaje: '',
+        useradmin: '',
       },
       preguntas: {},
       preguntasCerradas: {},
       respuestas: {},
-      passwordAnterior: "",
+      passwordAnterior: '',
       respuestaModificada: {
-        userid: "",
-        pregid: "",
-        resptexto: "",
+        userid: '',
+        pregid: '',
+        resptexto: '',
       },
       //paginador
       page: 1,
@@ -74,10 +87,23 @@ class Perfil extends Component {
           userpuntaje: this.state.user.userpuntaje,
           useradmin: this.state.user.useradmin,
         },
+        usuarioPasswordUpdate: {
+          userid: this.state.user.userid,
+          usernombre: this.state.user.usernombre,
+          userapellido: this.state.user.userapellido,
+          userfechanacimiento: this.state.user.userfechanacimiento,
+          usernick: this.state.user.usernick,
+          userpass: this.state.user.userpass,
+          useremail: this.state.user.useremail,
+          userfoto: this.state.user.userfoto,
+          usersexo: this.state.user.usersexo,
+          userpuntaje: this.state.user.userpuntaje,
+          useradmin: this.state.user.useradmin,
+        },
         respuestaModificada: {
           userid: this.state.user.userid,
-          pregid: "",
-          resptexto: "",
+          pregid: '',
+          resptexto: '',
         },
       });
     }
@@ -184,15 +210,15 @@ class Perfil extends Component {
       //update del usuarioen el servidor de fotos
       if (this.state.fileNameFotoUsuario && this.state.fotoUsuario) {
         const formData = new FormData();
-        formData.append("file", this.state.fotoUsuario);
+        formData.append('file', this.state.fotoUsuario);
 
         const res = await axios.post(
           `${serverImageURL}/upload?usuario=${this.state.fileNameFotoUsuario}`,
           formData,
           {
             headers: {
-              "Content-Type": "multipart/form-data",
-              "Access-Control-Allow-Origin": "*",
+              'Content-Type': 'multipart/form-data',
+              'Access-Control-Allow-Origin': '*',
             },
           }
         );
@@ -205,7 +231,7 @@ class Perfil extends Component {
       const { data: usuarioNuevo } = await axios.get(
         `${api_url}/api/usuario/${this.state.user.userid}`
       );
-      cookies.set("cookie1", usuarioNuevo, { path: "/" });
+      cookies.set('cookie1', usuarioNuevo, { path: '/' });
       //////////////////////////////////
       window.location.reload();
       this.setState({
@@ -226,6 +252,26 @@ class Perfil extends Component {
     });
   };
 
+  handleChangeNewPassword = (e) => {
+    this.setState({
+      usuarioPasswordUpdate: {
+        ...this.state.usuarioPasswordUpdate,
+        userid: this.state.usuarioPasswordUpdate.userid,
+        usernombre: this.state.usuarioPasswordUpdate.usernombre,
+        userapellido: this.state.usuarioPasswordUpdate.userapellido,
+        userfechanacimiento: this.state.usuarioPasswordUpdate
+          .userfechanacimiento,
+        usernick: this.state.usuarioPasswordUpdate.usernick,
+        userpass: this.state.usuarioPasswordUpdate.userpass,
+        usersexo: this.state.usuarioPasswordUpdate.usersexo,
+        useremail: this.state.usuarioPasswordUpdate.useremail,
+        userfoto: this.state.usuarioPasswordUpdate.userfoto,
+        useradmin: this.state.usuarioPasswordUpdate.useradmin,
+        [e.target.name]: e.target.value,
+      },
+    });
+  };
+
   onClickButtonUpdatePassword = async (e) => {
     e.preventDefault();
     //maneja el click del button para hacer el post del formulario pregunta
@@ -236,13 +282,13 @@ class Perfil extends Component {
     try {
       if (this.state.passwordAnterior === this.state.user.userpass) {
         const response = await axios.put(
-          `${api_url}/api/usuario/${this.state.usuarioUpdate.userid}`,
-          this.state.usuarioUpdate
+          `${api_url}/api/usuario/${this.state.usuarioPasswordUpdate.userid}`,
+          this.state.usuarioPasswordUpdate
         );
         const { data: usuarioNuevo } = await axios.get(
           `${api_url}/api/usuario/${this.state.user.userid}`
         );
-        cookies.set("cookie1", usuarioNuevo, { path: "/" });
+        cookies.set('cookie1', usuarioNuevo, { path: '/' });
         window.location.reload();
 
         this.setState({
@@ -314,7 +360,7 @@ class Perfil extends Component {
 
   panes = [
     {
-      menuItem: { key: "Perfil", icon: "user", content: "Perfil" },
+      menuItem: { key: 'Perfil', icon: 'user', content: 'Perfil' },
       render: () => (
         <Tab1
           eventoUpdate={this.handleChangeUpdate}
@@ -325,14 +371,15 @@ class Perfil extends Component {
           cambiadoErroneo={this.state.cambiadoErroneo}
           onCloseModales={this.onCloseModales}
           handleOnChangeFoto={this.handleOnChangeFoto}
+          handleChangeNewPassword={this.handleChangeNewPassword}
         />
       ),
     },
     {
       menuItem: {
-        key: "Preguntas",
-        icon: "question circle",
-        content: "Preguntas",
+        key: 'Preguntas',
+        icon: 'question circle',
+        content: 'Preguntas',
       },
       render: () => (
         <Tab2
@@ -344,7 +391,7 @@ class Perfil extends Component {
       ),
     },
     {
-      menuItem: { key: "Respuestas", icon: "talk", content: "Respuestas" },
+      menuItem: { key: 'Respuestas', icon: 'talk', content: 'Respuestas' },
       render: () => (
         <Tab3
           respuestasData={this.state.respuestas.data}
@@ -359,9 +406,9 @@ class Perfil extends Component {
     },
     {
       menuItem: {
-        key: "Preguntas cerradas",
-        icon: "question circle",
-        content: "Preguntas cerradas",
+        key: 'Preguntas cerradas',
+        icon: 'question circle',
+        content: 'Preguntas cerradas',
       },
       render: () => (
         <Tab4
@@ -374,9 +421,9 @@ class Perfil extends Component {
     },
     {
       menuItem: {
-        key: "Mensajes",
-        icon: "inbox",
-        content: "Mensajes",
+        key: 'Mensajes',
+        icon: 'inbox',
+        content: 'Mensajes',
       },
       render: () => (
         <Tab5
@@ -389,19 +436,20 @@ class Perfil extends Component {
     },
   ];
   render() {
+    console.log(this.state.usuarioPasswordUpdate);
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <Error />;
     return (
-      <div style={{ marginTop: "2em" }}>
+      <div style={{ marginTop: '2em' }}>
         <Tab
           menu={{
-            style: { backgroundColor: "#283049" },
+            style: { backgroundColor: '#283049' },
             inverted: true,
             fluid: true,
             vertical: true,
           }}
           panes={this.panes}
-          menuPosition="left"
+          menuPosition='left'
           onTabChange={this.onTabChange}
           activeIndex={this.state.tab}
         />
