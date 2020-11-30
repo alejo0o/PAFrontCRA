@@ -1,7 +1,7 @@
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import {
   Table,
   Button,
@@ -11,37 +11,37 @@ import {
   ModalHeader,
   FormGroup,
   ModalFooter,
-} from "reactstrap";
-import axios from "axios";
-import Cookies from "universal-cookie";
-import { api_url } from "../../Components/utils/utils";
+} from 'reactstrap';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
+import { api_url } from '../../Components/utils/utils';
 
-const url = `${api_url}/api/pregunta`;
+const url = `${api_url}/api/pregunta/`;
 
 class preguntas extends React.Component {
   state = {
     data: [],
     categorias: [],
-    pagina: "",
-    size: "",
-    totalPaginas: "",
-    totalRegistros: "",
+    pagina: '',
+    size: '',
+    totalPaginas: '',
+    totalRegistros: '',
     modalInsertar: false,
     modalEliminar: false,
     form: {
-      pregid: "",
-      userid: "",
-      catid: "",
-      pregtexto: "",
-      pregdetalle: "",
-      catnombre: "",
-      pregfecha: "",
-      preghora: "",
-      tipoModal: "",
+      pregid: '',
+      userid: '',
+      catid: '',
+      pregtexto: '',
+      pregdetalle: '',
+      catnombre: '',
+      pregfecha: '',
+      preghora: '',
+      tipoModal: '',
     },
   };
   peticionGet = (page, tamano) => {
-    const urlGet = url + "?pageNumber=" + page + "&pageSize=" + tamano;
+    const urlGet = url + '?pageNumber=' + page + '&pageSize=' + tamano;
     axios
       .get(urlGet)
       .then((response) => {
@@ -58,8 +58,8 @@ class preguntas extends React.Component {
 
   componentDidMount() {
     const cookies = new Cookies();
-    if (typeof cookies.get("cookie1") !== "undefined") {
-      if (cookies.get("cookie1").useradmin) {
+    if (typeof cookies.get('cookie1') !== 'undefined') {
+      if (cookies.get('cookie1').useradmin) {
         this.peticionGet(1, 20);
         axios
           .get(`${api_url}/api/categoria/`)
@@ -69,8 +69,8 @@ class preguntas extends React.Component {
           .catch((error) => {
             console.log(error);
           });
-      } else this.props.history.push("/");
-    } else this.props.history.push("/");
+      } else this.props.history.push('/');
+    } else this.props.history.push('/');
   }
 
   modalInsertar = () => {
@@ -103,7 +103,7 @@ class preguntas extends React.Component {
 
   seleccionar = (pregunta) => {
     this.setState({
-      tipoModal: "actualizar",
+      tipoModal: 'actualizar',
       form: {
         pregid: pregunta.pregid,
         userid: pregunta.userid,
@@ -189,22 +189,20 @@ class preguntas extends React.Component {
                   </td>
                   <td>
                     <Button
-                      color="primary"
+                      color='primary'
                       onClick={() => {
                         this.seleccionar(pregunta);
                         this.modalInsertar();
-                      }}
-                    >
+                      }}>
                       <FontAwesomeIcon icon={faEdit} />
                     </Button>
-                    {"  "}
+                    {'  '}
                     <Button
-                      color="danger"
+                      color='danger'
                       onClick={() => {
                         this.seleccionar(pregunta);
                         this.setState({ modalEliminar: true });
-                      }}
-                    >
+                      }}>
                       <FontAwesomeIcon icon={faTrashAlt} />
                     </Button>
                   </td>
@@ -224,9 +222,8 @@ class preguntas extends React.Component {
                 {paginas.map((pag) => (
                   <th>
                     <Button
-                      color={pag[1] ? "info" : "link"}
-                      onClick={() => this.peticionGet(pag[0], this.state.size)}
-                    >
+                      color={pag[1] ? 'info' : 'link'}
+                      onClick={() => this.peticionGet(pag[0], this.state.size)}>
                       {pag[0]}
                     </Button>
                   </th>
@@ -235,8 +232,7 @@ class preguntas extends React.Component {
                   <Button
                     onClick={() =>
                       this.peticionGet(this.state.totalPaginas, this.state.size)
-                    }
-                  >
+                    }>
                     Ultima
                   </Button>
                 </th>
@@ -245,105 +241,99 @@ class preguntas extends React.Component {
           </Table>
 
           <Modal isOpen={this.state.modalInsertar}>
-            <ModalHeader style={{ display: "block" }}>
+            <ModalHeader style={{ display: 'block' }}>
               <span
-                style={{ float: "right" }}
-                onClick={() => this.modalInsertar()}
-              >
+                style={{ float: 'right' }}
+                onClick={() => this.modalInsertar()}>
                 x
               </span>
             </ModalHeader>
             <ModalBody>
-              <div className="form-group">
-                <label htmlFor="id">ID</label>
+              <div className='form-group'>
+                <label htmlFor='id'>ID</label>
                 <input
-                  className="form-control"
-                  type="text"
-                  name="pregid"
-                  id="pregid"
+                  className='form-control'
+                  type='text'
+                  name='pregid'
+                  id='pregid'
                   readOnly
                   onChange={this.handleChange}
-                  value={form ? form.pregid : ""}
+                  value={form ? form.pregid : ''}
                 />
                 <br />
                 <input
-                  className="form-control"
-                  type="hidden"
-                  name="userid"
-                  id="userid"
+                  className='form-control'
+                  type='hidden'
+                  name='userid'
+                  id='userid'
                   readOnly
                   onChange={this.handleChange}
-                  value={form ? form.userid : ""}
+                  value={form ? form.userid : ''}
                 />
                 <input
-                  className="form-control"
-                  type="hidden"
-                  name="respid"
-                  id="respid"
+                  className='form-control'
+                  type='hidden'
+                  name='respid'
+                  id='respid'
                   readOnly
                   onChange={this.handleChange}
-                  value={form ? form.respid : ""}
+                  value={form ? form.respid : ''}
                 />
-                <label htmlFor="nombre">Categoría</label>
+                <label htmlFor='nombre'>Categoría</label>
                 <select
-                  className="form-control"
-                  name="catnombre"
-                  id="catnombre"
+                  className='form-control'
+                  name='catnombre'
+                  id='catnombre'
                   onChange={this.handleChange}
-                  value={form ? form.catid : ""}
-                >
+                  value={form ? form.catid : ''}>
                   {this.state.categorias.map((elemento) => (
                     <option
                       key={elemento.catnombre}
                       value={elemento.catid}
-                      name={elemento.catnombre}
-                    >
+                      name={elemento.catnombre}>
                       {elemento.catnombre}
                     </option>
                   ))}
                 </select>
 
-                <label htmlFor="nombre">Texto</label>
+                <label htmlFor='nombre'>Texto</label>
                 <input
-                  className="form-control"
-                  type="text"
-                  name="pregtexto"
-                  id="pregtexto"
+                  className='form-control'
+                  type='text'
+                  name='pregtexto'
+                  id='pregtexto'
                   onChange={this.handleChange}
-                  value={form ? form.pregtexto : ""}
+                  value={form ? form.pregtexto : ''}
                 />
-                <label htmlFor="detalle">Detalle</label>
+                <label htmlFor='detalle'>Detalle</label>
                 <input
-                  className="form-control"
-                  type="text"
-                  name="pregdetalle"
-                  id="pregdetalle"
+                  className='form-control'
+                  type='text'
+                  name='pregdetalle'
+                  id='pregdetalle'
                   onChange={this.handleChange}
-                  value={form ? form.pregdetalle : ""}
+                  value={form ? form.pregdetalle : ''}
                 />
               </div>
             </ModalBody>
 
             <ModalFooter>
-              {this.state.tipoModal == "insertar" ? (
+              {this.state.tipoModal == 'insertar' ? (
                 <button
-                  className="btn btn-success"
-                  onClick={() => this.peticionPost()}
-                >
+                  className='btn btn-success'
+                  onClick={() => this.peticionPost()}>
                   Insertar
                 </button>
               ) : (
                 <button
-                  className="btn btn-primary"
-                  onClick={() => this.peticionPut()}
-                >
+                  className='btn btn-primary'
+                  onClick={() => this.peticionPut()}>
                   Actualizar
                 </button>
               )}
               <button
-                className="btn btn-danger"
-                onClick={() => this.modalInsertar()}
-              >
+                className='btn btn-danger'
+                onClick={() => this.modalInsertar()}>
                 Cancelar
               </button>
             </ModalFooter>
@@ -355,15 +345,13 @@ class preguntas extends React.Component {
             </ModalBody>
             <ModalFooter>
               <button
-                className="btn btn-danger"
-                onClick={() => this.peticionDelete()}
-              >
+                className='btn btn-danger'
+                onClick={() => this.peticionDelete()}>
                 Sí
               </button>
               <button
-                className="btn btn-secundary"
-                onClick={() => this.setState({ modalEliminar: false })}
-              >
+                className='btn btn-secundary'
+                onClick={() => this.setState({ modalEliminar: false })}>
                 No
               </button>
             </ModalFooter>

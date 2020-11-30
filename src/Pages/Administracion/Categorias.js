@@ -1,7 +1,7 @@
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import {
   Table,
   Button,
@@ -10,35 +10,38 @@ import {
   ModalBody,
   ModalHeader,
   ModalFooter,
-} from "reactstrap";
-import axios from "axios";
-import Cookies from "universal-cookie";
-import { api_url } from "../../Components/utils/utils";
+} from 'reactstrap';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
+import { api_url } from '../../Components/utils/utils';
 
-const url = `${api_url}/api/Categoria/`;
+const url = `${api_url}/api/categoria/`;
 
 class categorias extends React.Component {
   state = {
     data: [],
-    pagina: "",
-    size: "",
-    totalPaginas: "",
-    totalRegistros: "",
+    pagina: '',
+    size: '',
+    totalPaginas: '',
+    totalRegistros: '',
     modalInsertar: false,
     modalEliminar: false,
     form: {
-      catid: "",
-      catnombre: "",
-      catdescripcion: "",
-      tipoModal: "",
+      catid: '',
+      catnombre: '',
+      catdescripcion: '',
+      tipoModal: '',
     },
   };
   peticionGet = (page, tamano) => {
-    const urlGet = url + "?pageNumber=" + page + "&pageSize=" + tamano;
+    const urlGet = url + '?pageNumber=' + page + '&pageSize=' + tamano;
     axios
       .get(urlGet)
       .then((response) => {
-        this.setState({ total: response.data });
+        this.setState({ pagina: response.data.pageNumber });
+        this.setState({ size: response.data.pageSize });
+        this.setState({ totalPaginas: response.data.totalPages });
+        this.setState({ totalRegistros: response.data.totalRecords });
         this.setState({ data: response.data.data });
       })
       .catch((error) => {
@@ -48,11 +51,11 @@ class categorias extends React.Component {
 
   componentDidMount() {
     const cookies = new Cookies();
-    if (typeof cookies.get("cookie1") !== "undefined")
-      if (cookies.get("cookie1").useradmin) {
+    if (typeof cookies.get('cookie1') !== 'undefined')
+      if (cookies.get('cookie1').useradmin) {
         this.peticionGet(1, 20);
-      } else this.props.history.push("/");
-    else this.props.history.push("/");
+      } else this.props.history.push('/');
+    else this.props.history.push('/');
   }
 
   modalInsertar = () => {
@@ -85,7 +88,7 @@ class categorias extends React.Component {
 
   seleccionar = (categoria) => {
     this.setState({
-      tipoModal: "actualizar",
+      tipoModal: 'actualizar',
       form: {
         catid: categoria.catid,
         catnombre: categoria.catnombre,
@@ -122,12 +125,11 @@ class categorias extends React.Component {
             <br />
             <h2>Categorias</h2>
             <button
-              className="ui teal button m1-2"
+              className='ui teal button m1-2'
               onClick={() => {
-                this.setState({ form: null, tipoModal: "insertar" });
+                this.setState({ form: null, tipoModal: 'insertar' });
                 this.modalInsertar();
-              }}
-            >
+              }}>
               Agregar Categoria
             </button>
             <br />
@@ -149,22 +151,20 @@ class categorias extends React.Component {
                     <td>{categoria.catdescripcion}</td>
                     <td>
                       <Button
-                        color="primary"
+                        color='primary'
                         onClick={() => {
                           this.seleccionar(categoria);
                           this.modalInsertar();
-                        }}
-                      >
+                        }}>
                         <FontAwesomeIcon icon={faEdit} />
                       </Button>
-                      {"  "}
+                      {'  '}
                       <Button
-                        color="danger"
+                        color='danger'
                         onClick={() => {
                           this.seleccionar(categoria);
                           this.setState({ modalEliminar: true });
-                        }}
-                      >
+                        }}>
                         <FontAwesomeIcon icon={faTrashAlt} />
                       </Button>
                     </td>
@@ -184,11 +184,10 @@ class categorias extends React.Component {
                   {paginas.map((pag) => (
                     <th>
                       <Button
-                        color={pag[1] ? "info" : "link"}
+                        color={pag[1] ? 'info' : 'link'}
                         onClick={() =>
                           this.peticionGet(pag[0], this.state.size)
-                        }
-                      >
+                        }>
                         {pag[0]}
                       </Button>
                     </th>
@@ -200,8 +199,7 @@ class categorias extends React.Component {
                           this.state.totalPaginas,
                           this.state.size
                         )
-                      }
-                    >
+                      }>
                       Ultima
                     </Button>
                   </th>
@@ -210,69 +208,65 @@ class categorias extends React.Component {
             </Table>
 
             <Modal isOpen={this.state.modalInsertar}>
-              <ModalHeader style={{ display: "block" }}>
+              <ModalHeader style={{ display: 'block' }}>
                 <span
-                  style={{ float: "right" }}
-                  onClick={() => this.modalInsertar()}
-                >
+                  style={{ float: 'right' }}
+                  onClick={() => this.modalInsertar()}>
                   x
                 </span>
               </ModalHeader>
               <ModalBody>
-                <div className="form-group">
-                  <label htmlFor="id">ID</label>
+                <div className='form-group'>
+                  <label htmlFor='id'>ID</label>
                   <input
-                    className="form-control"
-                    type="text"
-                    name="catid"
-                    id="catid"
+                    className='form-control'
+                    type='text'
+                    name='catid'
+                    id='catid'
                     readOnly
                     onChange={this.handleChange}
-                    value={form ? form.catid : ""}
+                    value={form ? form.catid : ''}
                   />
                   <br />
-                  <label htmlFor="nombre">Nombre</label>
+                  <label htmlFor='nombre'>Nombre</label>
                   <input
-                    className="form-control"
-                    type="text"
-                    name="catnombre"
-                    id="catnombre"
+                    className='form-control'
+                    type='text'
+                    name='catnombre'
+                    id='catnombre'
                     onChange={this.handleChange}
-                    value={form ? form.catnombre : ""}
+                    value={form ? form.catnombre : ''}
                   />
                   <br />
-                  <label htmlFor="nombre">Descripción</label>
+                  <label htmlFor='nombre'>Descripción</label>
                   <input
-                    className="form-control"
-                    type="text"
-                    name="catdescripcion"
-                    id="catdescripcion"
+                    className='form-control'
+                    type='text'
+                    name='catdescripcion'
+                    id='catdescripcion'
                     onChange={this.handleChange}
-                    value={form ? form.catdescripcion : ""}
+                    value={form ? form.catdescripcion : ''}
                   />
                 </div>
               </ModalBody>
 
               <ModalFooter>
-                {this.state.tipoModal == "insertar" ? (
+                {this.state.tipoModal == 'insertar' ? (
                   <button
-                    className="btn btn-success"
-                    onClick={() => this.peticionPost()}
-                  >
+                    className='btn btn-success'
+                    onClick={() => this.peticionPost()}>
                     Insertar
                   </button>
                 ) : (
                   <button
-                    className="btn btn-primary"
-                    onClick={() => this.peticionPut()}
-                  >
+                    className='btn btn-primary'
+                    onClick={() => this.peticionPut()}>
                     Actualizar
                   </button>
                 )}
                 <button
-                  className="btn btn-danger"
-                  onClick={() => this.modalInsertar()}
-                >
+                  className='btn btn-danger'
+                  onClick={() => this.modalInsertar()}>
                   Cancelar
                 </button>
               </ModalFooter>
@@ -280,20 +274,18 @@ class categorias extends React.Component {
 
             <Modal isOpen={this.state.modalEliminar}>
               <ModalBody>
-                Estás seguro que deseas eliminar a la categoria{" "}
+                Estás seguro que deseas eliminar a la categoria{' '}
                 {form && form.catnombre}
               </ModalBody>
               <ModalFooter>
                 <button
-                  className="btn btn-danger"
-                  onClick={() => this.peticionDelete()}
-                >
+                  className='btn btn-danger'
+                  onClick={() => this.peticionDelete()}>
                   Sí
                 </button>
                 <button
-                  className="btn btn-secundary"
-                  onClick={() => this.setState({ modalEliminar: false })}
-                >
+                  className='btn btn-secundary'
+                  onClick={() => this.setState({ modalEliminar: false })}>
                   No
                 </button>
               </ModalFooter>
