@@ -1,8 +1,8 @@
-import React from "react";
-import { Modal, Button, Tab, Header, Icon } from "semantic-ui-react";
-import Tab1 from "./Pane1";
-import Tab2 from "./Pane2";
-import "semantic-ui-css/semantic.min.css";
+import React from 'react';
+import { Modal, Button, Tab, Header, Icon } from 'semantic-ui-react';
+import Tab1 from './Pane1';
+import Tab2 from './Pane2';
+import 'semantic-ui-css/semantic.min.css';
 
 function LoginForm({
   eventoLogin,
@@ -18,6 +18,7 @@ function LoginForm({
   usuarioCreado,
   nick_del_usuario,
   handleOnChangeFoto,
+  correo_del_usuario,
 }) {
   const [open, setOpen] = React.useState(false);
   const handleOnChange = (e, data) => {
@@ -26,7 +27,7 @@ function LoginForm({
 
   const panes = [
     {
-      menuItem: { key: "Login", icon: "user", content: "Login" },
+      menuItem: { key: 'Login', icon: 'user', content: 'Login' },
       render: () => (
         <Tab1
           eventoLogin={eventoLogin}
@@ -38,7 +39,7 @@ function LoginForm({
       ),
     },
     {
-      menuItem: { key: "SignUp", icon: "users", content: "SignUp" },
+      menuItem: { key: 'SignUp', icon: 'users', content: 'SignUp' },
       render: () => (
         <Tab2
           eventoSignUp={eventoSignUp}
@@ -57,15 +58,14 @@ function LoginForm({
         centered={true}
         open={open}
         basic
-        dimmer="blurring"
-        size="small"
+        dimmer='blurring'
+        size='small'
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
-        trigger={<Button color="teal">{nombreBoton}</Button>}
-      >
+        trigger={<Button color='teal'>{nombreBoton}</Button>}>
         <Tab
           menu={{
-            style: { backgroundColor: "#283049" },
+            style: { backgroundColor: '#283049' },
             inverted: true,
             attached: false,
             tabular: false,
@@ -76,21 +76,21 @@ function LoginForm({
         <Modal
           closeIcon
           open={usuarioErrorSignup}
-          size="small"
+          size='small'
           style={{ height: 200 }}
-          centered={true}
-        >
-          <Header icon="remove circle" content="Ups! Hubo un error" />
+          centered={true}>
+          <Header icon='remove circle' content='Ups! Hubo un error' />
           <Modal.Content>
             <p>
-              El usuario con nick {nick_del_usuario} no pudo ser creado, el nick
-              del usuario ya esta en uso o el nick contiene caracteres
-              especiales.
+              El usuario con nick <strong>{nick_del_usuario}</strong> y correo{' '}
+              <strong>{correo_del_usuario}</strong> no pudo ser creado, el nick
+              del usuario ya esta en uso, el correo es inválido o el nick
+              contiene caracteres especiales.
             </p>
           </Modal.Content>
           <Modal.Actions>
-            <Button color="red" onClick={modalOnCloseFail}>
-              <Icon name="checkmark" /> Ok!
+            <Button color='red' onClick={modalOnCloseFail}>
+              <Icon name='checkmark' /> Ok!
             </Button>
           </Modal.Actions>
         </Modal>
@@ -98,13 +98,12 @@ function LoginForm({
         <Modal
           closeIcon
           open={usuarioCreado}
-          size="small"
+          size='small'
           style={{ height: 200 }}
-          centered={true}
-        >
+          centered={true}>
           <Header
-            icon="check circle"
-            content="Usuario creado satisfactoriamente!"
+            icon='check circle'
+            content='Usuario creado satisfactoriamente!'
           />
           <Modal.Content>
             <p>
@@ -113,8 +112,8 @@ function LoginForm({
             </p>
           </Modal.Content>
           <Modal.Actions>
-            <Button color="green" onClick={modalOnCloseFail}>
-              <Icon name="smile outline" /> Ok!
+            <Button color='green' onClick={modalOnCloseFail}>
+              <Icon name='smile outline' /> Ok!
             </Button>
           </Modal.Actions>
         </Modal>

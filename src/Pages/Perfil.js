@@ -25,6 +25,7 @@ class Perfil extends Component {
       user: cookies.get('cookie1'),
       fotoUsuario: '',
       fileNameFotoUsuario: '',
+      emailInvalido: false,
       usuarioUpdate: {
         userid: '',
         usernombre: '',
@@ -208,7 +209,13 @@ class Perfil extends Component {
     });
     try {
       //update del usuarioen el servidor de fotos
-      if (this.state.fileNameFotoUsuario && this.state.fotoUsuario) {
+      if (
+        this.state.fileNameFotoUsuario &&
+        this.state.fotoUsuario &&
+        /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(
+          this.state.usuarioUpdate.useremail
+        )
+      ) {
         const formData = new FormData();
         formData.append('file', this.state.fotoUsuario);
 
@@ -223,21 +230,29 @@ class Perfil extends Component {
           }
         );
       }
-      const response = await axios.put(
-        `${api_url}/api/usuario/${this.state.usuarioUpdate.userid}`,
-        this.state.usuarioUpdate
-      );
-      //saca el nuevo usuario modificado para poder seteralo en la cookie
-      const { data: usuarioNuevo } = await axios.get(
-        `${api_url}/api/usuario/${this.state.user.userid}`
-      );
-      cookies.set('cookie1', usuarioNuevo, { path: '/' });
-      //////////////////////////////////
-      window.location.reload();
-      this.setState({
-        loading: false,
-        error: null,
-      });
+      if (
+        /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(
+          this.state.usuarioUpdate.useremail
+        )
+      ) {
+        const response = await axios.put(
+          `${api_url}/api/usuario/${this.state.usuarioUpdate.userid}`,
+          this.state.usuarioUpdate
+        );
+        //saca el nuevo usuario modificado para poder seteralo en la cookie
+        const { data: usuarioNuevo } = await axios.get(
+          `${api_url}/api/usuario/${this.state.user.userid}`
+        );
+        cookies.set('cookie1', usuarioNuevo, { path: '/' });
+        //////////////////////////////////
+        window.location.reload();
+        this.setState({
+          loading: false,
+          error: null,
+        });
+      } else {
+        this.setState({ loading: false, error: null, emailInvalido: true });
+      }
     } catch (error) {
       this.setState({
         loading: false,
@@ -317,6 +332,7 @@ class Perfil extends Component {
   onCloseModales = (e) => {
     this.setState({
       cambiadoErroneo: false,
+      emailInvalido: false,
     });
   };
 
@@ -372,6 +388,7 @@ class Perfil extends Component {
           onCloseModales={this.onCloseModales}
           handleOnChangeFoto={this.handleOnChangeFoto}
           handleChangeNewPassword={this.handleChangeNewPassword}
+          emailInvalido={this.state.emailInvalido}
         />
       ),
     },

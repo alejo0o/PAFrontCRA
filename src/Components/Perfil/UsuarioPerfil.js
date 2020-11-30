@@ -25,6 +25,7 @@ function UsuarioPerfil({
   onCloseModales,
   handleOnChangeFoto,
   handleChangeNewPassword,
+  emailInvalido,
 }) {
   const [openPass, setOpenPass] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -110,6 +111,7 @@ function UsuarioPerfil({
             buttonClickUpdate={buttonClickUpdate}
             cambiadoErroneo={cambiadoErroneo}
             onCloseModales={onCloseModales}
+            emailInvalido={emailInvalido}
           />
         </Modal>
         <Modal
