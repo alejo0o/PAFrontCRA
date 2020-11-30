@@ -1,5 +1,5 @@
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   Table,
   Button,
@@ -8,13 +8,13 @@ import {
   ModalBody,
   ModalHeader,
   ModalFooter,
-} from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
-import moment from "moment";
-import Cookies from "universal-cookie";
-import { api_url } from "../../Components/utils/utils";
+} from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import moment from 'moment';
+import Cookies from 'universal-cookie';
+import { api_url } from '../../Components/utils/utils';
 
 const url = `${api_url}/api/Usuario/`;
 const size = 5;
@@ -22,36 +22,36 @@ const size = 5;
 class respuestas extends React.Component {
   state = {
     data: [],
-    pagina: "",
-    size: "",
-    totalPaginas: "",
-    totalRegistros: "",
+    pagina: '',
+    size: '',
+    totalPaginas: '',
+    totalRegistros: '',
     modalEncerar: false,
     modalInsertar: false,
     modalEliminar: false,
     form: {
-      userid: "",
-      usernombre: "",
-      userapellido: "",
+      userid: '',
+      usernombre: '',
+      userapellido: '',
       userfechanacimiento: Date,
-      usernick: "",
-      userpass: "",
-      useremail: "",
-      userfoto: "",
-      useradmin: "",
-      usersexo: "",
-      userpuntaje: "",
-      tipoModal: "",
+      usernick: '',
+      userpass: '',
+      useremail: '',
+      userfoto: '',
+      useradmin: '',
+      usersexo: '',
+      userpuntaje: '',
+      tipoModal: '',
     },
     formMensaje: {
-      adminid: "",
-      userid: "",
-      mentitulo: "",
-      mendetalle: "",
+      adminid: '',
+      userid: '',
+      mentitulo: '',
+      mendetalle: '',
     },
   };
   peticionGet = (page, tamano) => {
-    const urlGet = url + "?pageNumber=" + page + "&pageSize=" + tamano;
+    const urlGet = url + '?pageNumber=' + page + '&pageSize=' + tamano;
     axios
       .get(urlGet)
       .then((response) => {
@@ -68,11 +68,11 @@ class respuestas extends React.Component {
 
   componentDidMount() {
     const cookies = new Cookies();
-    if (typeof cookies.get("cookie1") !== "undefined")
-      if (cookies.get("cookie1").useradmin) {
+    if (typeof cookies.get('cookie1') !== 'undefined')
+      if (cookies.get('cookie1').useradmin) {
         this.peticionGet(1, 20);
-      } else this.props.history.push("/");
-    else this.props.history.push("/");
+      } else this.props.history.push('/');
+    else this.props.history.push('/');
   }
 
   modalInsertar = () => {
@@ -101,7 +101,7 @@ class respuestas extends React.Component {
 
   seleccionar = (usuario) => {
     this.setState({
-      tipoModal: "actualizar",
+      tipoModal: 'actualizar',
       form: {
         userid: usuario.userid,
         usernombre: usuario.usernombre,
@@ -119,7 +119,7 @@ class respuestas extends React.Component {
   };
 
   peticionPut = () => {
-    if (this.state.form.useradmin == "true") {
+    if (this.state.form.useradmin == 'true') {
       this.state.form.useradmin = true;
     } else {
       this.state.form.useradmin = false;
@@ -148,8 +148,8 @@ class respuestas extends React.Component {
       .then((response) => {
         this.setState({ modalEncerar: false });
         const cookies = new Cookies();
-        this.state.formMensaje.mentitulo = "Puntaje 0";
-        this.state.formMensaje.adminid = cookies.get("cookie1").userid;
+        this.state.formMensaje.mentitulo = 'Puntaje 0';
+        this.state.formMensaje.adminid = cookies.get('cookie1').userid;
         this.state.formMensaje.userid = this.state.form.userid;
         this.peticionPost();
         this.peticionGet(this.state.pagina, this.state.size);
@@ -169,7 +169,7 @@ class respuestas extends React.Component {
           <br />
           <h2>Usuarios</h2>
           <br />
-          <div class="table-responsive">
+          <div class='table-responsive'>
             <Table>
               <thead>
                 <tr>
@@ -194,45 +194,42 @@ class respuestas extends React.Component {
                       {usuario.usernombre} {usuario.userapellido}
                     </td>
                     <td>
-                      {moment(usuario.userfechanacimiento).format("DD/MM/YYYY")}
+                      {moment(usuario.userfechanacimiento).format('DD/MM/YYYY')}
                     </td>
                     <td>{usuario.usernick}</td>
                     <td>{usuario.userpass}</td>
                     <td>{usuario.usersexo}</td>
                     <td>{usuario.useremail}</td>
                     <td>
-                      <img src={usuario.userfoto} width="100" height="100" />
+                      <img src={usuario.userfoto} width='100' height='100' />
                     </td>
                     <td>{usuario.userpuntaje}</td>
-                    <td>{usuario.useradmin ? "Admin" : "Usuario"}</td>
+                    <td>{usuario.useradmin ? 'Admin' : 'Usuario'}</td>
                     <td>
                       <Button
-                        color="primary"
+                        color='primary'
                         onClick={() => {
                           this.seleccionar(usuario);
                           this.modalInsertar();
-                        }}
-                      >
+                        }}>
                         <FontAwesomeIcon icon={faEdit} />
                       </Button>
-                      {"  "}
+                      {'  '}
 
                       <Button
-                        color="primary"
+                        color='primary'
                         onClick={() => {
                           this.seleccionar(usuario);
                           this.setState({ modalEncerar: true });
-                        }}
-                      >
+                        }}>
                         Encerar
                       </Button>
                       <Button
-                        color="danger"
+                        color='danger'
                         onClick={() => {
                           this.seleccionar(usuario);
                           this.setState({ modalEliminar: true });
-                        }}
-                      >
+                        }}>
                         <FontAwesomeIcon icon={faTrashAlt} />
                       </Button>
                     </td>
@@ -252,11 +249,10 @@ class respuestas extends React.Component {
                   {paginas.map((pag) => (
                     <th>
                       <Button
-                        color={pag[1] ? "info" : "link"}
+                        color={pag[1] ? 'info' : 'link'}
                         onClick={() =>
                           this.peticionGet(pag[0], this.state.size)
-                        }
-                      >
+                        }>
                         {pag[0]}
                       </Button>
                     </th>
@@ -268,8 +264,7 @@ class respuestas extends React.Component {
                           this.state.totalPaginas,
                           this.state.size
                         )
-                      }
-                    >
+                      }>
                       Ultima
                     </Button>
                   </th>
@@ -278,156 +273,151 @@ class respuestas extends React.Component {
             </Table>
 
             <Modal isOpen={this.state.modalInsertar}>
-              <ModalHeader style={{ display: "block" }}>
+              <ModalHeader style={{ display: 'block' }}>
                 <span
-                  style={{ float: "right" }}
-                  onClick={() => this.modalInsertar()}
-                >
+                  style={{ float: 'right' }}
+                  onClick={() => this.modalInsertar()}>
                   x
                 </span>
               </ModalHeader>
               <ModalBody>
-                <div className="form-group">
-                  <label htmlFor="id">ID</label>
+                <div className='form-group'>
+                  <label htmlFor='id'>ID</label>
                   <input
-                    className="form-control"
-                    type="text"
-                    name="userid"
-                    id="userid"
+                    className='form-control'
+                    type='text'
+                    name='userid'
+                    id='userid'
                     readOnly
                     onChange={this.handleChange}
-                    value={form ? form.userid : ""}
+                    value={form ? form.userid : ''}
                   />
                   <br />
-                  <label htmlFor="nombre">Nombre</label>
+                  <label htmlFor='nombre'>Nombre</label>
                   <input
-                    className="form-control"
-                    type="text"
-                    name="usernombre"
-                    id="usernombre"
+                    className='form-control'
+                    type='text'
+                    name='usernombre'
+                    id='usernombre'
                     onChange={this.handleChange}
-                    value={form ? form.usernombre : ""}
+                    value={form ? form.usernombre : ''}
                   />
                   <br />
-                  <label htmlFor="apellido">Apellido</label>
+                  <label htmlFor='apellido'>Apellido</label>
                   <input
-                    className="form-control"
-                    type="text"
-                    name="userapellido"
-                    id="userapellido"
+                    className='form-control'
+                    type='text'
+                    name='userapellido'
+                    id='userapellido'
                     onChange={this.handleChange}
-                    value={form ? form.userapellido : ""}
+                    value={form ? form.userapellido : ''}
                   />
                   <br />
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor='email'>Email</label>
                   <input
-                    className="form-control"
-                    type="email"
-                    name="useremail"
-                    id="useremail"
+                    className='form-control'
+                    type='email'
+                    name='useremail'
+                    id='useremail'
                     onChange={this.handleChange}
-                    value={form ? form.useremail : ""}
+                    value={form ? form.useremail : ''}
                   />
                   <br />
-                  <label htmlFor="fechanacimiento">Fecha Nacimiento</label>
+                  <label htmlFor='fechanacimiento'>Fecha Nacimiento</label>
                   <input
-                    className="form-control"
-                    type="date"
-                    name="userfechanacimiento"
-                    id="userfechanacimiento"
+                    className='form-control'
+                    type='date'
+                    name='userfechanacimiento'
+                    id='userfechanacimiento'
                     onChange={this.handleChange}
                     value={
                       form
-                        ? moment(form.userfechanacimiento).format("yyyy-MM-dd")
-                        : ""
+                        ? moment(form.userfechanacimiento).format('yyyy-MM-dd')
+                        : ''
                     }
                   />
                   <br />
-                  <label htmlFor="sexo">Sexo</label>
+                  <label htmlFor='sexo'>Sexo</label>
                   <select
-                    className="form-control"
-                    name="usersexo"
-                    id="usersexo"
+                    className='form-control'
+                    name='usersexo'
+                    id='usersexo'
                     onChange={this.handleChange}
-                    value={form ? form.usersexo : ""}
-                  >
-                    <option value="Masculino">Masculino</option>
-                    <option value="Femenino">Femenino</option>
-                    <option value="Otro">Otro</option>
+                    value={form ? form.usersexo : ''}>
+                    <option value='Masculino'>Masculino</option>
+                    <option value='Femenino'>Femenino</option>
+                    <option value='Otro'>Otro</option>
                   </select>
-                  <label htmlFor="nick">Usuario</label>
+                  <label htmlFor='nick'>Usuario</label>
                   <input
-                    className="form-control"
-                    type="text"
-                    name="usernick"
-                    id="usernick"
+                    className='form-control'
+                    type='text'
+                    name='usernick'
+                    id='usernick'
                     readOnly
                     onChange={this.handleChange}
-                    value={form ? form.usernick : ""}
+                    value={form ? form.usernick : ''}
                   />
                   <br />
-                  <label htmlFor="foto">Foto:</label> &nbsp;&nbsp;&nbsp;&nbsp;
+                  <label htmlFor='foto'>Foto:</label> &nbsp;&nbsp;&nbsp;&nbsp;
                   <img
-                    src={form ? form.userfoto : ""}
-                    width="100"
-                    height="100"
-                  />{" "}
+                    src={form ? form.userfoto : ''}
+                    width='100'
+                    height='100'
+                  />{' '}
                   <br />
                   <input
-                    className="form-control"
-                    type="text"
-                    name="userfoto"
-                    id="userfoto"
-                    onChange={this.handleChange}
-                    value={form ? form.userfoto : ""}
-                  />
-                  <br />
-                  <label htmlFor="puntaje">Puntaje</label>
-                  <input
-                    className="form-control"
-                    type="text"
-                    name="userpuntaje"
-                    id="userpuntaje"
+                    className='form-control'
+                    type='text'
+                    name='userfoto'
+                    id='userfoto'
                     readOnly
                     onChange={this.handleChange}
-                    value={form ? form.userpuntaje : ""}
+                    value={form ? form.userfoto : ''}
                   />
                   <br />
-                  <label htmlFor="admin">Administrador</label>
-                  <select
-                    className="form-control"
-                    name="useradmin"
-                    id="useradmin"
+                  <label htmlFor='puntaje'>Puntaje</label>
+                  <input
+                    className='form-control'
+                    type='text'
+                    name='userpuntaje'
+                    id='userpuntaje'
+                    readOnly
                     onChange={this.handleChange}
-                    value={form ? form.useradmin : ""}
-                  >
-                    <option value="true">Si</option>
-                    <option value="false">No</option>
+                    value={form ? form.userpuntaje : ''}
+                  />
+                  <br />
+                  <label htmlFor='admin'>Administrador</label>
+                  <select
+                    className='form-control'
+                    name='useradmin'
+                    id='useradmin'
+                    onChange={this.handleChange}
+                    value={form ? form.useradmin : ''}>
+                    <option value='true'>Si</option>
+                    <option value='false'>No</option>
                   </select>
                   <br />
                 </div>
               </ModalBody>
 
               <ModalFooter>
-                {this.state.tipoModal == "insertar" ? (
+                {this.state.tipoModal == 'insertar' ? (
                   <button
-                    className="btn btn-success"
-                    onClick={() => this.peticionPost()}
-                  >
+                    className='btn btn-success'
+                    onClick={() => this.peticionPost()}>
                     Insertar
                   </button>
                 ) : (
                   <button
-                    className="btn btn-primary"
-                    onClick={() => this.peticionPut()}
-                  >
+                    className='btn btn-primary'
+                    onClick={() => this.peticionPut()}>
                     Actualizar
                   </button>
                 )}
                 <button
-                  className="btn btn-danger"
-                  onClick={() => this.modalInsertar()}
-                >
+                  className='btn btn-danger'
+                  onClick={() => this.modalInsertar()}>
                   Cancelar
                 </button>
               </ModalFooter>
@@ -435,20 +425,18 @@ class respuestas extends React.Component {
 
             <Modal isOpen={this.state.modalEliminar}>
               <ModalBody>
-                Estás seguro que deseas eliminar el usuario{" "}
+                Estás seguro que deseas eliminar el usuario{' '}
                 {form && form.usuarioid}
               </ModalBody>
               <ModalFooter>
                 <button
-                  className="btn btn-danger"
-                  onClick={() => this.peticionDelete()}
-                >
+                  className='btn btn-danger'
+                  onClick={() => this.peticionDelete()}>
                   Sí
                 </button>
                 <button
-                  className="btn btn-secundary"
-                  onClick={() => this.setState({ modalEliminar: false })}
-                >
+                  className='btn btn-secundary'
+                  onClick={() => this.setState({ modalEliminar: false })}>
                   No
                 </button>
               </ModalFooter>
@@ -456,122 +444,119 @@ class respuestas extends React.Component {
 
             <Modal isOpen={this.state.modalEncerar}>
               <ModalBody>
-                <div className="form-group">
-                  <label htmlFor="id">ID</label>
+                <div className='form-group'>
+                  <label htmlFor='id'>ID</label>
                   <input
-                    className="form-control"
-                    type="text"
-                    name="userid"
-                    id="userid"
+                    className='form-control'
+                    type='text'
+                    name='userid'
+                    id='userid'
                     readOnly
                     onChange={this.handleChange}
-                    value={form ? form.userid : ""}
+                    value={form ? form.userid : ''}
                   />
                   <br />
                   Ingrese la razón para modificar la puntuación
                   <textarea
-                    className="form-control"
-                    type="text"
-                    name="mensajeuser"
+                    className='form-control'
+                    type='text'
+                    name='mensajeuser'
                     onChange={this.handleChange}
-                    id="mensajeuser"
-                    required
-                  >
-                    {" "}
+                    id='mensajeuser'
+                    required>
+                    {' '}
                   </textarea>
                   <br />
                   <br />
                   <input
-                    className="form-control"
-                    type="hidden"
-                    name="usernombre"
-                    id="usernombre"
+                    className='form-control'
+                    type='hidden'
+                    name='usernombre'
+                    id='usernombre'
                     onChange={this.handleChange}
-                    value={form ? form.usernombre : ""}
+                    value={form ? form.usernombre : ''}
                   />
                   <input
-                    className="form-control"
-                    type="hidden"
-                    name="userapellido"
-                    id="userapellido"
+                    className='form-control'
+                    type='hidden'
+                    name='userapellido'
+                    id='userapellido'
                     onChange={this.handleChange}
-                    value={form ? form.userapellido : ""}
+                    value={form ? form.userapellido : ''}
                   />
                   <input
-                    className="form-control"
-                    type="hidden"
-                    name="useremail"
-                    id="useremail"
+                    className='form-control'
+                    type='hidden'
+                    name='useremail'
+                    id='useremail'
                     onChange={this.handleChange}
-                    value={form ? form.useremail : ""}
+                    value={form ? form.useremail : ''}
                   />
                   <input
-                    className="form-control"
-                    type="hidden"
-                    name="userfechanacimiento"
-                    id="userfechanacimiento"
+                    className='form-control'
+                    type='hidden'
+                    name='userfechanacimiento'
+                    id='userfechanacimiento'
                     onChange={this.handleChange}
                     value={
                       form
-                        ? moment(form.userfechanacimiento).format("yyyy-MM-dd")
-                        : ""
+                        ? moment(form.userfechanacimiento).format('yyyy-MM-dd')
+                        : ''
                     }
                   />
                   <input
-                    className="form-control"
-                    type="hidden"
-                    name="usersexo"
-                    id="usersexo"
+                    className='form-control'
+                    type='hidden'
+                    name='usersexo'
+                    id='usersexo'
                     onChange={this.handleChange}
-                    value={form ? form.usersexo : ""}
+                    value={form ? form.usersexo : ''}
                   />
                   <input
-                    className="form-control"
-                    type="hidden"
-                    name="usernick"
-                    id="usernick"
+                    className='form-control'
+                    type='hidden'
+                    name='usernick'
+                    id='usernick'
                     readOnly
                     onChange={this.handleChange}
-                    value={form ? form.usernick : ""}
+                    value={form ? form.usernick : ''}
                   />
                   <input
-                    className="form-control"
-                    type="hidden"
-                    name="userfoto"
-                    id="userfoto"
+                    className='form-control'
+                    type='hidden'
+                    name='userfoto'
+                    id='userfoto'
                     onChange={this.handleChange}
-                    value={form ? form.userfoto : ""}
+                    value={form ? form.userfoto : ''}
                   />
                   <input
-                    className="form-control"
-                    type="hidden"
-                    name="userpuntaje"
-                    id="userpuntaje"
+                    className='form-control'
+                    type='hidden'
+                    name='userpuntaje'
+                    id='userpuntaje'
                     readOnly
                     onChange={this.handleChange}
                   />
                   <input
-                    className="form-control"
-                    type="hidden"
-                    name="useradmin"
-                    id="useradmin"
+                    className='form-control'
+                    type='hidden'
+                    name='useradmin'
+                    id='useradmin'
                     onChange={this.handleChange}
-                    value={form ? form.useradmin : ""}
+                    value={form ? form.useradmin : ''}
                   />
                   <br />
                 </div>
               </ModalBody>
               <ModalFooter>
                 <button
-                  className="btn btn-danger"
-                  onClick={() => this.peticionEncerar()}
-                >
+                  className='btn btn-danger'
+                  onClick={() => this.peticionEncerar()}>
                   Enviar
                 </button>
                 <button
-                  className="btn btn-secundary"
-                  onClick={() => this.setState({ modalEncerar: false })}
-                >
+                  className='btn btn-secundary'
+                  onClick={() => this.setState({ modalEncerar: false })}>
                   Regresar
                 </button>
               </ModalFooter>
