@@ -30,7 +30,9 @@ class Categorias extends Component {
       error: null,
     });
     try {
-      const { data } = await axios.get(`${api_url}/api/categoria`);
+      const { data } = await axios.get(
+        `${api_url}/api/customqueries/ordenarcategoria`
+      );
       this.setState({
         categorias: data,
         loading: false,
