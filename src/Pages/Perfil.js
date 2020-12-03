@@ -453,11 +453,10 @@ class Perfil extends Component {
     },
   ];
   render() {
-    console.log(this.state.usuarioPasswordUpdate);
     if (this.state.loading) return <Loader />;
     if (this.state.error) return <Error />;
     return (
-      <div style={{ marginTop: '2em' }}>
+      <div style={{ marginTop: '2em', minHeight: 500 }}>
         <Tab
           menu={{
             style: { backgroundColor: '#283049' },

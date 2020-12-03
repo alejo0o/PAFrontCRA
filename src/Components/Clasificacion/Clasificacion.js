@@ -52,7 +52,7 @@ class Clasificacion extends Component {
     }
   };
   render() {
-    if (this.state.loading) return <Loader />;
+    if (this.state.loading) return <div style={{ width: '22.5%' }}></div>;
     if (this.state.error) return <Error />;
     return (
       <div>
