@@ -124,7 +124,7 @@ class respuestas extends React.Component {
   };
 
   peticionPut = () => {
-    if (this.state.form.useradmin == 'true') {
+    if (this.state.form.useradmin == true || this.state.form.useradmin == 'true') {
       this.state.form.useradmin = true;
     } else {
       this.state.form.useradmin = false;
