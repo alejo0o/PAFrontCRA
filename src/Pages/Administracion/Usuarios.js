@@ -10,11 +10,15 @@ import {
   ModalFooter,
 } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faBan } from '@fortawesome/free-solid-svg-icons';
+import { Form } from 'semantic-ui-react';
 import axios from 'axios';
 import moment from 'moment';
 import Cookies from 'universal-cookie';
 import { api_url } from '../../Components/utils/utils';
+import {
+  validateEmail
+} from './ValidateFunctions';
 
 const url = `${api_url}/api/Usuario/`;
 const size = 5;
@@ -22,6 +26,7 @@ const size = 5;
 class respuestas extends React.Component {
   state = {
     data: [],
+    error: false,
     pagina: '',
     size: '',
     totalPaginas: '',
@@ -119,7 +124,7 @@ class respuestas extends React.Component {
   };
 
   peticionPut = () => {
-    if (this.state.form.useradmin == 'true') {
+    if (this.state.form.useradmin == true || this.state.form.useradmin == 'true') {
       this.state.form.useradmin = true;
     } else {
       this.state.form.useradmin = false;
@@ -170,7 +175,7 @@ class respuestas extends React.Component {
           <h2>Usuarios</h2>
           <br />
           <div class='table-responsive'>
-            <Table>
+            <Table className="ui striped table">
               <thead>
                 <tr>
                   <th>Id</th>
@@ -199,13 +204,13 @@ class respuestas extends React.Component {
                     <td>{usuario.usernick}</td>
                     <td>{usuario.userpass}</td>
                     <td>{usuario.usersexo}</td>
-                    <td>{usuario.useremail}</td>
+                    <td  WIDTH="100">{usuario.useremail}</td>
                     <td>
                       <img src={usuario.userfoto} width='100' height='100' />
                     </td>
                     <td>{usuario.userpuntaje}</td>
                     <td>{usuario.useradmin ? 'Admin' : 'Usuario'}</td>
-                    <td>
+                    <td  WIDTH="100">
                       <Button
                         color='primary'
                         onClick={() => {
@@ -217,12 +222,12 @@ class respuestas extends React.Component {
                       {'  '}
 
                       <Button
-                        color='primary'
+                        color='warning'
                         onClick={() => {
                           this.seleccionar(usuario);
                           this.setState({ modalEncerar: true });
                         }}>
-                        Encerar
+                        <FontAwesomeIcon icon={faBan} />
                       </Button>
                       <Button
                         color='danger'
@@ -281,6 +286,7 @@ class respuestas extends React.Component {
                 </span>
               </ModalHeader>
               <ModalBody>
+              
                 <div className='form-group'>
                   <label htmlFor='id'>ID</label>
                   <input
@@ -316,12 +322,23 @@ class respuestas extends React.Component {
                   <label htmlFor='email'>Email</label>
                   <input
                     className='form-control'
-                    type='email'
+                    type='hidden'
                     name='useremail'
                     id='useremail'
                     onChange={this.handleChange}
                     value={form ? form.useremail : ''}
+                    error={validateEmail(form.useremail)}
                   />
+                <Form.Input
+                  fluid
+                 
+                  placeholder='Email'
+                  onChange={this.handleChange}
+                  type='email'
+                  name='useremail'
+                  value={form ? form.useremail : ''}
+                  error={validateEmail(form.useremail)}
+                />
                   <br />
                   <label htmlFor='fechanacimiento'>Fecha Nacimiento</label>
                   <input
@@ -368,7 +385,7 @@ class respuestas extends React.Component {
                   <br />
                   <input
                     className='form-control'
-                    type='text'
+                    type='hidden'
                     name='userfoto'
                     id='userfoto'
                     readOnly
@@ -399,28 +416,32 @@ class respuestas extends React.Component {
                   </select>
                   <br />
                 </div>
-              </ModalBody>
 
+              </ModalBody>
               <ModalFooter>
-                {this.state.tipoModal == 'insertar' ? (
-                  <button
-                    className='btn btn-success'
-                    onClick={() => this.peticionPost()}>
-                    Insertar
-                  </button>
-                ) : (
-                  <button
-                    className='btn btn-primary'
-                    onClick={() => this.peticionPut()}>
-                    Actualizar
-                  </button>
-                )}
+              {this.state.tipoModal == "insertar" ? (
                 <button
-                  className='btn btn-danger'
-                  onClick={() => this.modalInsertar()}>
-                  Cancelar
+                  className="btn btn-success"
+                  onClick={() => this.peticionPost()}
+                >
+                  Insertar
                 </button>
-              </ModalFooter>
+              ) : (
+                <button
+                  className="btn btn-primary"
+                  onClick={() => this.peticionPut()}
+                >
+                  Actualizar
+                </button>
+              )}
+              <button
+                className="btn btn-danger"
+                onClick={() => this.modalInsertar()}
+              >
+                Cancelar
+              </button>
+            </ModalFooter>
+              
             </Modal>
 
             <Modal isOpen={this.state.modalEliminar}>

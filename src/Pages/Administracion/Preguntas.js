@@ -15,6 +15,7 @@ import {
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 import { api_url } from '../../Components/utils/utils';
+import moment from 'moment';
 
 const url = `${api_url}/api/pregunta/`;
 
@@ -159,17 +160,17 @@ class preguntas extends React.Component {
           <h2>Preguntas</h2>
           <br />
 
-          <Table>
+          <Table className="ui striped table">
             <thead>
               <tr>
                 <th>Id</th>
-                <th>Usuario Id</th>
-                <th>Categoria Id</th>
+                <th hidden>Usuario Id</th>
+                <th hidden>Categoria Id</th>
                 <th>Categoria</th>
                 <th>Texto</th>
                 <th>Detalle</th>
                 <th>Fecha</th>
-                <th>Hora</th>
+                <th hidden>Hora</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -177,13 +178,13 @@ class preguntas extends React.Component {
               {this.state.data.map((pregunta) => (
                 <tr key={pregunta.pregid}>
                   <td>{pregunta.pregid}</td>
-                  <td>{pregunta.userid}</td>
-                  <td>{pregunta.catid}</td>
+                  <td hidden>{pregunta.userid}</td>
+                  <td hidden>{pregunta.catid}</td>
                   <td>{pregunta.catnombre}</td>
                   <td>{pregunta.pregtexto}</td>
                   <td>{pregunta.pregdetalle}</td>
-                  <td>{pregunta.pregfecha}</td>
-                  <td>
+                  <td  WIDTH="100">{moment(pregunta.pregfecha).format("YYYY-MM-DD")}</td>
+                  <td hidden>
                     {pregunta.preghora.hours}:{pregunta.preghora.minutes}:
                     {pregunta.preghora.seconds}
                   </td>

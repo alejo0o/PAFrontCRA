@@ -17,6 +17,7 @@ import moment from "moment";
 import Cookies from "universal-cookie";
 import { api_url } from "../../Components/utils/utils";
 
+
 const url = `${api_url}/api/respuesta/`;
 
 class respuestas extends React.Component {
@@ -136,15 +137,15 @@ class respuestas extends React.Component {
           <h2>Respuestas</h2>
           <br />
 
-          <Table>
+          <Table className="ui striped table">
             <thead>
               <tr>
                 <th>Id</th>
-                <th>Usuario Id</th>
-                <th>Pregunta Id</th>
+                <th hidden>Usuario Id</th>
+                <th hidden>Pregunta Id</th>
                 <th>Respuesta</th>
                 <th>Fecha</th>
-                <th>Hora</th>
+                <th hidden>Hora</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -152,11 +153,11 @@ class respuestas extends React.Component {
               {this.state.data.map((respuesta) => (
                 <tr key={respuesta.respid}>
                   <td>{respuesta.respid}</td>
-                  <td>{respuesta.userid}</td>
-                  <td>{respuesta.pregid}</td>
-                  <td>{respuesta.resptexto}</td>
+                  <td hidden>{respuesta.userid}</td>
+                  <td hidden>{respuesta.pregid}</td>
+                  <td  WIDTH="800">{respuesta.resptexto}</td>
                   <td>{moment(respuesta.respfecha).format("YYYY-MM-DD")}</td>
-                  <td>
+                  <td hidden>
                     {respuesta.resphora.hours}:{respuesta.resphora.minutes}:
                     {respuesta.resphora.seconds}
                   </td>

@@ -134,7 +134,7 @@ class categorias extends React.Component {
             </button>
             <br />
             <br />
-            <Table>
+            <Table className="ui striped table">
               <thead>
                 <tr>
                   <th>Id</th>
